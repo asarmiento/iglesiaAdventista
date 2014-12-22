@@ -1,0 +1,74 @@
+[09-Nov-2014 10:21:02] PHP Warning:  require(__DIR__/../bootstrap/autoload.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:21:02] PHP Warning:  require(__DIR__/../bootstrap/autoload.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:21:02] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required '__DIR__/../bootstrap/autoload.php' (include_path='.:/opt/php52/lib/php') in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:21:05] PHP Warning:  require(__DIR__/../bootstrap/autoload.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:21:05] PHP Warning:  require(__DIR__/../bootstrap/autoload.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:21:05] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required '__DIR__/../bootstrap/autoload.php' (include_path='.:/opt/php52/lib/php') in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:28:11] PHP Warning:  require(__DIR__/../bootstrap/autoload.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:28:11] PHP Warning:  require(__DIR__/../bootstrap/autoload.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:28:11] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required '__DIR__/../bootstrap/autoload.php' (include_path='.:/opt/php52/lib/php') in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:28:17] PHP Warning:  require(__DIR__/../bootstrap/autoload.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:28:17] PHP Warning:  require(__DIR__/../bootstrap/autoload.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:28:17] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required '__DIR__/../bootstrap/autoload.php' (include_path='.:/opt/php52/lib/php') in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:30:54] PHP Warning:  require(__DIR__/../bootstrap/autoload.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:30:54] PHP Warning:  require(__DIR__/../bootstrap/autoload.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /home/friendly/login/public/index.php on line 21
+[09-Nov-2014 10:30:54] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required '__DIR__/../bootstrap/autoload.php' (include_path='.:/opt/php52/lib/php') in /home/friendly/login/public/index.php on line 21
+[19-Nov-2014 16:04:57 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'Undefined variable: resultado' in /home/scontaro/dev/app/storage/views/005dff9726335646214deb9fc44c314d:28
+Stack trace:
+#0 /home/scontaro/dev/app/storage/views/005dff9726335646214deb9fc44c314d(28): Illuminate\Exception\Handler->handleError(8, 'Undefined varia...', '/home/scontaro/...', 28, Array)
+#1 /home/scontaro/dev/bootstrap/compiled.php(9798): include('/home/scontaro/...')
+#2 /home/scontaro/dev/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(56): Illuminate\View\Engines\PhpEngine->evaluatePath('/home/scontaro/...', Array)
+#3 /home/scontaro/dev/bootstrap/compiled.php(9676): Illuminate\View\Engines\CompilerEngine->get('/home/scontaro/...', Array)
+#4 /home/scontaro/dev/bootstrap/compiled.php(9663): Illuminate\View\View->getContents()
+#5 /home/scontaro/dev/bootstrap/compiled.php(9654): Illuminate\View\View->renderContents()
+#6 /home/scontaro/dev/bootstrap/compiled.php(10357): Illuminate\View\View->render()
+#7 /home/scontaro/dev/bootstra in /home/scontaro/dev/app/storage/views/005dff9726335646214deb9fc44c314d on line 28
+[19-Nov-2014 16:04:57 UTC] PHP Fatal error:  Call to a member function getCurrentPage() on a non-object in /home/scontaro/dev/app/storage/views/005dff9726335646214deb9fc44c314d on line 28
+[19-Nov-2014 16:10:32 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'Undefined variable: resultado' in /home/scontaro/dev/app/storage/views/005dff9726335646214deb9fc44c314d:28
+Stack trace:
+#0 /home/scontaro/dev/app/storage/views/005dff9726335646214deb9fc44c314d(28): Illuminate\Exception\Handler->handleError(8, 'Undefined varia...', '/home/scontaro/...', 28, Array)
+#1 /home/scontaro/dev/bootstrap/compiled.php(9798): include('/home/scontaro/...')
+#2 /home/scontaro/dev/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(56): Illuminate\View\Engines\PhpEngine->evaluatePath('/home/scontaro/...', Array)
+#3 /home/scontaro/dev/bootstrap/compiled.php(9676): Illuminate\View\Engines\CompilerEngine->get('/home/scontaro/...', Array)
+#4 /home/scontaro/dev/bootstrap/compiled.php(9663): Illuminate\View\View->getContents()
+#5 /home/scontaro/dev/bootstrap/compiled.php(9654): Illuminate\View\View->renderContents()
+#6 /home/scontaro/dev/bootstrap/compiled.php(10357): Illuminate\View\View->render()
+#7 /home/scontaro/dev/bootstra in /home/scontaro/dev/app/storage/views/005dff9726335646214deb9fc44c314d on line 28
+[19-Nov-2014 16:10:32 UTC] PHP Fatal error:  Call to a member function getCurrentPage() on a non-object in /home/scontaro/dev/app/storage/views/005dff9726335646214deb9fc44c314d on line 28
+[19-Nov-2014 18:25:08 UTC] PHP Fatal error:  Call to undefined method Illuminate\Database\MySqlConnection::join() in /home/scontaro/dev/app/controllers/PlanillaController.php on line 29
+[19-Nov-2014 18:25:39 UTC] PHP Fatal error:  Call to undefined method Illuminate\Database\MySqlConnection::join() in /home/scontaro/dev/app/controllers/PlanillaController.php on line 29
+[19-Nov-2014 18:29:22 UTC] PHP Fatal error:  Call to undefined method Illuminate\Database\MySqlConnection::join() in /home/scontaro/dev/app/controllers/PlanillaController.php on line 29
+[19-Nov-2014 21:30:15 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'Undefined variable: conn' in /home/scontaro/dev/app/controllers/GrupoController.php:37
+Stack trace:
+#0 /home/scontaro/dev/app/controllers/GrupoController.php(37): Illuminate\Exception\Handler->handleError(8, 'Undefined varia...', '/home/scontaro/...', 37, Array)
+#1 [internal function]: GrupoController->getEdit('6')
+#2 /home/scontaro/dev/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(231): call_user_func_array(Array, Array)
+#3 /home/scontaro/dev/bootstrap/compiled.php(5776): Illuminate\Routing\Controller->callAction('getEdit', Array)
+#4 /home/scontaro/dev/bootstrap/compiled.php(5764): Illuminate\Routing\ControllerDispatcher->call(Object(GrupoController), Object(Illuminate\Routing\Route), 'getEdit')
+#5 /home/scontaro/dev/bootstrap/compiled.php(4971): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'GrupoController', 'getEdit')
+#6 [internal function]: Illuminate\Routing\Router->I in /home/scontaro/dev/app/controllers/GrupoController.php on line 37
+[19-Nov-2014 21:30:15 UTC] PHP Fatal error:  Call to a member function table() on a non-object in /home/scontaro/dev/app/controllers/GrupoController.php on line 37
+[19-Nov-2014 21:31:22 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'Undefined variable: conn' in /home/scontaro/dev/app/controllers/GrupoController.php:38
+Stack trace:
+#0 /home/scontaro/dev/app/controllers/GrupoController.php(38): Illuminate\Exception\Handler->handleError(8, 'Undefined varia...', '/home/scontaro/...', 38, Array)
+#1 [internal function]: GrupoController->getEdit('6')
+#2 /home/scontaro/dev/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(231): call_user_func_array(Array, Array)
+#3 /home/scontaro/dev/bootstrap/compiled.php(5776): Illuminate\Routing\Controller->callAction('getEdit', Array)
+#4 /home/scontaro/dev/bootstrap/compiled.php(5764): Illuminate\Routing\ControllerDispatcher->call(Object(GrupoController), Object(Illuminate\Routing\Route), 'getEdit')
+#5 /home/scontaro/dev/bootstrap/compiled.php(4971): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'GrupoController', 'getEdit')
+#6 [internal function]: Illuminate\Routing\Router->I in /home/scontaro/dev/app/controllers/GrupoController.php on line 38
+[19-Nov-2014 21:31:22 UTC] PHP Fatal error:  Call to a member function table() on a non-object in /home/scontaro/dev/app/controllers/GrupoController.php on line 38
+[19-Nov-2014 23:16:12 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/scontaro/dev/app/controllers/GrupoController.php on line 60
+[20-Nov-2014 13:02:19 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/scontaro/dev/app/controllers/PlanillaController.php on line 146
+[20-Nov-2014 13:03:11 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/scontaro/dev/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php on line 1336
+[21-Nov-2014 05:36:09 UTC] PHP Parse error:  syntax error, unexpected '$data' (T_VARIABLE) in /home/scontaro/dev/app/storage/views/1c955505d0b20e9b0d956c5483628d14 on line 94
+[23-Nov-2014 05:35:16 UTC] PHP Parse error:  syntax error, unexpected 'endforeach' (T_ENDFOREACH) in /home/scontaro/dev/app/storage/views/59e224bc2dba8feed73698059a8fb31b on line 73
+[23-Nov-2014 05:41:21 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 255852544 bytes) in /home/scontaro/dev/app/storage/views/59e224bc2dba8feed73698059a8fb31b on line 56
+[23-Nov-2014 05:46:00 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 255852544 bytes) in /home/scontaro/dev/app/storage/views/59e224bc2dba8feed73698059a8fb31b on line 56
+[23-Nov-2014 06:29:31 UTC] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /home/scontaro/dev/app/controllers/SetupController.php on line 8
+[11-Dec-2014 02:59:56 UTC] PHP Warning:  Unterminated comment starting line 72 in /home/scontaro/dev/app/controllers/PlanillaController.php on line 72
+[11-Dec-2014 02:59:56 UTC] PHP Parse error:  syntax error, unexpected '*', expecting function (T_FUNCTION) in /home/scontaro/dev/app/controllers/PlanillaController.php on line 72
+[11-Dec-2014 03:10:07 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/scontaro/dev/app/controllers/PlanillaController.php on line 183
+[11-Dec-2014 05:31:31 UTC] PHP Fatal error:  Call to undefined method Maatwebsite\Excel\Writers\CellWriter::setHeight() in /home/scontaro/dev/app/controllers/PlanillaController.php on line 228
+[11-Dec-2014 07:36:20 UTC] PHP Fatal error:  Class 'PDF' not found in /home/scontaro/dev/app/controllers/PlanillaController.php on line 275
+[11-Dec-2014 07:40:05 UTC] PHP Fatal error:  Class 'PDF' not found in /home/scontaro/dev/app/controllers/PlanillaController.php on line 275
