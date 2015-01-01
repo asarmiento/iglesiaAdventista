@@ -1,0 +1,1 @@
+C:\xampp\htdocs\iglesiaQuepos\app/views/ingresos/edit.blade.php

@@ -1,0 +1,1 @@
+C:\xampp\htdocs\iglesiaQuepos\app/views/gastos/show.blade.php

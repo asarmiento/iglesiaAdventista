@@ -1,0 +1,1 @@
+C:\xampp\htdocs\iglesiaQuepos\app/views/tipos_fijos/edit.blade.php
