@@ -1,3 +1,0 @@
-IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
-RewriteEngine On
-RewriteRule ^(.*)$ public/$1 [L]

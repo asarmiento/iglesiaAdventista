@@ -4,45 +4,8 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "824a26ec6accabe628a0300e20e60cc9",
+    "hash": "cce6015a015d1aaf6f2cae97680d79b9",
     "packages": [
-        {
-            "name": "anouar/fpdf",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:xroot/laravel-fpdf.git",
-                "reference": "master"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/xroot/laravel-fpdf/zipball/81a572c4d8c7971e51bdaadecf76d586c915a077",
-                "reference": "81a572c4d8c7971e51bdaadecf76d586c915a077",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "~4.0",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Anouar\\Fpdf": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Anouar",
-                    "email": "dtekind@gmail.com"
-                }
-            ],
-            "description": "Fpdf allows to generate PDF files",
-            "time": "2014-07-09 19:20:46"
-        },
         {
             "name": "classpreloader/classpreloader",
             "version": "1.0.2",
@@ -274,16 +237,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v4.2.12",
+            "version": "v4.2.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "70a60f2ff9b96b3fcd88a68ef5382557733fe671"
+                "reference": "31fe6a5747bbe3c2df21dc4cc8f291e75ab6144f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/70a60f2ff9b96b3fcd88a68ef5382557733fe671",
-                "reference": "70a60f2ff9b96b3fcd88a68ef5382557733fe671",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/31fe6a5747bbe3c2df21dc4cc8f291e75ab6144f",
+                "reference": "31fe6a5747bbe3c2df21dc4cc8f291e75ab6144f",
                 "shasum": ""
             },
             "require": {
@@ -385,87 +348,20 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2014-12-11 17:14:36"
-        },
-        {
-            "name": "maatwebsite/excel",
-            "version": "v1.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
-                "reference": "331792997e21cc37e027abd10e5d988a624f4569"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/331792997e21cc37e027abd10e5d988a624f4569",
-                "reference": "331792997e21cc37e027abd10e5d988a624f4569",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/cache": "~4.0|~5.0",
-                "illuminate/config": "~4.0|~5.0",
-                "illuminate/filesystem": "~4.0|~5.0",
-                "illuminate/support": "~4.0|~5.0",
-                "nesbot/carbon": "~1.0",
-                "php": ">=5.3.0",
-                "phpoffice/phpexcel": "~1.8.0",
-                "tijsverkoyen/css-to-inline-styles": "~1.5"
-            },
-            "require-dev": {
-                "mockery/mockery": "~0.9",
-                "orchestra/testbench": "~2.2.0",
-                "phpseclib/phpseclib": ">=0.3.7",
-                "phpunit/phpunit": "~4.0"
-            },
-            "suggest": {
-                "illuminate/http": "~4.0|~5.0",
-                "illuminate/routing": "~4.0|~5.0",
-                "illuminate/view": "~4.0|~5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/Maatwebsite/Excel",
-                    "tests/TestCase.php"
-                ],
-                "psr-0": {
-                    "Maatwebsite\\Excel\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Maatwebsite.nl",
-                    "email": "patrick@maatwebsite.nl"
-                }
-            ],
-            "description": "An eloquent way of importing and exporting Excel and CSV in Laravel 4 with the power of PHPExcel",
-            "keywords": [
-                "PHPExcel",
-                "batch",
-                "csv",
-                "excel",
-                "export",
-                "import",
-                "laravel"
-            ],
-            "time": "2014-12-16 21:01:32"
+            "time": "2014-12-22 20:56:10"
         },
         {
             "name": "monolog/monolog",
-            "version": "1.11.0",
+            "version": "1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "ec3961874c43840e96da3a8a1ed20d8c73d7e5aa"
+                "reference": "1fbe8c2641f2b163addf49cc5e18f144bec6b19f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/ec3961874c43840e96da3a8a1ed20d8c73d7e5aa",
-                "reference": "ec3961874c43840e96da3a8a1ed20d8c73d7e5aa",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1fbe8c2641f2b163addf49cc5e18f144bec6b19f",
+                "reference": "1fbe8c2641f2b163addf49cc5e18f144bec6b19f",
                 "shasum": ""
             },
             "require": {
@@ -479,7 +375,7 @@
                 "aws/aws-sdk-php": "~2.4, >2.4.8",
                 "doctrine/couchdb": "~1.0@dev",
                 "graylog2/gelf-php": "~1.0",
-                "phpunit/phpunit": "~3.7.0",
+                "phpunit/phpunit": "~4.0",
                 "raven/raven": "~0.5",
                 "ruflin/elastica": "0.90.*",
                 "videlalvaro/php-amqplib": "~2.4"
@@ -498,7 +394,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.11.x-dev"
+                    "dev-master": "1.12.x-dev"
                 }
             },
             "autoload": {
@@ -524,7 +420,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-09-30 13:30:58"
+            "time": "2014-12-29 21:29:35"
         },
         {
             "name": "nesbot/carbon",
@@ -672,63 +568,6 @@
                 "utf8"
             ],
             "time": "2014-11-08 10:13:25"
-        },
-        {
-            "name": "phpoffice/phpexcel",
-            "version": "1.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPOffice/PHPExcel.git",
-                "reference": "e69a5e4d0ffa7fb6f171859e0a04346e580df30b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/e69a5e4d0ffa7fb6f171859e0a04346e580df30b",
-                "reference": "e69a5e4d0ffa7fb6f171859e0a04346e580df30b",
-                "shasum": ""
-            },
-            "require": {
-                "ext-xml": "*",
-                "ext-xmlwriter": "*",
-                "php": ">=5.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PHPExcel": "Classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Maarten Balliauw",
-                    "homepage": "http://blog.maartenballiauw.be"
-                },
-                {
-                    "name": "Mark Baker"
-                },
-                {
-                    "name": "Franck Lefevre",
-                    "homepage": "http://blog.rootslabs.net"
-                },
-                {
-                    "name": "Erik Tilt"
-                }
-            ],
-            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
-            "homepage": "http://phpexcel.codeplex.com",
-            "keywords": [
-                "OpenXML",
-                "excel",
-                "php",
-                "spreadsheet",
-                "xls",
-                "xlsx"
-            ],
-            "time": "2014-03-02 15:22:49"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -1794,212 +1633,12 @@
             "description": "Symfony Translation Component",
             "homepage": "http://symfony.com",
             "time": "2014-12-02 20:15:53"
-        },
-        {
-            "name": "tijsverkoyen/css-to-inline-styles",
-            "version": "1.5.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tijsverkoyen/CssToInlineStyles.git",
-                "reference": "c50e8cd86acb0e528855c59653006e96d094a5b1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tijsverkoyen/CssToInlineStyles/zipball/c50e8cd86acb0e528855c59653006e96d094a5b1",
-                "reference": "c50e8cd86acb0e528855c59653006e96d094a5b1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "symfony/css-selector": "~2.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "TijsVerkoyen\\CssToInlineStyles\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD"
-            ],
-            "authors": [
-                {
-                    "name": "Tijs Verkoyen",
-                    "email": "css_to_inline_styles@verkoyen.eu",
-                    "role": "Developer"
-                }
-            ],
-            "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
-            "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
-            "time": "2014-08-01 18:02:04"
-        },
-        {
-            "name": "twitter/bootstrap",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "f11a3a31f1382f212f9255671535d87060078355"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/f11a3a31f1382f212f9255671535d87060078355",
-                "reference": "f11a3a31f1382f212f9255671535d87060078355",
-                "shasum": ""
-            },
-            "replace": {
-                "twitter/bootstrap": "self.version"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.3.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jacob Thornton",
-                    "email": "jacobthornton@gmail.com"
-                },
-                {
-                    "name": "Mark Otto",
-                    "email": "markdotto@gmail.com"
-                }
-            ],
-            "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
-            "homepage": "http://getbootstrap.com",
-            "keywords": [
-                "JS",
-                "css",
-                "framework",
-                "front-end",
-                "less",
-                "mobile-first",
-                "responsive",
-                "web"
-            ],
-            "time": "2014-12-12 22:31:30"
         }
     ],
-    "packages-dev": [
-        {
-            "name": "fzaninotto/faker",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "d82603adc7aa0f7d47c2e767fd33636803f4117a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/d82603adc7aa0f7d47c2e767fd33636803f4117a",
-                "reference": "d82603adc7aa0f7d47c2e767fd33636803f4117a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~1.5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Faker\\": "src/Faker/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "François Zaninotto"
-                }
-            ],
-            "description": "Faker is a PHP library that generates fake data for you.",
-            "keywords": [
-                "data",
-                "faker",
-                "fixtures"
-            ],
-            "time": "2014-12-18 07:45:28"
-        },
-        {
-            "name": "way/generators",
-            "version": "2.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/JeffreyWay/Laravel-4-Generators.git",
-                "reference": "484d379c6bc1d38c75e4f52f74efcbcd11f7dd2c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/JeffreyWay/Laravel-4-Generators/zipball/484d379c6bc1d38c75e4f52f74efcbcd11f7dd2c",
-                "reference": "484d379c6bc1d38c75e4f52f74efcbcd11f7dd2c",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "~4.0",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "behat/behat": "~2.5.1",
-                "behat/mink": "~1.5.0",
-                "behat/mink-extension": "~1.2.0",
-                "behat/mink-goutte-driver": "~1.0.9",
-                "behat/mink-selenium2-driver": "~1.1.1",
-                "phpspec/phpspec": "~2.0",
-                "phpunit/phpunit": "~3.7"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Way\\Generators": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jeffrey Way",
-                    "email": "jeffrey@jeffrey-way.com",
-                    "homepage": "http://jeffrye-way.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Rapidly generate resources, migrations, models, and much more.",
-            "time": "2014-05-27 14:21:26"
-        }
-    ],
+    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "anouar/fpdf": 20,
-        "twitter/bootstrap": 20,
-        "fzaninotto/faker": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "platform": [],
     "platform-dev": []
