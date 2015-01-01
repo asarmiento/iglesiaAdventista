@@ -57,7 +57,7 @@ return array(
 			'host'      => 'localhost',
 			'database'  => 'gbook_iglesiaquepos',
 			'username'  => 'root',
-			'password'  => '',
+			'password'  => 'F4cc0unt',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
