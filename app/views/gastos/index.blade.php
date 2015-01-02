@@ -1,1 +1,27 @@
-C:\xampp\htdocs\iglesiaQuepos\app/views/gastos/index.blade.php
+@extends('layouts.layouts')
+@section('title')
+Gastos
+@stop
+
+@section('title-form')
+Lista Gastos
+@stop
+
+@section('content')
+<table>
+    <thead>
+        <tr> 
+            <th>Nº</th>
+            <th width="200">Departamento</th> 
+            <th width="150">Fecha</th> 
+            <th width="150">Monto</th> 
+            <th width="150">Descripcion</th> 
+            <th width="50">Editar</th> 
+            <th width="50">Eliminar</th> 
+        </tr>
+    </thead> 
+    <tbody> 
+
+    </tbody>
+</table>
+@stop

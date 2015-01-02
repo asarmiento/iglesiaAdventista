@@ -2,106 +2,103 @@
 
 class MiembrosController extends \BaseController {
 
-	/**
-	 * Display a listing of miembros
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		$miembros = Miembro::all();
+    /**
+     * Display a listing of miembros
+     *
+     * @return Response
+     */
+    public function index() {
+        $miembros = Miembro::all();
 
-		return View::make('miembros.index', compact('miembros'));
-	}
+        return View::make('miembros.index', compact('miembros'));
+    }
 
-	/**
-	 * Show the form for creating a new miembro
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return View::make('miembros.create');
-	}
+    /**
+     * Show the form for creating a new miembro
+     *
+     * @return Response
+     */
+    public function create() {
+        $form_data = array('route' => 'miembros.store', 'method' => 'POST');
+        $action = 'Agregar';
+        $miembro = array();
+        $dropdown = Iglesia::lists('name', 'id');
+        return View::make('miembros.form', compact('form_data', 'action', 'miembro', 'dropdown'));
+    }
 
-	/**
-	 * Store a newly created miembro in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		$validator = Validator::make($data = Input::all(), Miembro::$rules);
+    /**
+     * Store a newly created miembro in storage.
+     *
+     * @return Response
+     */
+    public function store() {
+        $validator = Validator::make($data = Input::all(), Miembro::$rules);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
-		Miembro::create($data);
+        Miembro::create($data);
 
-		return Redirect::route('miembros.index');
-	}
+        return Redirect::to('miembros');
+    }
 
-	/**
-	 * Display the specified miembro.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$miembro = Miembro::findOrFail($id);
+    /**
+     * Display the specified miembro.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function show($id) {
+        $miembro = Miembro::findOrFail($id);
 
-		return View::make('miembros.show', compact('miembro'));
-	}
+        return View::make('miembros.show', compact('miembro'));
+    }
 
-	/**
-	 * Show the form for editing the specified miembro.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		$miembro = Miembro::find($id);
+    /**
+     * Show the form for editing the specified miembro.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id) {
+        $miembro = Miembro::find($id);
+        $form_data = array('route' => array('miembros.update', $miembro->id), 'method' => 'PATCH');
+        $action = 'Agregar';
+        $dropdown = Iglesia::lists('name', 'id');
+        return View::make('miembros.form', compact('form_data', 'action', 'miembro', 'dropdown'));
+    }
 
-		return View::make('miembros.edit', compact('miembro'));
-	}
+    /**
+     * Update the specified miembro in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update($id) {
+        $miembro = Miembro::findOrFail($id);
 
-	/**
-	 * Update the specified miembro in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		$miembro = Miembro::findOrFail($id);
+        $validator = Validator::make($data = Input::all(), Miembro::$rules);
 
-		$validator = Validator::make($data = Input::all(), Miembro::$rules);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+        $miembro->update($data);
 
-		$miembro->update($data);
+        return Redirect::route('miembros.index');
+    }
 
-		return Redirect::route('miembros.index');
-	}
+    /**
+     * Remove the specified miembro from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id) {
+        Miembro::destroy($id);
 
-	/**
-	 * Remove the specified miembro from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		Miembro::destroy($id);
-
-		return Redirect::route('miembros.index');
-	}
+        return Redirect::route('miembros.index');
+    }
 
 }
