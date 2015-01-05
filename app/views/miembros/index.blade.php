@@ -35,4 +35,7 @@ Lista Miembros
         @endforeach
     </tbody>
 </table>
+<div class="container">
+    {{$miembros->links()}}
+</div>
 @stop

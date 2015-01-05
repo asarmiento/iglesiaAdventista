@@ -11,7 +11,7 @@ class TypeUsersController extends \BaseController {
 	{
 		$typeusers = Typeuser::all();
 
-		return View::make('typeusers.index', compact('typeusers'));
+		return View::make('type_users.index', compact('typeusers'));
 	}
 
 	/**
@@ -21,7 +21,10 @@ class TypeUsersController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('typeusers.create');
+		$form_data = array('route' => 'type_users.store', 'method' => 'POST');
+        $action = 'Agregar';
+        $typeuser = array();
+        return View::make('type_users.form',  compact('typeuser','action','form_data'));
 	}
 
 	/**
@@ -40,7 +43,7 @@ class TypeUsersController extends \BaseController {
 
 		Typeuser::create($data);
 
-		return Redirect::route('typeusers.index');
+		return Redirect::route('type_users.index');
 	}
 
 	/**
@@ -66,7 +69,9 @@ class TypeUsersController extends \BaseController {
 	{
 		$typeuser = Typeuser::find($id);
 
-		return View::make('typeusers.edit', compact('typeuser'));
+		$form_data = array('route' => array('type_users.update', $typeuser->id), 'method' => 'PATCH');
+        $action = 'Editar';  
+        return View::make('type_users.form', compact('typeuser','action','form_data'));
 	}
 
 	/**
@@ -88,7 +93,7 @@ class TypeUsersController extends \BaseController {
 
 		$typeuser->update($data);
 
-		return Redirect::route('typeusers.index');
+		return Redirect::route('type_users.index');
 	}
 
 	/**

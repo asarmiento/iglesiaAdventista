@@ -2,106 +2,100 @@
 
 class IngresosController extends \BaseController {
 
-	/**
-	 * Display a listing of ingresos
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		$ingresos = Ingreso::all();
+    /**
+     * Display a listing of ingresos
+     *
+     * @return Response
+     */
+    public function index() {
+        $ingresos = Ingreso::all();
 
-		return View::make('ingresos.index', compact('ingresos'));
-	}
+        return View::make('ingresos.index', compact('ingresos'));
+    }
 
-	/**
-	 * Show the form for creating a new ingreso
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return View::make('ingresos.create');
-	}
+    /**
+     * Show the form for creating a new ingreso
+     *
+     * @return Response
+     */
+    public function create() {
+        $form_data = array('route' => 'ingresos.store', 'method' => 'POST');
+        $action = 'Agregar';
+        $ingresos = array();
+        return View::make('ingresos.form', compact('ingresos', 'action', 'form_data'));
+    }
 
-	/**
-	 * Store a newly created ingreso in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		$validator = Validator::make($data = Input::all(), Ingreso::$rules);
+    /**
+     * Store a newly created ingreso in storage.
+     *
+     * @return Response
+     */
+    public function store() {
+        $validator = Validator::make($data = Input::all(), Ingreso::$rules);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
-		Ingreso::create($data);
+        Ingreso::create($data);
 
-		return Redirect::route('ingresos.index');
-	}
+        return Redirect::route('ingresos.index');
+    }
 
-	/**
-	 * Display the specified ingreso.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$ingreso = Ingreso::findOrFail($id);
+    /**
+     * Display the specified ingreso.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function show($id) {
+        $ingreso = Ingreso::findOrFail($id);
 
-		return View::make('ingresos.show', compact('ingreso'));
-	}
+        return View::make('ingresos.show', compact('ingreso'));
+    }
 
-	/**
-	 * Show the form for editing the specified ingreso.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		$ingreso = Ingreso::find($id);
+    /**
+     * Show the form for editing the specified ingreso.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id) {
+        $ingreso = Ingreso::find($id);
 
-		return View::make('ingresos.edit', compact('ingreso'));
-	}
+        return View::make('ingresos.edit', compact('ingreso'));
+    }
 
-	/**
-	 * Update the specified ingreso in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		$ingreso = Ingreso::findOrFail($id);
+    /**
+     * Update the specified ingreso in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update($id) {
+        $ingreso = Ingreso::findOrFail($id);
 
-		$validator = Validator::make($data = Input::all(), Ingreso::$rules);
+        $validator = Validator::make($data = Input::all(), Ingreso::$rules);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
-		$ingreso->update($data);
+        $ingreso->update($data);
 
-		return Redirect::route('ingresos.index');
-	}
+        return Redirect::route('ingresos.index');
+    }
 
-	/**
-	 * Remove the specified ingreso from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		Ingreso::destroy($id);
+    /**
+     * Remove the specified ingreso from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id) {
+        Ingreso::destroy($id);
 
-		return Redirect::route('ingresos.index');
-	}
+        return Redirect::route('ingresos.index');
+    }
 
 }

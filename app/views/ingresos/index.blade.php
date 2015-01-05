@@ -8,6 +8,7 @@ Lista Ingresos
 @stop
 
 @section('content')
+<div><a href="{{url()}}/ingresos/create"  class="button radius">Crear</a></div>
 <table>
     <thead>
         <tr> 

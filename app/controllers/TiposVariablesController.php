@@ -2,106 +2,101 @@
 
 class TiposVariablesController extends \BaseController {
 
-	/**
-	 * Display a listing of tiposvariables
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		$tiposvariables = Tiposvariable::all();
+    /**
+     * Display a listing of tiposvariables
+     *
+     * @return Response
+     */
+    public function index() {
+        $tiposvariables = Tiposvariable::all();
 
-		return View::make('tiposvariables.index', compact('tiposvariables'));
-	}
+        return View::make('tipos_variables.index', compact('tiposvariables'));
+    }
 
-	/**
-	 * Show the form for creating a new tiposvariable
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return View::make('tiposvariables.create');
-	}
+    /**
+     * Show the form for creating a new tiposvariable
+     *
+     * @return Response
+     */
+    public function create() {
+        $form_data = array('route' => 'tipos_variables.store', 'method' => 'POST');
+        $action = 'Agregar';
+        $tiposvariable = array();
+        return View::make('tipos_variables.form', compact('tiposvariable', 'action', 'form_data'));
+    }
 
-	/**
-	 * Store a newly created tiposvariable in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		$validator = Validator::make($data = Input::all(), Tiposvariable::$rules);
+    /**
+     * Store a newly created tiposvariable in storage.
+     *
+     * @return Response
+     */
+    public function store() {
+        $validator = Validator::make($data = Input::all(), Tiposvariable::$rules);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
-		Tiposvariable::create($data);
+        Tiposvariable::create($data);
 
-		return Redirect::route('tiposvariables.index');
-	}
+        return Redirect::route('tipos_variables.index');
+    }
 
-	/**
-	 * Display the specified tiposvariable.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$tiposvariable = Tiposvariable::findOrFail($id);
+    /**
+     * Display the specified tiposvariable.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function show($id) {
+        $tiposvariable = Tiposvariable::findOrFail($id);
 
-		return View::make('tiposvariables.show', compact('tiposvariable'));
-	}
+        return View::make('tipos_variables.show', compact('tiposvariable'));
+    }
 
-	/**
-	 * Show the form for editing the specified tiposvariable.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		$tiposvariable = Tiposvariable::find($id);
+    /**
+     * Show the form for editing the specified tiposvariable.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id) {
+        $tiposvariable = Tiposvariable::find($id);
+        $form_data = array('route' => array('tipos_variables.update', $tiposvariable->id), 'method' => 'PATCH');
+        $action = 'Editar';  
+        return View::make('tipos_variables.form', compact('tiposvariable','action','form_data'));
+    }
 
-		return View::make('tiposvariables.edit', compact('tiposvariable'));
-	}
+    /**
+     * Update the specified tiposvariable in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update($id) {
+        $tiposvariable = Tiposvariable::findOrFail($id);
 
-	/**
-	 * Update the specified tiposvariable in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		$tiposvariable = Tiposvariable::findOrFail($id);
+        $validator = Validator::make($data = Input::all(), Tiposvariable::$rules);
 
-		$validator = Validator::make($data = Input::all(), Tiposvariable::$rules);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+        $tiposvariable->update($data);
 
-		$tiposvariable->update($data);
+        return Redirect::route('tipos_variables.index');
+    }
 
-		return Redirect::route('tiposvariables.index');
-	}
+    /**
+     * Remove the specified tiposvariable from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id) {
+        Tiposvariable::destroy($id);
 
-	/**
-	 * Remove the specified tiposvariable from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		Tiposvariable::destroy($id);
-
-		return Redirect::route('tiposvariables.index');
-	}
+        return Redirect::route('tipos_variables.index');
+    }
 
 }

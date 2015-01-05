@@ -8,7 +8,7 @@ class MiembrosController extends \BaseController {
      * @return Response
      */
     public function index() {
-        $miembros = Miembro::all();
+        $miembros = Miembro::paginate(10);
 
         return View::make('miembros.index', compact('miembros'));
     }

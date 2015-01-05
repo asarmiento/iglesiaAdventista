@@ -1,1 +1,0 @@
-C:\xampp\htdocs\iglesiaQuepos\app/views/tipos_variables/create.blade.php
