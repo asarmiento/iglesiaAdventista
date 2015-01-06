@@ -14,5 +14,6 @@ return array(
 	*/
 
 	'debug' => true,
+    'timezone' => 'America/Lima',
 
 );
