@@ -22,7 +22,10 @@ class IngresosController extends \BaseController {
         $form_data = array('route' => 'ingresos.store', 'method' => 'POST');
         $action = 'Agregar';
         $ingresos = array();
-        return View::make('ingresos.form', compact('ingresos', 'action', 'form_data'));
+        $fijos=  TiposFijo::all();
+        $variables=  TiposVariable::all();
+        $miembros = Miembro::paginate(10);
+        return View::make('ingresos.form', compact('ingresos', 'action', 'form_data','fijos','variables','miembros'));
     }
 
     /**
