@@ -1,9 +1,9 @@
 <?php
 
 class IglesiasController extends \BaseController {
-    
-    protected $dropdown=array(''=>'Elija una Misión','2'=>'Misión Norte','1'=>'Asociación Central','3'=>'Misión del Caribe');
-      
+
+    protected $dropdown = array('' => 'Elija una Misión', '2' => 'Misión Norte', '1' => 'Asociación Central', '3' => 'Misión del Caribe');
+
     /**
      * Display a listing of iglesias
      *
@@ -20,12 +20,12 @@ class IglesiasController extends \BaseController {
      *
      * @return Response
      */
-    public function create() {         
+    public function create() {
         $form_data = array('route' => 'iglesias.store', 'method' => 'POST');
         $action = 'Agregar';
         $iglesia = array();
-        $dropdown=$this->dropdown;
-        return View::make('iglesias.form',  compact('form_data','action','iglesia','dropdown'));
+        $dropdown = $this->dropdown;
+        return View::make('iglesias.form', compact('form_data', 'action', 'iglesia', 'dropdown'));
     }
 
     /**
@@ -67,8 +67,8 @@ class IglesiasController extends \BaseController {
         $iglesia = Iglesia::find($id);
         $form_data = array('route' => array('iglesias.update', $iglesia->id), 'method' => 'PATCH');
         $action = 'Editar';
-        $dropdown=$this->dropdown;
-        return View::make('iglesias.form',  compact('form_data','action','iglesia','dropdown'));
+        $dropdown = $this->dropdown;
+        return View::make('iglesias.form', compact('form_data', 'action', 'iglesia', 'dropdown'));
     }
 
     /**

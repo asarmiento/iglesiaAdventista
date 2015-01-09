@@ -9,7 +9,6 @@ class IngresosController extends \BaseController {
      */
     public function index() {
         $ingresos = Ingreso::all();
-
         return View::make('ingresos.index', compact('ingresos'));
     }
 
@@ -20,9 +19,12 @@ class IngresosController extends \BaseController {
      */
     public function create() {
         $form_data = array('route' => 'ingresos.store', 'method' => 'POST');
-        $action = 'Agregar';
+        $fijos=  TiposFijo::all();
+        $variables=  TiposVariable::all();
+        $miembros = Miembro::paginate(10);
+        $action="Agregar";
         $ingresos = array();
-        return View::make('ingresos.form', compact('ingresos', 'action', 'form_data'));
+        return View::make('ingresos.form', compact('ingresos', 'action', 'form_data','fijos','variables','miembros'));
     }
 
     /**
