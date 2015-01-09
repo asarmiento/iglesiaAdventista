@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder {
                  $this->call('MiembrosTableSeeder');
                  $this->call('TiposFijosTableSeeder');
                  $this->call('TiposVariablesTableSeeder');
-                 $this->call('TipoUsersTableSeeder');
+                 $this->call('TiposUsersTableSeeder');
 	}
 
 }

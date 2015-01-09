@@ -1,19 +1,19 @@
 <?php
 
-class TipoUsersTableSeeder extends Seeder {
+class TiposUsersTableSeeder extends Seeder {
 
 	public function run()
 	{
 		
-			TypeUser::create([
+			TiposUser::create([
                             'id'=>1,
                             'name'=>'Administrador'
 			]);
-                        TypeUser::create([
+                        TiposUser::create([
                             'id'=>2,
                             'name'=>'Tesoreros'
 			]);
-                        TypeUser::create([
+                        TiposUser::create([
                             'id'=>3,
                             'name'=>'Observador'
 			]);
