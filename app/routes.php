@@ -26,3 +26,6 @@ Route::resource('tipos_fijos','TiposFijosController');
 Route::resource('tipos_variables','TiposVariablesController');
 Route::resource('type_users','TypeUsersController');
 Route::resource('users','UsersController');
+
+//test
+Route::get('test', 'TestController@show');
