@@ -15,6 +15,15 @@ class CreateMiembrosTable extends Migration {
 		Schema::create('miembros', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('name');
+			$table->string('last');
+			$table->date('date_bautizmo');
+			$table->date('date_nacimiento');
+			$table->string('phone');
+			$table->string('celular');
+			$table->string('email');
+			$table->integer('iglesias_id');
+			$table->foreign('iglesias_id')->references('id')->on('iglesias');
 			$table->timestamps();
 		});
 	}

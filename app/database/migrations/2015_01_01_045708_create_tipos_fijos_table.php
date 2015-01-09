@@ -15,6 +15,8 @@ class CreateTiposFijosTable extends Migration {
 		Schema::create('tipos_fijos', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('name');
+			$table->decimal('saldo',[20,2]);
 			$table->timestamps();
 		});
 	}

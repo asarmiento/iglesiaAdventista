@@ -14,6 +14,6 @@ return array(
 	*/
 
 	'debug' => true,
-    'timezone' => 'America/Lima',
+    'America'=>'Costa_Rica',
 
 );

@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTiposVariablesTable extends Migration {
+class CreateBancosTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,13 @@ class CreateTiposVariablesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tipos_variables', function(Blueprint $table)
+		Schema::create('bancos', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('name');
 			$table->decimal('saldo',[20,2]);
+			$table->integer('ingresos_id');
+			$table->foreign('ingresos_id')->references('id')->on('ingresos');
 			$table->timestamps();
 		});
 	}
@@ -29,7 +31,7 @@ class CreateTiposVariablesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('tipos_variables');
+		Schema::drop('bancos');
 	}
 
 }

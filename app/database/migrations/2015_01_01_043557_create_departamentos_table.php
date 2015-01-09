@@ -15,6 +15,10 @@ class CreateDepartamentosTable extends Migration {
 		Schema::create('departamentos', function(Blueprint $table)
 		{
 			$table->increments('id');
+                        $table->string('name');
+			$table->decimal('saldo',[20,2]);
+			$table->integer('iglesias_id')->unsigned();
+                        $table->foreign('iglesias_id')->references('id')->on('iglesias');
 			$table->timestamps();
 		});
 	}

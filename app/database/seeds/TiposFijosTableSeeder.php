@@ -1,20 +1,30 @@
 <?php
 
-// Composer: "fzaninotto/faker": "v1.3.0"
-use Faker\Factory as Faker;
+
 
 class TiposFijosTableSeeder extends Seeder {
 
 	public function run()
 	{
-		$faker = Faker::create();
-
-		foreach(range(1, 10) as $index)
-		{
+		
 			TiposFijo::create([
-
+                            'id'=>1,
+                            'name'=>'Diezmos'
 			]);
-		}
+                        
+                        TiposFijo::create([
+                            'id'=>2,
+                            'name'=>'Ofrenda'
+			]);
+                        TiposFijo::create([
+                            'id'=>3,
+                            'name'=>'Recoleccion'
+			]);
+                        TiposFijo::create([
+                            'id'=>4,
+                            'name'=>'Mat. Esc. Sab.'
+			]);
+                        
 	}
 
 }

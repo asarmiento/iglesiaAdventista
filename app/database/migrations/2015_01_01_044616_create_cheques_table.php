@@ -15,6 +15,15 @@ class CreateChequesTable extends Migration {
 		Schema::create('cheques', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('numero');
+			$table->string('name');
+			$table->date('date');
+			$table->text('detalle');
+			$table->string('monto');
+			$table->integer('departamentos_id');
+			$table->integer('banco_id');
+			$table->foreign('departamentos_id')->references('id')->on('departamentos');
+			$table->foreign('banco_id')->references('id')->on('bancos');
 			$table->timestamps();
 		});
 	}

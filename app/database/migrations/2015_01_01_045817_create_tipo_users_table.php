@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTypeUsersTable extends Migration {
+class CreateTipoUsersTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,9 +12,10 @@ class CreateTypeUsersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('type_users', function(Blueprint $table)
+		Schema::create('tipo_users', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('name');
 			$table->timestamps();
 		});
 	}
@@ -27,7 +28,7 @@ class CreateTypeUsersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('type_users');
+		Schema::drop('tipo_users');
 	}
 
 }

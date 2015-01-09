@@ -15,6 +15,13 @@ class CreateGastosTable extends Migration {
 		Schema::create('gastos', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('num_factura');
+			$table->date('date');
+			$table->date('datefactura');
+			$table->decimal('monto',[20,2]);
+			$table->text('descripcion');
+			$table->string('departamentos_id');
+			$table->foreign('departamentos_id')->references('id')->on('departamentos');
 			$table->timestamps();
 		});
 	}

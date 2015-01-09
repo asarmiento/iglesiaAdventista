@@ -15,6 +15,9 @@ class CreateIglesiasTable extends Migration {
 		Schema::create('iglesias', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('name');
+			$table->string('address');
+			$table->string('phone');
 			$table->timestamps();
 		});
 	}
