@@ -14,6 +14,7 @@ return array(
 	*/
 
 	'debug' => true,
+    'America'=>'Lima',
     'America'=>'Costa_Rica',
 
 );

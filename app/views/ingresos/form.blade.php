@@ -24,7 +24,7 @@ Formulario {{$action}} Ingresos
     </div>
     <div class="large-4 columns">
         <label class="">Iglesia
-<<<<<<< HEAD
+
             {{Form::input('text','saldo','',array('readonly'=>"readonly"))}}
         </label>
         <small class="error-message red-message">{{$errors->first('iglesias_id')}}</small>
@@ -71,12 +71,12 @@ Formulario {{$action}} Ingresos
         {{$miembros->links()}}
     </div>
 </div>
-=======
+
         </label>
         <small class="error-message red-message">{{$errors->first('iglesias_id')}}</small>
     </div>
 </div>
->>>>>>> origin/master
+
 </br>
 <div class="row">
     <div class="large-12 columns text-center">

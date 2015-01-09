@@ -2,15 +2,17 @@
 
 class Iglesia extends \Eloquent {
 
-	// Add your validation rules here
-	public static $rules = [
-		 'name' => 'required',
-            'phone' => 'required',
-            'address' => 'required',
-            'misions_id' => 'required'
-	];
+    // Add your validation rules here
+    public static $rules = [
+        'name' => 'required',
+        'phone' => 'required',
+        'address' => 'required',
+    ];
+    // Don't forget to fill this array
+    protected $fillable = ['name', 'phone', 'address'];
 
-	// Don't forget to fill this array
-	protected $fillable = ['name','phone','address','misions_id'];
+    public function Users() {
+        return $this->belongsTo('users');
+    }
 
 }

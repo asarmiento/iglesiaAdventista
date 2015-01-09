@@ -1,12 +1,17 @@
 <?php
 
 class Departamento extends \Eloquent {
-        
-     // Add your validation rules here
-	public static $rules = [
-		 'name' => 'required',
-             'saldo' => 'required',
-            'iglesias_id' => 'required'
-	];
-	protected $fillable = ['name','iglesias_id','saldo'];
+
+    // Add your validation rules here
+    public static $rules = [
+        'name' => 'required',
+        'saldo' => 'required',
+        'iglesias_id' => 'required'
+    ];
+    protected $fillable = ['name', 'iglesias_id', 'saldo'];
+
+    public function Iglesia() {
+        return $this->HasMany('iglesias', 'foreign_key', 'local_key');
+    }
+
 }
