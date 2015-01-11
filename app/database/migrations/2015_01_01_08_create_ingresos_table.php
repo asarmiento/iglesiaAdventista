@@ -13,12 +13,12 @@ class CreateIngresosTable extends Migration {
     public function up() {
         Schema::create('ingresos', function(Blueprint $table) {
             $table->increments('id');
-            $table->integer('historial_id')->unsigned()->index();
-            $table->foreign('historial_id')->references('id')->on('historial')->onDelete('no action');
             $table->integer('num_sobre');
             $table->integer('num_control');
             $table->date('date');
             $table->decimal('monto', 20, 2);
+            $table->integer('historial_id')->unsigned()->index();
+            $table->foreign('historial_id')->references('id')->on('historials')->onDelete('no action');
             $table->integer('miembros_id')->unsigned()->index();
             $table->foreign('miembros_id')->references('id')->on('miembros')->onDelete('no action');
             $table->integer('tipos_fijos_id')->unsigned()->nullable()->index();

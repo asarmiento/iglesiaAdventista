@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateHistorialTable extends Migration {
+class CreateHistorialsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,9 +12,10 @@ class CreateHistorialTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('historial', function(Blueprint $table)
+		Schema::create('historials', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('numero');
 			$table->date('sabado');
                         $table->timestamps();
 		});
@@ -28,7 +29,7 @@ class CreateHistorialTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('historial');
+		Schema::drop('historials');
 	}
 
 }

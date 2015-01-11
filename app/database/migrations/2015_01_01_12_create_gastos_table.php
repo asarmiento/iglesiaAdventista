@@ -21,6 +21,8 @@ class CreateGastosTable extends Migration {
             $table->string('factura');
             $table->integer('departamentos_id')->unsigned()->index();
             $table->foreign('departamentos_id')->references('id')->on('departamentos')->onDelete('no action');
+            $table->integer('cheques_id')->unsigned()->index();
+            $table->foreign('cheques_id')->references('id')->on('cheques')->onDelete('no action');
             $table->engine = 'InnoDB';
             $table->timestamps();
             $table->softDeletes();

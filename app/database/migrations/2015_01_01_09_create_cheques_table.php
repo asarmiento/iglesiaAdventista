@@ -18,10 +18,6 @@ class CreateChequesTable extends Migration {
             $table->date('date');
             $table->text('detalle');
             $table->decimal('monto', 20, 2);
-            $table->integer('departamentos_id')->unsigned()->index();
-            $table->foreign('departamentos_id')->references('id')->on('departamentos')->onDelete('no action');
-            $table->integer('bancos_id')->unsigned()->index();
-            $table->foreign('bancos_id')->references('id')->on('bancos')->onDelete('no action');
             $table->engine = 'InnoDB';
             $table->timestamps();
             $table->softDeletes();

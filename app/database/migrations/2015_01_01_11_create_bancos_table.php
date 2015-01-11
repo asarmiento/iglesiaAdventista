@@ -15,8 +15,9 @@ class CreateBancosTable extends Migration {
             $table->increments('id');
             $table->decimal('saldo', 20, 2);
             $table->date('date');
+            $table->enum('tipo',['entradas','salidas']);
             $table->integer('historial_id')->unsigned()->nullable()->index();
-            $table->foreign('historial_id')->references('id')->on('historial')->onDelete('no action');
+            $table->foreign('historial_id')->references('id')->on('historials')->onDelete('no action');
             $table->integer('cheques_id')->unsigned()->nullable()->index();
             $table->foreign('cheques_id')->references('id')->on('cheques')->onDelete('no action');
             $table->engine = 'InnoDB';

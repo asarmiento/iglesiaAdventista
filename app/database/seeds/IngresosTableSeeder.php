@@ -6,7 +6,6 @@ class IngresosTableSeeder extends Seeder {
 
         Ingreso::create([
             'id'=>1,
-            'num_informe'=>2548,
             'num_sobre'=>25464,
             'num_control'=>25444,
             'date'=>'2015-01-05',
@@ -17,7 +16,6 @@ class IngresosTableSeeder extends Seeder {
         ]);
         Ingreso::create([
             'id'=>2,
-            'num_informe'=>2548,
             'num_sobre'=>25464,
             'num_control'=>25444,
             'date'=>'2015-01-05',
@@ -28,7 +26,6 @@ class IngresosTableSeeder extends Seeder {
         ]);
         Ingreso::create([
             'id'=>3,
-            'num_informe'=>2548,
             'num_sobre'=>25464,
             'num_control'=>25444,
             'date'=>'2015-01-05',
