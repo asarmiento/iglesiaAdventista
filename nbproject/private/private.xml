@@ -3,18 +3,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/database/seeds/BancosTableSeeder.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/database/migrations/2015_01_01_08_create_bancos_table.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/TiposFijo.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/Departamento.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/database/seeds/DepartamentosTableSeeder.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/TiposUser.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/Miembro.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/database/migrations/2015_01_01_12_create_historial_table.php</file>
             <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/TiposVariable.php</file>
-            <file>file:/C:/xampp/htdocs/iglesiaQuepos/public/assets/css/styles.css</file>
-            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/controllers/IglesiasController.php</file>
-=======
-            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/views/departamentos/form.blade.php</file>
-            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/controllers/DepartamentosController.php</file>
-            <file>file:/C:/xampp/htdocs/iglesiaQuepos/public/assets/js/global.js</file>
-            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/views/layouts/layouts.blade.php</file>
->>>>>>> origin/master
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/database/seeds/DatabaseSeeder.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/Ingreso.php</file>
             <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/controllers/IngresosController.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/User.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/Cheque.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/database/seeds/HistorialTableSeeder.php</file>
             <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/views/ingresos/form.blade.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/Gasto.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/routes.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/database/seeds/IngresosTableSeeder.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/Iglesia.php</file>
         </group>
     </open-files>
 </project-private>
