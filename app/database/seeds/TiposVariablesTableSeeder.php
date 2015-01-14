@@ -7,7 +7,8 @@ class TiposVariablesTableSeeder extends Seeder {
         TiposVariable::create([
             'id' => 1,
             'name' => 'Bancas',
-            'saldo' => '0.00'
+            'saldo' => '0.00',
+            'iglesias_id' => 1
         ]);
     }
 

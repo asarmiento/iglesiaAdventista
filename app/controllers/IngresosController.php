@@ -17,7 +17,7 @@ class IngresosController extends \BaseController {
      *
      * @return Response
      */
-    public function create() {
+    public function create() {       // dd(Input::all());
         $form_data = array('route' => 'ingresos.store', 'method' => 'POST');
 
         $fijos=  TiposFijo::all();

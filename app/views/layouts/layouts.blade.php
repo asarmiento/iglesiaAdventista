@@ -31,7 +31,7 @@
                                 <li><a href="{{url()}}/home">INICIO</a></li>
                                 <li><a href="{{url()}}/iglesias">IGLESIA</a></li>
                                 <li><a href="{{url()}}/miembros">MIEMBROS</a></li>
-                                <li><a href="{{url()}}/ingresos">INGRESOS</a></li>
+                                <li><a href="{{url()}}/informes">INFORME SEMANAL</a></li>
                                 <li><a href="{{url()}}/gastos">GASTOS</a></li>
                                 <li><a href="{{url()}}/cheques">CHEQUES</a></li>
                                 <li class="has-dropdown">

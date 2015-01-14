@@ -25,6 +25,7 @@ Route::resource('miembros','MiembrosController');
 Route::resource('tipos_fijos','TiposFijosController');
 Route::resource('tipos_variables','TiposVariablesController');
 Route::resource('type_users','TypeUsersController');
+Route::resource('informes','HistorialController');
 Route::resource('users','UsersController');
 
 //test

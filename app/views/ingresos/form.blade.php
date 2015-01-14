@@ -7,7 +7,7 @@
 Formulario {{$action}} Ingresos
 @stop
 
-@section('content')
+@section('content') 
 {{Form::model($ingresos,$form_data,array('role'=>'form','class'=>'form-inline'))}}
 <div class="row">
     <div class="large-4 columns">

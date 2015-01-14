@@ -23,9 +23,9 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'gbook_iglesiaquepos',
-			'username'  => 'root',
+			'host'      => '186.15.74.21',
+			'database'  => 'friendly_iglesia',
+			'username'  => 'friendly_iglesia',
 			'password'  => 'F4cc0unt',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
