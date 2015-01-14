@@ -3,7 +3,7 @@
 class TestController extends \BaseController {
 
     public function show() {
-//	      $test = Miembro::all();
+	      $test = Miembro::all();
 //            $test = Iglesia::all();
 //            $test = Gasto::all();
 //            $test = Ingreso::all();

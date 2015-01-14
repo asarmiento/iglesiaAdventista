@@ -16,7 +16,7 @@ class Miembro extends \Eloquent {
     // Don't forget to fill this array
     protected $fillable = ['name', 'last', 'date_bautizmo', 'date_nacimiento', 'phone', 'celular', 'email', 'iglesias_id'];
 
-    public function Iglesia() {
+    public function iglesia() {
         return $this->HasMany('iglesias');
     }
 
