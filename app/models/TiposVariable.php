@@ -6,13 +6,18 @@ class TiposVariable extends \Eloquent {
     // Add your validation rules here
     public static $rules = [
         'name' => 'required',
-        'saldo' => 'required'
+        'saldo' => 'required',
+        'iglesias_id'=>'required'
     ];
     // Don't forget to fill this array
-    protected $fillable = ['name', 'saldo'];
+    protected $fillable = ['name', 'saldo','iglesias_id'];
 
-    public function Ingresos() {
-        return $this->belongsTo('ingresos');
+    public function ingreso() {
+        return $this->belongsTo('Ingreso');
+    }
+
+    public function iglesia() {
+        return $this->HasMany('Iglesia', 'id', 'iglesias_id');
     }
 
 }

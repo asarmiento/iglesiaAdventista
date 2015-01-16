@@ -10,13 +10,17 @@ class Gasto extends \Eloquent {
         'monto' => 'required',
         'descripcion' => 'required',
         'departamentos_id' => 'required',
+        'cheques_id' => 'required',
     ];
     // Don't forget to fill this array
-    protected $fillable = ['num_factura', 'date', 'datefactura', 'monto', 'descripcion', 'departamentos_id'];
+    protected $fillable = ['num_factura', 'date', 'datefactura', 'monto', 'descripcion', 'departamentos_id','cheques_id'];
 
-    public function Departamentos() {
+    public function departamento() {
 
-        $this->HasMany('departamentos');
+        return $this->HasMany('Departamento','id','departamentos_id');
     }
+  public function cheque() {
 
+        return $this->HasMany('Cheque','id','cheques_id');
+    }
 }

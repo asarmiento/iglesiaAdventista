@@ -6,10 +6,19 @@ class Historial extends \Eloquent {
     public static $rules = [
         'sabado' => 'required',
         'numero' => 'required',
+        'num_control'=>'required',
         'saldo' => 'required'
     ];
     // Don't forget to fill this array
-    protected $fillable = ['numero', 'sabado', 'saldo'];
+    protected $fillable = ['numero', 'sabado','num_control', 'saldo'];
+
+    public function ingreso() {
+        return $this->belongsTo('Ingreso');
+    }
+
+    public function banco() {
+        return $this->belongsTo('Banco');
+    }
 
     public function lastId() {
         $lastId = Historial::orderBy('id', 'desc')->first();

@@ -14,5 +14,10 @@ class Iglesia extends \Eloquent {
     public function Users() {
         return $this->belongsTo('users');
     }
-
+     public function miembro() {
+        return $this->belongsTo('Miembro');
+    }
+    public function departamento() {
+        return $this->belongsTo('Departamento');
+    }
 }

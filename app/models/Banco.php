@@ -6,19 +6,18 @@ class Banco extends \Eloquent {
         'name' => 'required',
         'saldo' => 'required',
         'tipo' => 'required',
-        'historial_id' => 'required',
-        'cheques_id' => 'required'
+        'imagen' => 'required',
     ];
     // Don't forget to fill this array
-    protected $fillable = ['name', 'saldo','tipo','historial_id','cheques_id'];
+    protected $fillable = ['name', 'saldo','tipo','imagen','historial_id','cheques_id'];
 
     public function cheques() {
 
-        return $this->HasMany('Cheque', 'id', 'cheques_id');
+        return $this->HasOne('Cheque', 'id', 'cheques_id');
     }
 
     public function historial() {
 
-        return $this->HasOne('historial');
+        return $this->HasOne('Historial', 'id', 'historial_id');
     }
 }

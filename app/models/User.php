@@ -24,14 +24,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
      */
     protected $hidden = array('password', 'remember_token');
 
-    public function TipoUser() {
+    public function tipouser() {
 
-        $this->HasMany('tipos_users', 'foreign_key', 'local_key');
+        $this->HasMany('TipoUser', 'id', 'tipos_users_id');
     }
 
-    public function Iglesia() {
+    public function iglesia() {
 
-        $this->HasMany('iglesias', 'foreign_key', 'local_key');
+        $this->HasMany('Iglesia', 'id', 'iglesias_id');
     }
 
 }

@@ -6,7 +6,7 @@ class Ingreso extends \Eloquent {
     public static $rules = [
         'historial_id' => 'required',
         'num_sobre' => 'required',
-        'num_control' => 'required',
+        'imagen' => 'required',
         'date' => 'required',
         'monto' => 'required',
         'miembros_id' => 'required',
@@ -14,21 +14,21 @@ class Ingreso extends \Eloquent {
         'tipos_variables_id' => 'required'
     ];
     // Don't forget to fill this array
-    protected $fillable = ['historial_id', 'num_sobre', 'num_control', 'date', 'monto', 'miembros_id', 'tipos_fijos_id', 'tipos_variables_id'];
+    protected $fillable = ['historial_id', 'num_sobre', 'imagen', 'date', 'monto', 'miembros_id', 'tipos_fijos_id', 'tipos_variables_id'];
 
-    public function Miembro() {
-        return $this->HasMany('mienbros');
+    public function miembro() {
+        return $this->HasMany('Miembro','id','miembros_id');
     }
 
-    public function TiposFijos() {
-        return $this->HasMany('tipos_fijos');
+    public function tiposfijos() {
+        return $this->HasMany('TiposFijo','id','tipos_fijos_id');
     }
 
-    public function TiposVariables() {
-        return $this->HasMany('tipos_variables');
+    public function tiposvariables() {
+        return $this->HasMany('TiposVariable','id','tipos_variables_id');
     }
-    public function Historial() {
-        return $this->HasMany('historials');
+    public function historial() {
+        return $this->HasMany('Historial','id','historial_id');
     }
 
 }

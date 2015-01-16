@@ -10,8 +10,8 @@ class TiposUser extends \Eloquent {
     // Don't forget to fill this array
     protected $fillable = ['name'];
 
-    public function User() {
-        return $this->belongsTo('users');
+    public function user() {
+        return $this->belongsTo('User');
     }
 
 }

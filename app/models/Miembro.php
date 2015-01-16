@@ -17,7 +17,9 @@ class Miembro extends \Eloquent {
     protected $fillable = ['name', 'last', 'date_bautizmo', 'date_nacimiento', 'phone', 'celular', 'email', 'iglesias_id'];
 
     public function iglesia() {
-        return $this->HasMany('iglesias');
+        return $this->HasMany('Iglesia','id','iglesias_id');
     }
-
+   public function ingreso() {
+        return $this->belongsTo('Ingreso');
+    }
 }

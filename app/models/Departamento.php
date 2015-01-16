@@ -10,8 +10,11 @@ class Departamento extends \Eloquent {
     ];
     protected $fillable = ['name', 'iglesias_id', 'saldo'];
 
-    public function Iglesia() {
-        return $this->HasMany('iglesias', 'foreign_key', 'local_key');
+     public function gasto() {
+        return $this->belongsTo('Gasto');
+    }
+    public function iglesia() {
+        return $this->HasMany('Iglesia', 'id', 'iglesias_id');
     }
 
 }

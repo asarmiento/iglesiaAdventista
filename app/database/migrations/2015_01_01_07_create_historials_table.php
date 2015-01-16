@@ -16,6 +16,7 @@ class CreateHistorialsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('numero');
+                        $table->string('num_control');
 			$table->date('sabado');
                         $table->decimal('saldo',20,2);
                         $table->timestamps();

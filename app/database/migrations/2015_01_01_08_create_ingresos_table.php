@@ -14,7 +14,7 @@ class CreateIngresosTable extends Migration {
         Schema::create('ingresos', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('num_sobre');
-            $table->integer('num_control');
+            $table->integer('imagen');
             $table->date('date');
             $table->decimal('monto', 20, 2);
             $table->integer('historial_id')->unsigned()->index();

@@ -9,19 +9,18 @@ class Cheque extends \Eloquent {
         'date' => 'required',
         'detalle' => 'required',
         'monto' => 'required',
-        'departamentos_id' => 'required'
     ];
     // Don't forget to fill this array
-    protected $fillable = ['numero', 'name', 'date', 'detalle', 'monto', 'departamentos_id'];
+    protected $fillable = ['numero', 'name', 'date', 'detalle', 'monto'];
 
     public function banco() {
 
         return $this->belongsTo('Banco');
     }
 
-    public function Departamentos() {
+    public function gasto() {
 
-        $this->HasMany('departamento');
+        return $this->belongsTo('Gasto');
     }
 
 }
