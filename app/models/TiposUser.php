@@ -11,7 +11,7 @@ class TiposUser extends \Eloquent {
     protected $fillable = ['name'];
 
     public function user() {
-        return $this->belongsTo('User');
+        return $this->belongsTo('User','id','tipos_users_id');
     }
 
 }

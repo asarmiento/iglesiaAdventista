@@ -20,6 +20,6 @@ class Miembro extends \Eloquent {
         return $this->HasMany('Iglesia','id','iglesias_id');
     }
    public function ingreso() {
-        return $this->belongsTo('Ingreso');
+        return $this->belongsTo('Ingreso','id','miembros_id');
     }
 }

@@ -11,7 +11,7 @@ class Departamento extends \Eloquent {
     protected $fillable = ['name', 'iglesias_id', 'saldo'];
 
      public function gasto() {
-        return $this->belongsTo('Gasto');
+        return $this->belongsTo('Gasto','id','departamentos_id');
     }
     public function iglesia() {
         return $this->HasMany('Iglesia', 'id', 'iglesias_id');

@@ -13,7 +13,7 @@ class TiposFijo extends \Eloquent {
     protected $fillable = ['name', 'saldo','iglesias_id'];
 
     public function ingreso() {
-        return $this->belongsTo('Ingreso');
+        return $this->belongsTo('Ingreso','id','tipos_fijos_id');
     }
 
     public function iglesia() {

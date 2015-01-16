@@ -13,7 +13,7 @@ class TiposVariable extends \Eloquent {
     protected $fillable = ['name', 'saldo','iglesias_id'];
 
     public function ingreso() {
-        return $this->belongsTo('Ingreso');
+        return $this->belongsTo('Ingreso','id','tipos_variables_id');
     }
 
     public function iglesia() {

@@ -13,11 +13,11 @@ class Historial extends \Eloquent {
     protected $fillable = ['numero', 'sabado','num_control', 'saldo'];
 
     public function ingreso() {
-        return $this->belongsTo('Ingreso');
+        return $this->belongsTo('Ingreso','id','historial_id');
     }
 
     public function banco() {
-        return $this->belongsTo('Banco');
+        return $this->belongsTo('Banco','id','historial_id');
     }
 
     public function lastId() {

@@ -15,12 +15,12 @@ class Cheque extends \Eloquent {
 
     public function banco() {
 
-        return $this->belongsTo('Banco');
+        return $this->belongsTo('Banco','id','cheques_id');
     }
 
     public function gasto() {
 
-        return $this->belongsTo('Gasto');
+        return $this->belongsTo('Gasto','id','gastos_id');
     }
 
 }
