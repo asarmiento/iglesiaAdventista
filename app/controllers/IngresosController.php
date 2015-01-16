@@ -17,15 +17,15 @@ class IngresosController extends \BaseController {
      *
      * @return Response
      */
-    public function create() {       // dd(Input::all());
+    public function create() {       
         $form_data = array('route' => 'ingresos.store', 'method' => 'POST');
-
+        $informe = new Historial;
         $fijos=  TiposFijo::all();
         $variables=  TiposVariable::all();
-        $miembros = Miembro::paginate(10);
-        $action="Agregar";
-        $ingresos = array();
-        return View::make('ingresos.form', compact('ingresos', 'action', 'form_data','fijos','variables','miembros'));
+        $informes=  Historial::find($informe->lastId());
+        $action="Finalizar";
+        $ingresos = array();// Ingreso::where('historial_id ='.$informe->lastId());
+        return View::make('ingresos.form', compact('ingresos', 'action', 'form_data','fijos','variables','informes'));
 /*
         $action = 'Agregar';
         $ingresos = array();

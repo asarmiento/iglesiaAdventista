@@ -21,7 +21,17 @@ Lista Gastos
         </tr>
     </thead> 
     <tbody> 
-
+        @foreach($gastos AS $gasto)
+        <tr>
+            <td></td>
+            <td>{{$gasto->}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        @endforeach
     </tbody>
 </table>
 @stop

@@ -8,9 +8,8 @@ class ChequesController extends \BaseController {
 	 * @return Response
 	 */
 	public function index()
-	{
-		$cheques = Cheque::all();
-
+	{   $cheques = Cheque::all();
+               
 		return View::make('cheques.index', compact('cheques'));
 	}
 

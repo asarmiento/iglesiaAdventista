@@ -11,25 +11,15 @@ Formulario {{$action}} Ingresos
 {{Form::model($ingresos,$form_data,array('role'=>'form','class'=>'form-inline'))}}
 <div class="row">
     <div class="large-4 columns">
-        <label class="">Fecha
-            {{Form::input('text','date',null,array('placeholder'=>"fecha",'id'=>'date'))}}
-        </label>
-        <small class="error-message red-message">{{$errors->first('name')}}</small>
+        <label class="">Numero Informe: {{$informes->numero}}</label>
     </div>
     <div class="large-4 columns">
-        <label class="">Saldo Disponible
-            {{Form::input('text','saldo',null,array('placeholder'=>"Saldo Disponible"))}}
-        </label>
-        <small class="error-message red-message">{{$errors->first('saldo')}}</small>
+        <label class="">Fecha: {{$informes->sabado}}</label>
     </div>
     <div class="large-4 columns">
-        <label class="">Iglesia
-
-            {{Form::input('text','saldo','',array('readonly'=>"readonly"))}}
+        <label class="">Saldo Disponible: {{number_format($informes->saldo)}}
         </label>
-        <small class="error-message red-message">{{$errors->first('iglesias_id')}}</small>
     </div>
-
 </div>
 <div class="row">
     <table>
@@ -53,23 +43,20 @@ Formulario {{$action}} Ingresos
                 @foreach($variables AS $variable)
                 <td>{{Form::input('text','',null,array('placeholder'=>'0.00','size'=>5,'style'=>'height:30px'))}}</td>
                 @endforeach
+                <td><a><span class="glyphicon glyphicon-check"></span></a></td>
             </tr>
-            @foreach($miembros AS $miembro)
             <tr>
-                <td>{{$miembro->name}}{{$miembro->last}}</td>
-                @foreach($fijos AS $fijo)
-                <td>{{Form::input('text','',null,array('placeholder'=>'0.00','size'=>5,'style'=>'height:30px'))}}</td>
-                @endforeach
-                @foreach($variables AS $variable)
-                <td>{{Form::input('text','',null,array('placeholder'=>'0.00','size'=>5,'style'=>'height:30px'))}}</td>
-                @endforeach
+                <td>Anwar Sarmiento</td>
+                <td>10000</td>
+                <td>10000</td>
+                <td>3000</td>
+                <td>7000</td>
+                <td>20000</td>
+                <td><a><span class="glyphicon glyphicon-remove"></span></a></td>
             </tr>
-            @endforeach
         </tbody>
     </table>
-    <div class="container">
-        {{$miembros->links()}}
-    </div>
+
 </div>
 
         </label>

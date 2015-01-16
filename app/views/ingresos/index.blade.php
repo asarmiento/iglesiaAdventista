@@ -23,7 +23,18 @@ Lista Ingresos
         </tr>
     </thead> 
     <tbody> 
-
+  @foreach($ingresos AS $ingreso)
+        <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><a class="btn btn-warning" href="{{URL::action('IglesiasController@edit',$ingreso->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+    <td><a class="btn btn-warning" href="{{URL::action('IglesiasController@destroy',$ingreso->id)}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+    </tr>
+        @endforeach
     </tbody>
 </table>
 @stop

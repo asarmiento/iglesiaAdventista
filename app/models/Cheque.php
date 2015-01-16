@@ -21,7 +21,7 @@ class Cheque extends \Eloquent {
 
     public function Departamentos() {
 
-        $this->HasMany('departamentos');
+        $this->HasMany('departamento');
     }
 
 }

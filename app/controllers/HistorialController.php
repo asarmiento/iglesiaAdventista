@@ -31,7 +31,7 @@ class HistorialController extends \BaseController {
      * @return Response
      */
     public function store() {
-        $informes = array('numero'=>'00002','sabado'=>'2015-01-03','saldo'=>'168200.00'); //Input::all();
+        $informes = array('numero'=>'00003','sabado'=>'2015-01-03','saldo'=>'168200.00'); //Input::all();
          $validator = Validator::make($informes, Historial::$rules);
 
         if ($validator->fails()) {
@@ -39,9 +39,7 @@ class HistorialController extends \BaseController {
         }
 
         Historial::create($informes);
-        $data = Historial::where($informes);
-       // dd($data);
-        return Redirect::Route('ingresos.create')->with(($informes));
+        return Redirect::Route('ingresos.create');
     }
 
     /**
