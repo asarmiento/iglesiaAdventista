@@ -14,9 +14,9 @@ class Cheque extends \Eloquent {
     // Don't forget to fill this array
     protected $fillable = ['numero', 'name', 'date', 'detalle', 'monto', 'departamentos_id'];
 
-    public function Bancos() {
+    public function banco() {
 
-        $this->belongsTo('bancos');
+        return $this->belongsTo('Banco');
     }
 
     public function Departamentos() {
