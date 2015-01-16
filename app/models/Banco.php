@@ -11,14 +11,14 @@ class Banco extends \Eloquent {
     ];
     // Don't forget to fill this array
     protected $fillable = ['name', 'saldo','tipo','historial_id','cheques_id'];
-    
-    public function Cheques() {
 
-        $this->HasMany('cheques');
+    public function cheques() {
+
+        return $this->HasMany('Cheque', 'id', 'cheques_id');
     }
-    
+
     public function historial() {
 
-        $this->HasOne('historial');
+        return $this->HasOne('historial');
     }
 }

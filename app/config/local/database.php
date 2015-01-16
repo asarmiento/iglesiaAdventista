@@ -23,7 +23,7 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => '186.15.74.21',
+			'host'      => '192.185.173.45',
 			'database'  => 'friendly_iglesia',
 			'username'  => 'friendly_iglesia',
 			'password'  => 'F4cc0unt',
