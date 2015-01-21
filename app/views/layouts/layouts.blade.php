@@ -1,77 +1,72 @@
-<!DOCHTML HTML>
-<html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>@yield('title')</title>
-        <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}">
-        {{HTML::style('assets/css/foundation.css')}}
-        {{HTML::style('asset/css/bootstrap.css')}}
-        {{HTML::style('assets/css/styles.css')}}
-        {{HTML::style('assets/ui/jquery-ui.css')}}
-        {{HTML::style('assets/css/normalize.css')}}
-        {{HTML::script('assets/js/vendor/jquery.js')}}
-        {{HTML::script('assets/ui/jquery-ui.js')}}
-        {{HTML::script('assets/js/foundation/foundation.js')}}
-         {{HTML::script('assets/js/global.js')}}
-    </head>
-    <body>
-        <div class="row">
-            <div class="columns-2 left">
-                <img src="{{url()}}/assets/img/logo.jpg" width="170" height="170">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@yield('title')</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}">
+    {{HTML::style('css/bootstrap.min.css')}}
+    {{HTML::style('css/main.css')}}
+</head>
+<body>
+    <header>
+        <div class="">
+            <a href="{{url()}}"><img id="logo" src="{{ asset('img/LogoEs.png') }}" alt=""></a>
+            <div class="auth">
+                <span class="user">
+                    Anwar Sarmiento, 
+                </span>
+                <span class="church">
+                    Bienvenido a la Iglesia Quepos
+                </span>
             </div>
-            <div class="columns-11">
-                <div class="contain-to-grid">
-                    <nav class="top-bar" data-topbar>
-                        <ul class="title-area">
-                            <li class="name"></li>
-                            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-                        </ul>
-                        <section class="top-bar-section">
-                            <ul class="left">
-                                <li><a href="{{url()}}/home">INICIO</a></li>
-                                <li><a href="{{url()}}/iglesias">IGLESIA</a></li>
-                                <li><a href="{{url()}}/miembros">MIEMBROS</a></li>
-                                <li><a href="{{url()}}/informes">INFORME SEMANAL</a></li>
-                                <li><a href="{{url()}}/gastos">GASTOS</a></li>
-                                <li><a href="{{url()}}/cheques">CHEQUES</a></li>
-                                <li class="has-dropdown">
-                                    <a href="#">CONFIGURACIÓN</a>
-                                    <ul class="dropdown">
-                                        <li><a href="{{url()}}/departamentos">DEPARTAMENTOS</a></li>
-                                        <li><a href="{{url()}}/tipos_fijos">TIPOS FIJOS</a></li>
-                                        <li><a href="{{url()}}/tipos_variables">TIPOS VARIABLES</a></li>
-                                        <li><a href="{{url()}}/type_users">TIPOS USUARIO</a></li>
+            <div class="menu">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="{{url()}}/iglesias">Iglesia</a></li>
+                                <li><a href="{{url()}}/miembros">Miembros</a></li>
+                                <li><a href="{{url()}}/informes">Informe Semanal</a></li>
+                                <li><a href="{{url()}}/gastos">Gastos</a></li>
+                                <li><a href="{{url()}}/cheques">Cheques</a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Configuración <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{url()}}/departamentos">Departamentos</a></li>
+                                        <li><a href="{{url()}}/tipos_fijos">Tipos Fijos</a></li>
+                                        <li><a href="{{url()}}/tipos_variables">Tipos Variables</a></li>
+                                        <li><a href="{{url()}}/type_users">Tipos Usuario</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="/">SALIR</a></li>
+                                <li><a href="{{url()}}">Salir</a></li>
                             </ul>
-
-                        </section>
-                    </nav>
-                </div>        
-            </div>    
-        </div>
-
-        <!-- End Header and Nav -->
-        <!-- Second Band (Image Left with Text) -->
-        <div class="row">
-            <div class="large-12 columns">
-                <h1 class="text-center">-- @yield('title-form') --</h1>
-                <div class="container"> 
-                @yield('content')
-                </div>
+                        </div>
+                    </div>
+                </nav>
             </div>
         </div>
-        <!-- Footer -->
-        <footer class="row">
-            <div class="large-12 columns">
-                <hr />
-                <p class="text-center">Elaborado por: Francisco Gamonal &AMP; Anwar Sarmiento &copy; Copyright </p>
-            </div>
-        </footer>   
-
-        
-       
-        
-    </body>
+    </header>
+    <main>
+        <div class="container">
+            @yield('content')
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p class="text-center">Elaborado por: Francisco Gamonal &AMP; Anwar Sarmiento &copy; Copyright </p>
+        </div>
+    </footer>
+    {{HTML::script('js/lib/jquery.min.js')}}
+    {{HTML::script('js/lib/bootstrap.min.js')}}
+    {{HTML::script('js/main.js')}}
+</body>
 </html>
