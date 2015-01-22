@@ -21,8 +21,8 @@ class TestController extends \BaseController {
 //        dd($test->miembro);
       
  $data= new  TypeUsersController();
-   $data->restore(1);  
-  
+ // echo $data->destroy(3);  
+    echo $data->restore(3);  
     }
 
 }

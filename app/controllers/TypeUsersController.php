@@ -18,7 +18,7 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function create() {
-        return View::make('type_users.form');
+       return View::make('type_users.form');
     }
 
     /**
@@ -46,8 +46,7 @@ class TypeUsersController extends \BaseController {
      */
     public function show($id) {
         $typeuser = TiposUser::findOrFail($id);
-
-        return View::make('typeusers.show', compact('typeuser'));
+     return View::make('typeusers.show', json_encode($typeuser));
     }
 
     /**
@@ -91,8 +90,12 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        $data = TiposUser::destroy($id);
-        return $data;
+      $data= TiposUser::destroy($id);
+      if($data):
+          return 1;
+      endif;
+      
+      return json_encode(array('message'=>'Ya esta Inactivo'));
     }
 
     /**
@@ -102,8 +105,12 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function restore($id) {
-        $data = new TiposUser();
-         $data->restore($id);
+     $data=   TiposUser::withTrashed()->find($id)->restore();
+      if($data):
+          return 1;
+      endif;
+      
+      return json_encode(array('message'=>'Ya esta activa'));
     }
 
 }

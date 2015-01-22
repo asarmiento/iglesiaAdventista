@@ -17,10 +17,6 @@ class TiposUser extends \Eloquent {
         return $this->belongsTo('User', 'id', 'tipos_users_id');
     }
 
-    public function restore($id) {
-       $this->withTrashed()->where('id', $id)->restore();
-       
-        
-    }
+ 
 
 }
