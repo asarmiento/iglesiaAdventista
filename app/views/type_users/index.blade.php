@@ -24,22 +24,29 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>N°</th>
+                                <th class="text-center">N°</th>
                                 <th>Nombre </th>
-                                <th class="text-center">Editar </th>
+                                <th class="text-center">Estado</th>
+                                <th class="text-center">Editar</th>
                                 <th class="text-center">Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($typeusers as $typeuser)
                             <tr>
-                                <td>{{$typeuser->id}}</td>
+                                <td class="text-center user_number">{{$typeuser->id}}</td>
                                 <td>{{$typeuser->name}}</td>
+                                @if($typeuser->deleted_at)
+                                    <td class="text-center">Inactivo</td>
+                                @else
+                                    <td class="text-center">Activo</td>
+                                @endif
                                 <td class="text-center">
                                     <a class="btn btn-warning" href="{{URL::action('TypeUsersController@edit',$typeuser->id)}}"><span class="glyphicon glyphicon-pencil"></span></a>
-                                </td class="text-center">
+                                </td>
                                 <td class="text-center">
-                                    <a class="btn btn-warning" href="{{URL::action('TypeUsersController@destroy',$typeuser->id)}}"><span class="glyphicon glyphicon-remove"></span></a>
+                                    <!--<a class="btn btn-warning" href="{{URL::action('TypeUsersController@destroy',$typeuser->id)}}"><span class="glyphicon glyphicon-remove"></span></a>-->
+                                    <a id="btnRemoveTypeUser" class="btn btn-warning" href="#" data-resource="type_users"><span class="glyphicon glyphicon-remove"></span></a>
                                 </td>
                             </tr>
                             @endforeach

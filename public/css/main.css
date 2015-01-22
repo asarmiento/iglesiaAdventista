@@ -28,8 +28,8 @@ main {
 }
 
 ul {
-	padding: 0;
 	margin: 0;
+	padding: 0;
 }
 
 ul li {
@@ -67,8 +67,8 @@ ul li {
 
 .menu .navbar-default .navbar-nav > li > a, .menu .dropdown-menu > li > a {
 	color: #438390;
-	font-weight: 600;
 	font-size: .9em;
+	font-weight: 600;
 }
 
 .menu .navbar-default .navbar-nav > li > a:hover , .menu .dropdown-menu > li > a:hover {
@@ -88,8 +88,8 @@ ul li {
 }
 
 .page .active {
-	font-weight: 600;
 	font-size: .8em;
+	font-weight: 600;
 }
 
 .page h2 {
@@ -102,8 +102,8 @@ ul li {
 }
 
 .page ul li:after {
-	content: ' /';
 	color: #ccc;
+	content: ' /';
 }
 
 .page ul li:last-child:after {
@@ -128,8 +128,8 @@ ul li {
 }
 
 .tableData .contentTable {
-	padding: 1em;
 	font-size: .9em;
+	padding: 1em;
 }
 
 .tableData .headerTable {
