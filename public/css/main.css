@@ -80,6 +80,11 @@ ul li {
 }
 /* */
 
+.modal-footer {
+	margin-top: 15%;
+}
+
+
 .page {
 	background: white;
 	border-bottom: 1px solid #E7EAEC;
@@ -134,6 +139,7 @@ ul li {
 
 .tableData .headerTable {
 	border-bottom: 1px solid #E7EAEC;
+	font-family: Arial;
 	padding: .5em;
 }
 

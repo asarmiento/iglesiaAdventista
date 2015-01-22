@@ -25,28 +25,41 @@
                         <thead>
                             <tr>
                                 <th class="text-center">N°</th>
-                                <th>Nombre </th>
+                                <th>Nombre</th>
                                 <th class="text-center">Estado</th>
                                 <th class="text-center">Editar</th>
-                                <th class="text-center">Eliminar</th>
+                                <th class="text-center">Desactivar</th>
+                                <th class="text-center">Activar</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($typeusers as $typeuser)
                             <tr>
                                 <td class="text-center user_number">{{$typeuser->id}}</td>
-                                <td>{{$typeuser->name}}</td>
+                                <td class="user_name">{{$typeuser->name}}</td>
                                 @if($typeuser->deleted_at)
-                                    <td class="text-center">Inactivo</td>
+                                    <td class="text-center user_state">Inactivo</td>
                                 @else
-                                    <td class="text-center">Activo</td>
+                                    <td class="text-center user_state">Activo</td>
                                 @endif
                                 <td class="text-center">
-                                    <a class="btn btn-warning" href="{{URL::action('TypeUsersController@edit',$typeuser->id)}}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a class="btn btn-info" href="#" id="editTypeUser"><span class="glyphicon glyphicon-pencil"></span></a>
                                 </td>
                                 <td class="text-center">
-                                    <!--<a class="btn btn-warning" href="{{URL::action('TypeUsersController@destroy',$typeuser->id)}}"><span class="glyphicon glyphicon-remove"></span></a>-->
-                                    <a id="btnRemoveTypeUser" class="btn btn-warning" href="#" data-resource="type_users"><span class="glyphicon glyphicon-remove"></span></a>
+                                    @if($typeuser->deleted_at)
+                                        -
+                                    @else
+                                         <a id="btnDisabledTypeUser" class="btn btn-danger" href="#" data-resource="type_users"><span class="glyphicon glyphicon-trash"></span></a>
+                                    @endif
+                                   
+                                </td>
+                                <td class="text-center">
+                                    @if($typeuser->deleted_at)
+                                        <a id="btnEnabledTypeUser" class="btn btn-success" href="#" data-resource="type_users"><span class="glyphicon glyphicon-ok"></span></a>
+                                    @else
+                                        -
+                                    @endif
+                                   
                                 </td>
                             </tr>
                             @endforeach
@@ -57,4 +70,34 @@
             </div>
         </div>
     </div>
+<!-- Modal Edit Type User-->
+<div class="modal fade" id="modalEditTypeUser" tabindex="-1" role="dialog" aria-labelledby="editTypeUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="editTypeUserModalLabel">Editar Tipo de Usuario</h4>
+            </div>
+            <div class="modal-body">
+                <input id="id_typeUser" type="hidden">
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <label for="name_typeUser">Nombre</label>
+                    <input id="name_typeUser" class="form-control" type="text">
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <label for="slcState_typeUser">Estado</label>
+                    <select id="slcState_typeUser" class="form-control">
+                        <option value="0">Inactivo</option>
+                        <option value="1">Activo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal Type -->
 @stop
