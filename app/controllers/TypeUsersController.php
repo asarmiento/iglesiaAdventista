@@ -9,7 +9,7 @@ class TypeUsersController extends \BaseController {
 	 */
 	public function index()
 	{
-		$typeusers = Typeuser::all();
+		$typeusers = TiposUser::all();
 
 		return View::make('type_users.index', compact('typeusers'));
 	}
@@ -34,7 +34,7 @@ class TypeUsersController extends \BaseController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), Typeuser::$rules);
+		$validator = Validator::make($data = Input::all(), TiposUser::$rules);
 
 		if ($validator->fails())
 		{
