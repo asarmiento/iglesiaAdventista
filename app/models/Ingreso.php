@@ -1,7 +1,7 @@
 <?php
 
 class Ingreso extends \Eloquent {
-
+    use SoftDeletingTrait;
     // Add your validation rules here
     public static $rules = [
         'historial_id' => 'required',

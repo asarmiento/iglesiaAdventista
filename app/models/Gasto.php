@@ -1,7 +1,7 @@
 <?php
 
 class Gasto extends \Eloquent {
-
+    use SoftDeletingTrait;
     // Add your validation rules here
     public static $rules = [
         'num_factura' => 'required',

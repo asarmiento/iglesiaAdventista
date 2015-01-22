@@ -21,6 +21,7 @@ class TestController extends \BaseController {
 //        dd($test->miembro);
       
  $data=  TiposUser::destroy(5);
+        
  dd($data);
     }
 

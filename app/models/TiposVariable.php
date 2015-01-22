@@ -1,7 +1,7 @@
 <?php
 
 class TiposVariable extends \Eloquent {
-
+    use SoftDeletingTrait;
     protected $table = 'tipos_variables';
     // Add your validation rules here
     public static $rules = [

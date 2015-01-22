@@ -1,7 +1,7 @@
 <?php
 
 class Departamento extends \Eloquent {
-
+    use SoftDeletingTrait;
     // Add your validation rules here
     public static $rules = [
         'name' => 'required',

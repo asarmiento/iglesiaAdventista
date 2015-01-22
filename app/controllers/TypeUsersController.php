@@ -91,9 +91,8 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-      $data=  TiposUser::destroy(3);
-
-        return 1;
+      $data=  TiposUser::delete($id);
+        return $data;
     }
 
 }
