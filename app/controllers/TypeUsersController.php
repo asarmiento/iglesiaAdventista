@@ -18,7 +18,7 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function create() {
-        return View::make('type_users.form');
+      
     }
 
     /**
@@ -27,7 +27,7 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function store() {
-        $validator = Validator::make($data = Input::all(), TiposUser::$rules);
+        $validator = Validator::make($data = Input::json()->all(), TiposUser::$rules);
 
         if ($validator->fails()) {
             if (Request::ajax()):
@@ -50,8 +50,7 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-        $typeuser = TiposUser::findOrFail($id);
-        return View::make('typeusers.show', json_encode($typeuser));
+      
     }
 
     /**
@@ -61,8 +60,7 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        $typeuser = TiposUser::find($id);
-        return View::make('type_users.index', json_encode($typeuser));
+       
     }
 
     /**
@@ -71,10 +69,9 @@ class TypeUsersController extends \BaseController {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {
-        $typeuser = TiposUser::findOrFail($id);
-
-        $validator = Validator::make($data = Input::all(), TiposUser::$rules);
+    public function update() {
+        
+       $validator = Validator::make($data = Input::json()->all(), TiposUser::$rules);
 
         if ($validator->fails()) {
             if (Request::ajax()):
@@ -97,6 +94,7 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
+        
         $data = TiposUser::destroy($id);
         if ($data):
             return 1;
@@ -112,8 +110,11 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function restore($id) {
-        $data = TiposUser::withTrashed()->find($id)->restore();
+        
+        $data = TiposUser::onlyTrashed()->find($id);
+        
         if ($data):
+            $data->restore();
             return 1;
         endif;
 

@@ -22,7 +22,7 @@ class TestController extends \BaseController {
       
  $data= new  TypeUsersController();
  // echo $data->destroy(3);  
-    echo $data->restore(3);  
+    echo $data->restore(1);  
     }
 
 }
