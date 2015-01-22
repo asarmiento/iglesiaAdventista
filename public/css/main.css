@@ -5,6 +5,10 @@ html, body {
 	font-family: 'Open Sans', sans-serif;
 }
 
+a:hover {
+	text-decoration: none;
+}
+
 footer {
 	background-color: #C4D7D9;
 	border-top: 1px solid #383737;
@@ -18,7 +22,7 @@ header {
 }
 
 main {
-	background-color: white;
+	background-color: #F3F3F4;
 	min-height: 560px;
 	padding: 1em;
 }
@@ -64,6 +68,7 @@ ul li {
 .menu .navbar-default .navbar-nav > li > a, .menu .dropdown-menu > li > a {
 	color: #438390;
 	font-weight: 600;
+	font-size: .9em;
 }
 
 .menu .navbar-default .navbar-nav > li > a:hover , .menu .dropdown-menu > li > a:hover {
@@ -75,8 +80,65 @@ ul li {
 }
 /* */
 
+.page {
+	background: white;
+	border-bottom: 1px solid #E7EAEC;
+	color: #757481;
+	padding-bottom: .5em;
+}
+
+.page .active {
+	font-weight: 600;
+	font-size: .8em;
+}
+
+.page h2 {
+	font-size: 1.25em;
+	margin-top: .5em;
+}
+
+.page ul li {
+	display: inline-block;
+}
+
+.page ul li:after {
+	content: ' /';
+	color: #ccc;
+}
+
+.page ul li:last-child:after {
+	content: '';
+}
+
+.page ul li a {
+	color: #757481;
+	font-size: .9em;
+}
+
 .relative {
 	position: relative;
+}
+
+.tableData {
+	background: white;
+	border-top: 3px solid #438390;
+	-webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.75);
+}
+
+.tableData .contentTable {
+	padding: 1em;
+	font-size: .9em;
+}
+
+.tableData .headerTable {
+	border-bottom: 1px solid #E7EAEC;
+	padding: .5em;
+}
+
+.tableData .contentTable thead tr {
+	background: #F5F5F6;
 }
 
 @media (max-width: 1000px) {

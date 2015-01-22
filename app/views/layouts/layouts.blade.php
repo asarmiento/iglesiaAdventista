@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>@yield('title')</title>
@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <div class="">
+        <div>
             <a href="{{url()}}"><img id="logo" src="{{ asset('img/LogoEs.png') }}" alt=""></a>
             <div class="auth">
                 <span class="user">
@@ -55,6 +55,11 @@
             </div>
         </div>
     </header>
+    <aside class='page'>
+        <div class="container">
+            @yield('page')
+        </div>
+    </aside>
     <main>
         <div class="container">
             @yield('content')
