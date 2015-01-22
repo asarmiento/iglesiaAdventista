@@ -1,7 +1,9 @@
 <?php
 
 class TiposUser extends \Eloquent {
+
     use SoftDeletingTrait;
+
     protected $softDelete = true;
     protected $table = 'tipos_users';
     // Add your validation rules here
@@ -12,7 +14,13 @@ class TiposUser extends \Eloquent {
     protected $fillable = ['name'];
 
     public function user() {
-        return $this->belongsTo('User','id','tipos_users_id');
+        return $this->belongsTo('User', 'id', 'tipos_users_id');
+    }
+
+    public function restore($id) {
+       $this->withTrashed()->where('id', $id)->restore();
+       
+        
     }
 
 }

@@ -91,8 +91,19 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-      $data=  TiposUser::delete($id);
+        $data = TiposUser::destroy($id);
         return $data;
+    }
+
+    /**
+     * Restore the specified typeuser from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function restore($id) {
+        $data = new TiposUser();
+         $data->restore($id);
     }
 
 }

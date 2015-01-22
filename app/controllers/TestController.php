@@ -20,9 +20,9 @@ class TestController extends \BaseController {
 //        $test = Ingreso::all();
 //        dd($test->miembro);
       
- $data=  TiposUser::destroy(5);
-        
- dd($data);
+ $data= new  TypeUsersController();
+   $data->restore(1);  
+  
     }
 
 }
