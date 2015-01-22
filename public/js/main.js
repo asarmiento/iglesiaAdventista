@@ -32,9 +32,14 @@ $(function(){
 		var resource = $(this).data("resource");
 		var id = $(this).parent().parent().find('.user_number').text();
 		data.id = id;
-		ajaxForm(resource, "delte", data)
+		ajaxForm(resource, "delete", data)
 		.done(function(result){
-			console.log(result);
+			if(result == 1){
+				window.location.href = server + 'type_users';
+			}
+			else {
+				console.log(result);	
+			}
 		});
 	});
 
@@ -45,7 +50,12 @@ $(function(){
 		data.id = id;
 		ajaxForm(resource, "put", data, "restore")
 		.done(function(result){
-			console.log(result);
+			if(result == 1){
+				window.location.href = server + 'type_users';
+			}
+			else {
+				console.log(result);	
+			}
 		});
 	});
 
