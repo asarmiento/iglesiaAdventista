@@ -18,7 +18,7 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function create() {
-       return View::make('type_users.form');
+        return View::make('type_users.form');
     }
 
     /**
@@ -30,12 +30,17 @@ class TypeUsersController extends \BaseController {
         $validator = Validator::make($data = Input::all(), TiposUser::$rules);
 
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            if (Request::ajax()):
+                return Response::json([
+                            'success' => false,
+                            'errors' => $validator->getMessageBag()->toArray()
+                ]);
+            else:
+                return Redirect::back()->withErrors($validator)->withInput();
+            endif;
         }
-
         Typeuser::create($data);
-
-        return Redirect::route('type_users.index');
+        return 1;
     }
 
     /**
@@ -46,7 +51,7 @@ class TypeUsersController extends \BaseController {
      */
     public function show($id) {
         $typeuser = TiposUser::findOrFail($id);
-     return View::make('typeusers.show', json_encode($typeuser));
+        return View::make('typeusers.show', json_encode($typeuser));
     }
 
     /**
@@ -57,10 +62,7 @@ class TypeUsersController extends \BaseController {
      */
     public function edit($id) {
         $typeuser = TiposUser::find($id);
-
-        $form_data = array('route' => array('type_users.update', $typeuser->id), 'method' => 'PATCH');
-        $action = 'Editar';
-        return View::make('type_users.form', compact('typeuser', 'action', 'form_data'));
+        return View::make('type_users.index', json_encode($typeuser));
     }
 
     /**
@@ -75,12 +77,17 @@ class TypeUsersController extends \BaseController {
         $validator = Validator::make($data = Input::all(), TiposUser::$rules);
 
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            if (Request::ajax()):
+                return Response::json([
+                            'success' => false,
+                            'errors' => $validator->getMessageBag()->toArray()
+                ]);
+            else:
+                return Redirect::back()->withErrors($validator)->withInput();
+            endif;
         }
-
         $typeuser->update($data);
-
-        return Redirect::route('type_users.index');
+        return 1;
     }
 
     /**
@@ -90,12 +97,12 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-      $data= TiposUser::destroy($id);
-      if($data):
-          return 1;
-      endif;
-      
-      return json_encode(array('message'=>'Ya esta Inactivo'));
+        $data = TiposUser::destroy($id);
+        if ($data):
+            return 1;
+        endif;
+
+        return json_encode(array('message' => 'Ya esta Inactivo'));
     }
 
     /**
@@ -105,12 +112,12 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function restore($id) {
-     $data=   TiposUser::withTrashed()->find($id)->restore();
-      if($data):
-          return 1;
-      endif;
-      
-      return json_encode(array('message'=>'Ya esta activa'));
+        $data = TiposUser::withTrashed()->find($id)->restore();
+        if ($data):
+            return 1;
+        endif;
+
+        return json_encode(array('message' => 'Ya esta activa'));
     }
 
 }
