@@ -91,9 +91,9 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        TiposUser::destroy($id);
+      $data=  TiposUser::destroy(3);
 
-        return Redirect::route('typeusers.index');
+        return 1;
     }
 
 }

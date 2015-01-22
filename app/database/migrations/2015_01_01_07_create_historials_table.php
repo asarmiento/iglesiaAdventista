@@ -19,7 +19,9 @@ class CreateHistorialsTable extends Migration {
                         $table->string('num_control');
 			$table->date('sabado');
                         $table->decimal('saldo',20,2);
-                        $table->timestamps();
+                        $table->engine = 'InnoDB';
+            $table->timestamps();
+            $table->softDeletes();
 		});
 	}
 

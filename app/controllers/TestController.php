@@ -19,9 +19,9 @@ class TestController extends \BaseController {
 //        $test = Cheque::all();
 //        $test = Ingreso::all();
 //        dd($test->miembro);
-        foreach (Iglesia::with('Miembro')->get() AS $test):
-            echo $test;
-        endforeach;
+      
+ $data=  TiposUser::destroy(5);
+ dd($data);
     }
 
 }

@@ -7,7 +7,7 @@ class IngresosTableSeeder extends Seeder {
         Ingreso::create([
             'id'=>1,
             'num_sobre'=>25464,
-            'num_control'=>25444,
+            'imagen'=>'',
             'date'=>'2015-01-05',
             'monto'=>'25000',
             'miembros_id'=>26,
@@ -17,7 +17,7 @@ class IngresosTableSeeder extends Seeder {
         Ingreso::create([
             'id'=>2,
             'num_sobre'=>25464,
-            'num_control'=>25444,
+            'imagen'=>'',
             'date'=>'2015-01-05',
             'monto'=>'25000',
             'miembros_id'=>26,
@@ -27,7 +27,7 @@ class IngresosTableSeeder extends Seeder {
         Ingreso::create([
             'id'=>3,
             'num_sobre'=>25464,
-            'num_control'=>25444,
+            'imagen'=>'',
             'date'=>'2015-01-05',
             'monto'=>'5000',
             'miembros_id'=>26,
