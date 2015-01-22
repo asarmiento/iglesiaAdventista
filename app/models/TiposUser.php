@@ -2,6 +2,7 @@
 
 class TiposUser extends \Eloquent {
     use SoftDeletingTrait;
+    protected $softDelete = true;
     protected $table = 'tipos_users';
     // Add your validation rules here
     public static $rules = [

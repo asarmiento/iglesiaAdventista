@@ -8,7 +8,7 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function index() {
-        $typeusers = TiposUser::all();
+        $typeusers = TiposUser::withTrashed()->get();
         return View::make('type_users.index', compact('typeusers'));
     }
 
