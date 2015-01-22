@@ -27,6 +27,6 @@ Route::resource('tipos_variables','TiposVariablesController');
 Route::resource('type_users','TypeUsersController');
 Route::resource('informes','HistorialController');
 Route::resource('users','UsersController');
-Route::put('type_users/{id}/restore',array('as' => 'restore_tuser', 'uses' => 'TypeUsersController'));
+Route::put('type_users/restore/{id}',array('as' => 'restore_tuser', 'uses' => 'TypeUsersController@restore'));
 //test
 Route::get('test', 'TestController@show');
