@@ -18,7 +18,7 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function create() {
-      
+        
     }
 
     /**
@@ -27,12 +27,12 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function store() {
-       $json =Input::get('data');
-    $data =  json_decode($json);
-  
-       
-       $validator = Validator::make((array)$data, TiposUser::$rules);
-    
+        $json = Input::get('data');
+        $data = json_decode($json);
+
+
+        $validator = Validator::make((array) $data, TiposUser::$rules);
+
         if ($validator->fails()) {
             if (Request::ajax()):
                 return Response::json([
@@ -43,7 +43,9 @@ class TypeUsersController extends \BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             endif;
         }
-        TiposUser::create((array)$data);
+        $type = TiposUser();
+        $type->name = Str::upper($data->name);
+        $type->save();
         return 1;
     }
 
@@ -54,7 +56,7 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-      
+        
     }
 
     /**
@@ -64,7 +66,7 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-       
+        
     }
 
     /**
@@ -74,19 +76,19 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function update() {
-    $json =Input::get('data');
-    $data =  json_decode($json);
-   // dd((array)$data);
-   if($data->state==1):
+        $json = Input::get('data');
+        $data = json_decode($json);
+        // dd((array)$data);
+        if ($data->state == 1):
             TiposUser::withTrashed()->find($data->id)->restore();
-   else:
-         TiposUser::destroy($data->id);
+        else:
+            TiposUser::destroy($data->id);
         endif;
-      
-      
+
+
         $typeuser = TiposUser::withTrashed()->findOrFail($data->id);
-       $validator = Validator::make((array)$data, TiposUser::$rules);
-      
+        $validator = Validator::make((array) $data, TiposUser::$rules);
+
         if ($validator->fails()) {
             if (Request::ajax()):
                 return Response::json([
@@ -97,13 +99,13 @@ class TypeUsersController extends \BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             endif;
         }
-        $type =  TiposUser::find($data->id);
-$type->name = Str::upper($data->name);
+        $type = TiposUser::find($data->id);
+        $type->name = Str::upper($data->name);
 
-$type->save();
-       
-       
-        
+        $type->save();
+
+
+
         return 1;
     }
 
@@ -114,7 +116,7 @@ $type->save();
      * @return Response
      */
     public function destroy($id) {
-        
+
         $data = TiposUser::destroy($id);
         if ($data):
             return 1;
@@ -130,9 +132,9 @@ $type->save();
      * @return Response
      */
     public function restore($id) {
-        
+
         $data = TiposUser::onlyTrashed()->find($id);
-        
+
         if ($data):
             $data->restore();
             return 1;

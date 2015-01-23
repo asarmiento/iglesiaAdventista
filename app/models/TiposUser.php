@@ -8,7 +8,7 @@ class TiposUser extends \Eloquent {
     protected $table = 'tipos_users';
     // Add your validation rules here
     public static $rules = [
-        'name' => 'required'
+        'name' => 'required|unique:tipos_users'
     ];
     // Don't forget to fill this array
     protected $fillable = ['name'];
