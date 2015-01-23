@@ -87,7 +87,7 @@ class TypeUsersController extends \BaseController {
 
 
         $typeuser = TiposUser::withTrashed()->findOrFail($data->id);
-        $validator = Validator::make((array) $data, TiposUser::$rules);
+        $validator = Validator::make((array) $data, TiposUser::$rulesUpdate);
 
         if ($validator->fails()) {
             if (Request::ajax()):
