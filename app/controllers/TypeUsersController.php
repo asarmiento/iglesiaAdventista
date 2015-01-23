@@ -78,37 +78,34 @@ class TypeUsersController extends \BaseController {
     public function update() {
         $json = Input::get('data');
         $data = json_decode($json);
-        // dd((array)$data);
+        
         if ($data->state == 1):
             TiposUser::withTrashed()->find($data->id)->restore();
         else:
             TiposUser::destroy($data->id);
         endif;
-
-
-        $typeuser = TiposUser::withTrashed()->findOrFail($data->id);
-        $validator = Validator::make((array) $data, TiposUser::$rulesUpdate);
-
-        if ($validator->fails()) {
+        
+        $Tipouser = TiposUser::withTrashed()->find($data->id);
+        
+        if (is_null ($Tipouser)):
+              return View::make('type_users.index', json_encode(array('message'=>'El Tipo usuario no existe')));
+        endif;
+       
+        if ($Tipouser->isValid((array)$data)):
+            $Tipouser->fill((array)$data);
+            $Tipouser->save();
+            return 1;
+        endif;
+      
             if (Request::ajax()):
                 return Response::json([
                             'success' => false,
-                            'errors' => $validator->getMessageBag()->toArray()
+                            'errors' => $Tipouser->errors
                 ]);
             else:
-                return Redirect::back()->withErrors($validator)->withInput();
+                return Redirect::back()->withErrors($Tipouser->errors)->withInput();
             endif;
-        }
-        $type = TiposUser::withTrashed()->find($data->id);
-        
-        $type->name = Str::upper($data->name);
-
-        $type->save();
-
-
-
-        return 1;
-    }
+}
 
     /**
      * Remove the specified typeuser from storage.

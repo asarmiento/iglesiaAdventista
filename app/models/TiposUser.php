@@ -6,13 +6,7 @@ class TiposUser extends \Eloquent {
 
     protected $softDelete = true;
     protected $table = 'tipos_users';
-    // Add your validation rules here
-    public static $rules = [
-        'name' => 'required|unique:tipos_users,name'
-    ];
-    public static $rulesUpdate = [
-        'name' => 'required'
-    ];
+
     // Don't forget to fill this array
     protected $fillable = ['name'];
 
@@ -20,6 +14,24 @@ class TiposUser extends \Eloquent {
         return $this->belongsTo('User', 'id', 'tipos_users_id');
     }
 
- 
+  public function isValid($data)
+    {  
+        $rules = ['name'=> 'required|unique:tipos_users'];
+       
+        if ($this->exists)
+        {
+            $rules['name'] .= ',name,' . $this->id;
+        }
+       // dd($rules);
+         $validator = Validator::make($data, $rules);
+        if ($validator->passes())
+        {
+            return true;
+        }
+        
+        $this->errors = $validator->errors();
+        
+        return false;
+    }
 
 }
