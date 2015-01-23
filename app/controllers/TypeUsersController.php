@@ -76,7 +76,7 @@ class TypeUsersController extends \BaseController {
     public function update() {
     $json =Input::get('data');
     $data =  json_decode($json);
-    
+   // dd((array)$data);
    if($data->state==1):
             TiposUser::withTrashed()->find($data->id)->restore();
    else:
@@ -97,7 +97,11 @@ class TypeUsersController extends \BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             endif;
         }
-        $typeuser->update((array)$data);
+        $type =  TiposUser::find($data->id);
+$type->name = Str::upper($data->name);
+
+$type->save();
+       
        
         
         return 1;
