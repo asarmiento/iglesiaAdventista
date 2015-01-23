@@ -99,7 +99,8 @@ class TypeUsersController extends \BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             endif;
         }
-        $type = TiposUser::find($data->id);
+        $type = TiposUser::withTrashed()->find($data->id);
+        
         $type->name = Str::upper($data->name);
 
         $type->save();
