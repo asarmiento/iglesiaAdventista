@@ -10,6 +10,9 @@ class TiposUser extends \Eloquent {
     public static $rules = [
         'name' => 'required|unique:tipos_users,name'
     ];
+    public static $rulesUpdate = [
+        'name' => 'required'
+    ];
     // Don't forget to fill this array
     protected $fillable = ['name'];
 
