@@ -27,10 +27,11 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function store() {
-      $data =Input::get('data');
+       $json =Input::get('data');
+    $data =  json_decode($json);
   
        
-       $validator = Validator::make($data =Input::get('data'), TiposUser::$rules);
+       $validator = Validator::make((array)$data, TiposUser::$rules);
     
         if ($validator->fails()) {
             if (Request::ajax()):
@@ -42,7 +43,7 @@ class TypeUsersController extends \BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             endif;
         }
-        TiposUser::create($data);
+        TiposUser::create((array)$data);
         return 1;
     }
 
@@ -73,13 +74,13 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function update() {
-    $data =Input::get('data');
-
-       TiposUser::withTrashed()->find($data['id'])->restore();
+    $json =Input::get('data');
+    $data =  json_decode($json);
+   
       
-        $typeuser = TiposUser::withTrashed()->findOrFail($data['id']);
-       $validator = Validator::make($data =Input::get('data'), TiposUser::$rules);
-       
+        $typeuser = TiposUser::withTrashed()->findOrFail($data->id);
+       $validator = Validator::make((array)$data, TiposUser::$rules);
+      
         if ($validator->fails()) {
             if (Request::ajax()):
                 return Response::json([
@@ -90,7 +91,7 @@ class TypeUsersController extends \BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             endif;
         }
-        $typeuser->update($data);
+        $typeuser->update((array)$data);
         return 1;
     }
 
