@@ -21,11 +21,7 @@ class IglesiasController extends \BaseController {
      * @return Response
      */
     public function create() {
-        $form_data = array('route' => 'iglesias.store', 'method' => 'POST');
-        $action = 'Agregar';
-        $iglesia = array();
-        $dropdown = $this->dropdown;
-        return View::make('iglesias.form', compact('form_data', 'action', 'iglesia', 'dropdown'));
+        return View::make('iglesias.index', json_encode($this->dropdown));
     }
 
     /**

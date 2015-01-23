@@ -27,8 +27,13 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function store() {
-        $validator = Validator::make($data = Input::json()->all(), TiposUser::$rules);
-
+      $data =Input::get('data');
+      if($data['state']==0):
+        return Response::json(['message' => 'No Se puede Crear datos Inactivos']);
+    endif;
+       
+       $validator = Validator::make($data =Input::get('data'), TiposUser::$rules);
+    
         if ($validator->fails()) {
             if (Request::ajax()):
                 return Response::json([
@@ -39,7 +44,7 @@ class TypeUsersController extends \BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             endif;
         }
-        Typeuser::create($data);
+        TiposUser::create($data);
         return 1;
     }
 
@@ -70,9 +75,15 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function update() {
-        
-       $validator = Validator::make($data = Input::json()->all(), TiposUser::$rules);
-
+    $data =Input::get('data');
+    if($data['state']==0):
+        return Response::json(['message' => 'No Se puede Modificar datos Inactivos']);
+    endif;
+       TiposUser::find($data['id'])->restore();
+      
+        $typeuser = TiposUser::withTrashed()->findOrFail($data['id']);
+       $validator = Validator::make($data =Input::get('data'), TiposUser::$rules);
+       
         if ($validator->fails()) {
             if (Request::ajax()):
                 return Response::json([

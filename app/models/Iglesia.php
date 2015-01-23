@@ -2,6 +2,7 @@
 
 class Iglesia extends \Eloquent {
     use SoftDeletingTrait;
+    protected $softDelete = true;
     // Add your validation rules here
     public static $rules = [
         'name' => 'required',
