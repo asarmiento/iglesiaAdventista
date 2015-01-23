@@ -2,7 +2,7 @@ var ajaxForm = function (resource, type, data, method){
 	var action = '';
 	var url= server + resource;
 	console.log(type, resource, data);
-	if(type==='delete' || type==='put') {
+	if(type==='delete' || (type==='put' && method !='restore')) {
 		url += '/' + data.id;
 	}
 	if(method==='restore') {
@@ -12,7 +12,7 @@ var ajaxForm = function (resource, type, data, method){
 	return $.ajax({
 			url: url,
 		    type: type,
-		    data: {data: data},
+		    data: {data: JSON.stringify(data)},
 		    datatype: 'json',
 		    beforeSend: function(){
 		        console.log('Registrando');
