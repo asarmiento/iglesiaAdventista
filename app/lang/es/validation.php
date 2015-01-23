@@ -121,6 +121,5 @@ return array(
     'name'     => 'nombre',
     'name group'     => 'nombre grupo',
     'group'     => 'grupo',
-   // 'year'     => 'año',
 ),
 );
