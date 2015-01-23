@@ -22,7 +22,7 @@ class TiposUser extends \Eloquent {
         {
             $rules['name'] .= ',name,' . $this->id;
         }
-       // dd($rules);
+       
          $validator = Validator::make($data, $rules);
         if ($validator->passes())
         {

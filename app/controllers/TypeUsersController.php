@@ -92,7 +92,7 @@ class TypeUsersController extends \BaseController {
         endif;
        
         if ($Tipouser->isValid((array)$data)):
-            $Tipouser->fill((array)$data);
+            $Tipouser->name = Str::upper($data->name);
             $Tipouser->save();
             return 1;
         endif;
