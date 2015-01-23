@@ -72,6 +72,7 @@
     </footer>
     {{HTML::script('js/lib/jquery.min.js')}}
     {{HTML::script('js/lib/bootstrap.min.js')}}
+    {{HTML::script('js/lib/jquery.blockUI.min.js')}}
     {{HTML::script('js/main.js')}}
 </body>
 </html>

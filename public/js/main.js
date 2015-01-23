@@ -1,24 +1,65 @@
-var ajaxForm = function (resource, type, data, method){
-	var action = '';
+var loadingUI = function (message){
+    $.blockUI({ css: {
+        border: 'none',
+        padding: '15px',
+        backgroundColor: '#000',
+        '-webkit-border-radius': '10px',
+        '-moz-border-radius': '10px',
+        opacity: 0.5,
+        color: '#fff'
+    }, message: '<h2><img style="margin-right: 30px" src="' + server + 'img/spiffygif.gif" >' + message + '</h2>'});
+};
+
+var responseUI = function (message,color){
+    $.unblockUI();
+    $.blockUI({ css: {
+        border: 'none',
+        padding: '15px',
+        backgroundColor: color,
+        '-webkit-border-radius': '10px',
+        '-moz-border-radius': '10px',
+        opacity: 0.5,
+        color: '#fff'
+    }, message: '<h2>' + message + '</h2>'});
+    setTimeout(function(){
+        $.unblockUI();
+    },750);
+};
+
+var ajaxForm = function (resource, type, data, form, method){
 	var url= server + resource;
-	console.log(type, resource, data);
-	if(type==='delete' || (type==='put' && method !='restore')) {
+	var before = null;
+	var error = null;
+	var color = null;
+	if(form === 'form') {
+		before = "Registrando";
+		error = "No se pueden grabar los datos.";
+		color = "red";
+	}
+	if(type === 'delete' || (type === 'put' && method != 'restore')) {
 		url += '/' + data.id;
 	}
-	if(method==='restore') {
+	if(method === 'restore') {
 		url += '/restore/' + data.id;
 	}
-	console.log(url);
 	return $.ajax({
 			url: url,
 		    type: type,
 		    data: {data: JSON.stringify(data)},
 		    datatype: 'json',
 		    beforeSend: function(){
-		        console.log('Registrando');
+		    	if(before){
+		    		loadingUI(before);	
+		    	}else{
+		    		console.log('Registrando');
+		    	}
 		    },
 		    error:function(){
-		        console.log("No se pueden grabar los datos.");
+		        if(error){
+		    		responseUI(error);	
+		    	}else{
+		    		console.log('No se pueden grabar los datos.');
+		    	}
 		    }
 		});
 };
@@ -32,14 +73,17 @@ $(function(){
 		e.preventDefault();
 		var resource = $(this).data("resource");
 		var id = $(this).parent().parent().find('.user_number').text();
+		var name = $(this).parent().parent().find('.user_name').text();
 		data.id = id;
-		ajaxForm(resource, "delete", data)
+		ajaxForm(resource, "delete", data, "form")
 		.done(function(result){
 			if(result == 1){
+				responseUI("Se inhabilito el tipo de usuario "+name+" .", "green");
 				window.location.href = server + 'type_users';
 			}
 			else {
-				console.log(result);	
+				responseUI("No se pueden grabar los datos.", "red");
+				console.log(result);
 			}
 		});
 	});
@@ -48,13 +92,16 @@ $(function(){
 		e.preventDefault();
 		var resource = $(this).data("resource");
 		var id = $(this).parent().parent().find('.user_number').text();
+		var name = $(this).parent().parent().find('.user_name').text();
 		data.id = id;
-		ajaxForm(resource, "put", data, "restore")
+		ajaxForm(resource, "put", data, "form", "restore")
 		.done(function(result){
 			if(result == 1){
+				responseUI("Se habilito el tipo de usuario "+name+" .", "green");
 				window.location.href = server + 'type_users';
 			}
 			else {
+				responseUI("No se pueden grabar los datos.", "red");
 				console.log(result);	
 			}
 		});
@@ -86,9 +133,11 @@ $(function(){
 		ajaxForm(resource, "put", data)
 		.done(function(result){
 			if(result == 1){
+				//responseUI("Se actualizaron los datos del usuario.", "green");
 				window.location.href = server + 'type_users';
 			}
 			else {
+				//responseUI("No se pueden grabar los datos.", "red");
 				console.log(result);	
 			}
 		});
@@ -103,9 +152,11 @@ $(function(){
 		ajaxForm(resource, "post", data)
 		.done(function(result){
 			if(result == 1){
+				//responseUI("Se crearon los datos del usuario "+name+" .", "green");
 				window.location.href = server + 'type_users';
 			}
 			else {
+				//responseUI("No se pueden grabar los datos.", "red");
 				console.log(result);	
 			}
 		});
