@@ -28,9 +28,7 @@ class TypeUsersController extends \BaseController {
      */
     public function store() {
       $data =Input::get('data');
-      if($data['state']==0):
-        return Response::json(['message' => 'No Se puede Crear datos Inactivos']);
-    endif;
+  
        
        $validator = Validator::make($data =Input::get('data'), TiposUser::$rules);
     
@@ -76,10 +74,8 @@ class TypeUsersController extends \BaseController {
      */
     public function update() {
     $data =Input::get('data');
-    if($data['state']==0):
-        return Response::json(['message' => 'No Se puede Modificar datos Inactivos']);
-    endif;
-       TiposUser::find($data['id'])->restore();
+
+       TiposUser::withTrashed()->find($data['id'])->restore();
       
         $typeuser = TiposUser::withTrashed()->findOrFail($data['id']);
        $validator = Validator::make($data =Input::get('data'), TiposUser::$rules);
