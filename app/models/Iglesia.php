@@ -21,4 +21,25 @@ class Iglesia extends \Eloquent {
     public function departamento() {
         return $this->belongsTo('Departamento','id','departamentos_id');
     }
+     public function isValid($data)
+    {  
+        $rules = ['name'=> 'required|unique:iglesias',
+            'phone' => 'required',
+        'address' => 'required'];
+       
+        if ($this->exists)
+        {
+            $rules['name'] .= ',name,' . $this->id;
+        }
+       
+         $validator = Validator::make($data, $rules);
+        if ($validator->passes())
+        {
+            return true;
+        }
+        
+        $this->errors = $validator->errors();
+        
+        return false;
+    }
 }

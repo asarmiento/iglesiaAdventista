@@ -2,15 +2,13 @@
 
 class IglesiasController extends \BaseController {
 
-    protected $dropdown = array('' => 'Elija una Misión', '2' => 'Misión Norte', '1' => 'Asociación Central', '3' => 'Misión del Caribe');
-
     /**
      * Display a listing of iglesias
      *
      * @return Response
      */
     public function index() {
-        $iglesias = Iglesia::all();
+        $iglesias = Iglesia::withTrashed()->get();
 
         return View::make('iglesias.index', compact('iglesias'));
     }
@@ -21,7 +19,7 @@ class IglesiasController extends \BaseController {
      * @return Response
      */
     public function create() {
-        return View::make('iglesias.index', json_encode($this->dropdown));
+        
     }
 
     /**
@@ -30,15 +28,27 @@ class IglesiasController extends \BaseController {
      * @return Response
      */
     public function store() {
-        $validator = Validator::make($data = Input::all(), Iglesia::$rules);
+        $json = Input::get('data');
+        $data = json_decode($json);
 
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
+        $iglesia = new Iglesia;
 
-        Iglesia::create($data);
+        if ($iglesia->isValid((array) $data)):
+            $iglesia->phone = $data->phone;
+            $iglesia->address = Str::upper($data->address);
+            $iglesia->name = Str::upper($data->name);
+            $iglesia->save();
+            return 1;
+        endif;
 
-        return Redirect::to('iglesias');
+        if (Request::ajax()):
+            return Response::json([
+                        'success' => false,
+                        'errors' => $iglesia->errors
+            ]);
+        else:
+            return Redirect::back()->withErrors($iglesia->errors)->withInput();
+        endif;
     }
 
     /**
@@ -48,9 +58,7 @@ class IglesiasController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-        $iglesia = Iglesia::findOrFail($id);
-
-        return View::make('iglesias.show', compact('iglesia'));
+        
     }
 
     /**
@@ -60,11 +68,7 @@ class IglesiasController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        $iglesia = Iglesia::find($id);
-        $form_data = array('route' => array('iglesias.update', $iglesia->id), 'method' => 'PATCH');
-        $action = 'Editar';
-        $dropdown = $this->dropdown;
-        return View::make('iglesias.form', compact('form_data', 'action', 'iglesia', 'dropdown'));
+        
     }
 
     /**
@@ -74,17 +78,39 @@ class IglesiasController extends \BaseController {
      * @return Response
      */
     public function update($id) {
-        $iglesia = Iglesia::findOrFail($id);
-
-        $validator = Validator::make($data = Input::all(), Iglesia::$rules);
-
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
-
-        $iglesia->update($data);
-
-        return Redirect::route('iglesias.index');
+        //capturamos los datos enviados
+        $json = Input::get('data');
+        $data = json_decode($json);
+        //hacemos el cambio de estado de acuerdo a lo solicitado
+        if ($data->state == 1):
+            Iglesia::withTrashed()->find($data->id)->restore();
+        else:
+            Iglesia::destroy($data->id);
+        endif;
+        //enviamos a buscar los datos a editar
+        $Iglesia = Iglesia::withTrashed()->find($data->id);
+        // si no existe enviamos un mensaje de error via json
+        if (is_null($Iglesia)):
+            return View::make('type_users.index', json_encode(array('message' => 'El Tipo usuario no existe')));
+        endif;
+        //validamos los datos
+        if ($Iglesia->isValid((array) $data)):
+            //si estan correctos los editamos
+            $iglesia->phone = $data->phone;
+            $iglesia->address = Str::upper($data->address);
+            $iglesia->name = Str::upper($data->name);
+            $Iglesia->save();
+            return 1;
+        endif;
+        //si estan incorrecto enviamos mensaje via ajax 
+        if (Request::ajax()):
+            return Response::json([
+                        'success' => false,
+                        'errors' => $Iglesia->errors
+            ]);
+        else:
+            return Redirect::back()->withErrors($Iglesia->errors)->withInput();
+        endif;
     }
 
     /**
@@ -95,8 +121,29 @@ class IglesiasController extends \BaseController {
      */
     public function destroy($id) {
         Iglesia::destroy($id);
+        if ($data):
+            return 1;
+        endif;
 
-        return Redirect::to('iglesias');
+        return json_encode(array('message' => 'Ya esta Inactivo'));
+    }
+
+    /**
+     * Restore the specified typeuser from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function restore($id) {
+
+        $data = Iglesia::onlyTrashed()->find($id);
+
+        if ($data):
+            $data->restore();
+            return 1;
+        endif;
+
+        return json_encode(array('message' => 'Ya esta activa'));
     }
 
 }

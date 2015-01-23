@@ -29,24 +29,21 @@ class TypeUsersController extends \BaseController {
     public function store() {
         $json = Input::get('data');
         $data = json_decode($json);
+        $Tipouser = new TiposUser;
+        if ($Tipouser->isValid((array) $data)):
+            $Tipouser->name = Str::upper($data->name);
+            $Tipouser->save();
+            return 1;
+        endif;
 
-
-        $validator = Validator::make((array) $data, TiposUser::$rules);
-
-        if ($validator->fails()) {
-            if (Request::ajax()):
-                return Response::json([
-                            'success' => false,
-                            'errors' => $validator->getMessageBag()->toArray()
-                ]);
-            else:
-                return Redirect::back()->withErrors($validator)->withInput();
-            endif;
-        }
-        $type = new TiposUser;
-        $type->name = Str::upper($data->name);
-        $type->save();
-        return 1;
+        if (Request::ajax()):
+            return Response::json([
+                        'success' => false,
+                        'errors' => $Tipouser->errors
+            ]);
+        else:
+            return Redirect::back()->withErrors($Tipouser->errors)->withInput();
+        endif;
     }
 
     /**
@@ -76,36 +73,38 @@ class TypeUsersController extends \BaseController {
      * @return Response
      */
     public function update() {
+        //capturamos los datos enviados
         $json = Input::get('data');
         $data = json_decode($json);
-        
+        //hacemos el cambio de estado de acuerdo a lo solicitado
         if ($data->state == 1):
             TiposUser::withTrashed()->find($data->id)->restore();
         else:
             TiposUser::destroy($data->id);
         endif;
-        
+        //enviamos a buscar los datos a editar
         $Tipouser = TiposUser::withTrashed()->find($data->id);
-        
-        if (is_null ($Tipouser)):
-              return View::make('type_users.index', json_encode(array('message'=>'El Tipo usuario no existe')));
+        // si no existe enviamos un mensaje de error via json
+        if (is_null($Tipouser)):
+            return View::make('type_users.index', json_encode(array('message' => 'El Tipo usuario no existe')));
         endif;
-       
-        if ($Tipouser->isValid((array)$data)):
+        //validamos los datos
+        if ($Tipouser->isValid((array) $data)):
+            //si estan correctos los editamos
             $Tipouser->name = Str::upper($data->name);
             $Tipouser->save();
             return 1;
         endif;
-      
-            if (Request::ajax()):
-                return Response::json([
-                            'success' => false,
-                            'errors' => $Tipouser->errors
-                ]);
-            else:
-                return Redirect::back()->withErrors($Tipouser->errors)->withInput();
-            endif;
-}
+        //si estan incorrecto enviamos mensaje via ajax 
+        if (Request::ajax()):
+            return Response::json([
+                        'success' => false,
+                        'errors' => $Tipouser->errors
+            ]);
+        else:
+            return Redirect::back()->withErrors($Tipouser->errors)->withInput();
+        endif;
+    }
 
     /**
      * Remove the specified typeuser from storage.
