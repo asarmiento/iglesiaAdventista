@@ -146,7 +146,7 @@ $(function(){
 				$("#modalEditTypeUser").attr('data-success', "1")
 			}
 			else {
-				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> No se pueden grabar los datos.</p>";
+				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> No se pueden grabar los datos. "+ result.errors.name[0] +" </p>";
 				$("#msgEdit").html(message);
 				console.log(result);
 			}
@@ -190,6 +190,10 @@ $(function(){
 		$(this).attr('data-success', "0");
 	});
 
+	$('#modalEditTypeUser').on('show.bs.modal', function (e) {
+		$("#msgEdit").html('');
+	});
+	
 	$('#modalCreateTypeUser').on('show.bs.modal', function (e) {
 		$("#name_new_typeUser").val('');
 	});
