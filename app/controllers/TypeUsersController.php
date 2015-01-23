@@ -43,7 +43,7 @@ class TypeUsersController extends \BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             endif;
         }
-        $type = TiposUser();
+        $type = new TiposUser;
         $type->name = Str::upper($data->name);
         $type->save();
         return 1;
