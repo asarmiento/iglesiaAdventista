@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
     {{HTML::style('css/bootstrap.min.css')}}
+    {{HTML::style('css/ladda-themeless.min.css')}}
     {{HTML::style('css/main.css')}}
 </head>
 <body>
@@ -73,6 +74,8 @@
     {{HTML::script('js/lib/jquery.min.js')}}
     {{HTML::script('js/lib/bootstrap.min.js')}}
     {{HTML::script('js/lib/jquery.blockUI.min.js')}}
+    {{HTML::script('js/lib/spin.min.js')}}
+    {{HTML::script('js/lib/ladda.min.js')}}
     {{HTML::script('js/main.js')}}
 </body>
 </html>

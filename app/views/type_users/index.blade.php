@@ -36,7 +36,7 @@
                             @foreach($typeusers as $typeuser)
                             <tr>
                                 <td class="text-center user_number">{{$typeuser->id}}</td>
-                                <td class="user_name">{{$typeuser->name}}</td>
+                                <td class="user_name">{{mb_convert_case($typeuser->name, MB_CASE_TITLE, 'UTF-8')}}</td>
                                 @if($typeuser->deleted_at)
                                     <td class="text-center user_state">Inactivo</td>
                                 @else
@@ -91,6 +91,12 @@
                         <option value="1">Activo</option>
                     </select>
                 </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 msgLadda">
+                    <button id="btnLaddaEdit" class="btn ladda-button" data-style="expand-left" data-spinner-color="#000"><span class="ladda-label">Procesando la edición.</span><span class="ladda-spinner"></span></button>
+                    <div id="msgEdit">
+                                        
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -120,6 +126,12 @@
                         <option value="0">Inactivo</option>
                         <option value="1">Activo</option>
                     </select>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 msgLadda">
+                    <button id="btnLaddaCreate" class="btn ladda-button" data-style="expand-left" data-spinner-color="#000"><span class="ladda-label">Procesando la creación.</span><span class="ladda-spinner"></span></button>
+                    <div id="msgCreate">
+                                        
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

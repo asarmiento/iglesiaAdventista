@@ -36,6 +36,10 @@ ul li {
 	list-style: none;
 }
 
+#btnLaddaEdit, #btnLaddaCreate {
+	display: none;
+}
+
 #logo {
 	left: 0.5em;
 	position: absolute;
@@ -44,11 +48,23 @@ ul li {
 	z-index: 5;
 }
 
+#msgEdit, #msgCreate {
+	margin-top: 0.25em;
+}
+
 .auth {
 	font-family: sans-serif;
 	font-size: .9em;
 	padding-right: 2.2em;
 	text-align: right;
+}
+
+.color-green {
+	color: green;
+}
+
+.color-red {
+	color: red;
 }
 
 /* edit menu */
@@ -81,9 +97,12 @@ ul li {
 /* */
 
 .modal-footer {
-	margin-top: 15%;
+	margin-top: 16%;
 }
 
+.msgLadda {
+	margin: 0.5em 0;
+}
 
 .page {
 	background: white;
@@ -137,14 +156,14 @@ ul li {
 	padding: 1em;
 }
 
+.tableData .contentTable thead tr {
+	background: #F5F5F6;
+}
+
 .tableData .headerTable {
 	border-bottom: 1px solid #E7EAEC;
 	font-family: Arial;
 	padding: .5em;
-}
-
-.tableData .contentTable thead tr {
-	background: #F5F5F6;
 }
 
 @media (max-width: 1000px) {

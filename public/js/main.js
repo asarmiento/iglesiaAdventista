@@ -75,11 +75,12 @@ $(function(){
 		var id = $(this).parent().parent().find('.user_number').text();
 		var name = $(this).parent().parent().find('.user_name').text();
 		data.id = id;
+
 		ajaxForm(resource, "delete", data, "form")
 		.done(function(result){
 			if(result == 1){
-				responseUI("Se inhabilito el tipo de usuario "+name+" .", "green");
 				window.location.href = server + 'type_users';
+				responseUI("Se inhabilito el tipo de usuario "+name+" .", "green");
 			}
 			else {
 				responseUI("No se pueden grabar los datos.", "red");
@@ -94,11 +95,12 @@ $(function(){
 		var id = $(this).parent().parent().find('.user_number').text();
 		var name = $(this).parent().parent().find('.user_name').text();
 		data.id = id;
+
 		ajaxForm(resource, "put", data, "form", "restore")
 		.done(function(result){
 			if(result == 1){
-				responseUI("Se habilito el tipo de usuario "+name+" .", "green");
 				window.location.href = server + 'type_users';
+				responseUI("Se habilito el tipo de usuario "+name+" .", "green");
 			}
 			else {
 				responseUI("No se pueden grabar los datos.", "red");
@@ -126,19 +128,27 @@ $(function(){
 	$(document).on("click", "#btnUpdateTypeUser", function(e){
 		e.preventDefault();
 		var resource = $(this).data("resource");
+		var message = null;
 		data.id = $("#id_typeUser").val();;
 		data.name = $("#name_typeUser").val();
 		data.state = $("#slcState_typeUser").val();
-
+		$("#btnLaddaEdit").show();		
+		var l = Ladda.create(document.getElementById('btnLaddaEdit'));
+		l.start();
+		$("#msgEdit").html('');
 		ajaxForm(resource, "put", data)
 		.done(function(result){
+			l.stop();
+			$("#btnLaddaEdit").hide();
 			if(result == 1){
-				//responseUI("Se actualizaron los datos del usuario.", "green");
-				window.location.href = server + 'type_users';
+				message = "<p class='color-green'><span class='glyphicon glyphicon-ok'></span> Se actualizaron los datos correctamente.</p>";
+				$("#msgEdit").html(message);
+				//window.location.href = server + 'type_users';
 			}
 			else {
-				//responseUI("No se pueden grabar los datos.", "red");
-				console.log(result);	
+				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> No se pueden grabar los datos.</p>";
+				$("#msgEdit").html(message);
+				console.log(result);
 			}
 		});
 	});
@@ -146,23 +156,32 @@ $(function(){
 	$(document).on("click", "#btnCreateTypeUser", function(e){
 		e.preventDefault();
 		var resource = $(this).data("resource");
+		var message = null;
 		data.name = $("#name_new_typeUser").val();
 		data.state = $("#slcState_new_typeUser").val();
-
+		$("#btnLaddaCreate").show();		
+		var l = Ladda.create(document.getElementById('btnLaddaCreate'));
+		l.start();
+		$("#msgCreate").html('');
 		ajaxForm(resource, "post", data)
 		.done(function(result){
+			l.stop();
+			$("#btnLaddaCreate").hide();
 			if(result == 1){
-				//responseUI("Se crearon los datos del usuario "+name+" .", "green");
-				window.location.href = server + 'type_users';
+				message = "<p class='color-green'><span class='glyphicon glyphicon-ok'></span> Se registraron los datos correctamente.</p>";
+				$("#msgCreate").html(message);
+				//window.location.href = server + 'type_users';
 			}
 			else {
-				//responseUI("No se pueden grabar los datos.", "red");
-				console.log(result);	
+				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> No se pueden grabar los datos.</p>";
+				$("#msgCreate").html(message);
+				console.log(result);
 			}
 		});
 	});
 
-	/*$('#modalEditTypeUser').on('hidden.bs.modal', function (e) {
-		window.location.href = server + "type_users";
-	})*/
+	$('#modalEditTypeUser').on('hidden.bs.modal', function (e) {
+		$("#msgEdit").html('');
+	});
+
 });
