@@ -71,7 +71,7 @@
         </div>
     </div>
 <!-- Modal Edit Type User-->
-<div class="modal fade" id="modalEditTypeUser" tabindex="-1" role="dialog" aria-labelledby="editTypeUserModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalEditTypeUser" data-success="0" tabindex="-1" role="dialog" aria-labelledby="editTypeUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -108,7 +108,7 @@
 <!-- End Modal Edit Type -->
 
 <!-- Modal Create Type User-->
-<div class="modal fade" id="modalCreateTypeUser" tabindex="-1" role="dialog" aria-labelledby="createTypeUserModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalCreateTypeUser" data-success="0" tabindex="-1" role="dialog" aria-labelledby="createTypeUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

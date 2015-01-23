@@ -143,7 +143,7 @@ $(function(){
 			if(result == 1){
 				message = "<p class='color-green'><span class='glyphicon glyphicon-ok'></span> Se actualizaron los datos correctamente.</p>";
 				$("#msgEdit").html(message);
-				//window.location.href = server + 'type_users';
+				$("#modalEditTypeUser").attr('data-success', "1")
 			}
 			else {
 				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> No se pueden grabar los datos.</p>";
@@ -170,18 +170,28 @@ $(function(){
 			if(result == 1){
 				message = "<p class='color-green'><span class='glyphicon glyphicon-ok'></span> Se registraron los datos correctamente.</p>";
 				$("#msgCreate").html(message);
-				//window.location.href = server + 'type_users';
+				$("#modalCreateTypeUser").attr('data-success', "1")
 			}
 			else {
-				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> No se pueden grabar los datos.</p>";
+				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> "+ result.errors.name[0] +"</p>";
 				$("#msgCreate").html(message);
-				console.log(result);
+				console.log(result.errors.name[0]);
 			}
 		});
 	});
 
 	$('#modalEditTypeUser').on('hidden.bs.modal', function (e) {
-		$("#msgEdit").html('');
+		if($(this).attr('data-success') === "1") window.location.href = server + 'type_users';
+		$(this).attr('data-success', "0");
+	});
+
+	$('#modalCreateTypeUser').on('hidden.bs.modal', function (e) {
+		if($(this).attr('data-success') === "1") window.location.href = server + 'type_users';
+		$(this).attr('data-success', "0");
+	});
+
+	$('#modalCreateTypeUser').on('show.bs.modal', function (e) {
+		$("#name_new_typeUser").val('');
 	});
 
 });
