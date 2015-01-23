@@ -66,7 +66,7 @@
                         </tbody>
                     </table>
                 </div>
-                <a href="{{url()}}/type_users/create"  class="btn btn-md btn-success">Crear</a>
+                <a data-toggle="modal" data-target="#modalCreateTypeUser" class="btn btn-md btn-success">Crear</a>
             </div>
         </div>
     </div>
@@ -93,11 +93,41 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="btnUpdateTypeUser" data-resource="type_users" type="button" class="btn btn-success">Actualizar</button>
             </div>
         </div>
     </div>
 </div>
-<!-- End Modal Type -->
+<!-- End Modal Edit Type -->
+
+<!-- Modal Create Type User-->
+<div class="modal fade" id="modalCreateTypeUser" tabindex="-1" role="dialog" aria-labelledby="createTypeUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="createTypeUserModalLabel">Crear Tipo de Usuario</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <label for="name_new_typeUser">Nombre</label>
+                    <input id="name_new_typeUser" class="form-control" type="text">
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <label for="slcState_new_typeUser">Estado</label>
+                    <select id="slcState_new_typeUser" class="form-control">
+                        <option value="0">Inactivo</option>
+                        <option value="1">Activo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="btnCreateTypeUser" data-resource="type_users" type="button" class="btn btn-success">Crear</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal Create Type -->
 @stop

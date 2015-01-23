@@ -1,12 +1,12 @@
 var ajaxForm = function (resource, type, data, method){
 	var action = '';
-	var url= '';
+	var url= server + resource;
 	console.log(type, resource, data);
-	if(type==='delete') {
-		url = server + resource + '/' + data.id;
+	if(type==='delete' || type==='put') {
+		url += '/' + data.id;
 	}
 	if(method==='restore') {
-		url = server + resource + '/restore/' + data.id;
+		url += '/restore/' + data.id;
 	}
 	console.log(url);
 	return $.ajax({
@@ -27,6 +27,7 @@ var data = {};
 var server = 'http://localhost/iglesiaQuepos/public/';
 
 $(function(){
+
 	$(document).on("click", "#btnDisabledTypeUser", function(e){
 		e.preventDefault();
 		var resource = $(this).data("resource");
@@ -69,14 +70,48 @@ $(function(){
 		}else{
 			state = "1";
 		}
-		console.log(name);
+		$("#id_typeUser").val(id);
 		$("#name_typeUser").val(name);
 		$("#slcState_typeUser").val(state);
-		$("#id_typeUser").val(id);
 		$('#modalEditTypeUser').modal();
 	});
 
-	$('#modalEditTypeUser').on('hidden.bs.modal', function (e) {
+	$(document).on("click", "#btnUpdateTypeUser", function(e){
+		e.preventDefault();
+		var resource = $(this).data("resource");
+		data.id = $("#id_typeUser").val();;
+		data.name = $("#name_typeUser").val();
+		data.state = $("#slcState_typeUser").val();
+
+		ajaxForm(resource, "put", data)
+		.done(function(result){
+			if(result == 1){
+				window.location.href = server + 'type_users';
+			}
+			else {
+				console.log(result);	
+			}
+		});
+	});
+
+	$(document).on("click", "#btnCreateTypeUser", function(e){
+		e.preventDefault();
+		var resource = $(this).data("resource");
+		data.name = $("#name_new_typeUser").val();
+		data.state = $("#slcState_new_typeUser").val();
+
+		ajaxForm(resource, "post", data)
+		.done(function(result){
+			if(result == 1){
+				window.location.href = server + 'type_users';
+			}
+			else {
+				console.log(result);	
+			}
+		});
+	});
+
+	/*$('#modalEditTypeUser').on('hidden.bs.modal', function (e) {
 		window.location.href = server + "type_users";
-	})
+	})*/
 });
