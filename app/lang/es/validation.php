@@ -96,8 +96,8 @@ return array(
 'custom' => array(
 	'attribute-name' => array(
 	    'rule-name'  => 'custom-message',
-           
-	),
+        ),
+    
 ),
 
 /*
@@ -119,6 +119,8 @@ return array(
     'username' => 'usuario',
     'password' => 'contraseña',
     'name'     => 'nombre',
+    'address'     => 'Dirección',
+    'phone'     => 'Telefono',
     'name group'     => 'nombre grupo',
     'group'     => 'grupo',
 ),
