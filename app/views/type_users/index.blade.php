@@ -1,7 +1,7 @@
 @extends('layouts.layouts')
 
 @section('title')
-    Tipos de Usuario
+    Tipos de Usuarios
 @stop
 
 @section('page')
@@ -9,7 +9,7 @@
     <ul>
         <li><a href="{{url()}}">Home</a></li>
         <li><a>Configuración</a></li>
-        <li><a class="active">Tipo de Usuarios</a></li>
+        <li><a class="active">Tipos de Usuarios</a></li>
     </ul>
 @stop
 
@@ -17,7 +17,7 @@
     <div class="col-lg-12">
         <div class="tableData">
             <div class="headerTable">
-                <h5><strong>Lista por tipo de Usuarios</strong></h5>
+                <h5><strong>Lista por Tipos de Usuarios</strong></h5>
             </div>
             <div class="contentTable">
                 <div class="table-responsive">
@@ -98,7 +98,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer modal-footer-type-user">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 <button id="btnUpdateTypeUser" data-resource="type_users" type="button" class="btn btn-success">Actualizar</button>
             </div>
@@ -134,7 +134,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer modal-footer-type-user">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 <button id="btnCreateTypeUser" data-resource="type_users" type="button" class="btn btn-success">Crear</button>
             </div>

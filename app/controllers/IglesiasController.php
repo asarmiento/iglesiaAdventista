@@ -120,7 +120,7 @@ class IglesiasController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        Iglesia::destroy($id);
+        $data = Iglesia::destroy($id);
         if ($data):
             return 1;
         endif;

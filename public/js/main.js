@@ -69,6 +69,7 @@ var server = 'http://localhost/iglesiaQuepos/public/';
 
 $(function(){
 
+	/* Type User */
 	$(document).on("click", "#btnDisabledTypeUser", function(e){
 		e.preventDefault();
 		var resource = $(this).data("resource");
@@ -112,8 +113,8 @@ $(function(){
 	$(document).on("click", "#editTypeUser", function(e){
 		e.preventDefault();
 		var id = $(this).parent().parent().find('.user_number').text();
-		var state = $(this).parent().parent().find('.user_state').text().toLowerCase();
 		var name = $(this).parent().parent().find('.user_name').text();
+		var state = $(this).parent().parent().find('.user_state').text().toLowerCase();
 		if(state==='inactivo'){
 			state = "0";
 		}else{
@@ -196,6 +197,149 @@ $(function(){
 	
 	$('#modalCreateTypeUser').on('show.bs.modal', function (e) {
 		$("#name_new_typeUser").val('');
+	});
+
+	/* Iglesias */
+
+	$(document).on("click", "#btnDisabledIglesia", function(e){
+		e.preventDefault();
+		var resource = $(this).data("resource");
+		var id = $(this).parent().parent().find('.iglesia_number').text();
+		var name = $(this).parent().parent().find('.iglesia_name').text();
+		data.id = id;
+
+		ajaxForm(resource, "delete", data, "form")
+		.done(function(result){
+			if(result == 1){
+				window.location.href = server + 'iglesias';
+				responseUI("Se inhabilito la "+name+" .", "green");
+			}
+			else {
+				responseUI("No se pueden grabar los datos.", "red");
+				console.log(result);
+			}
+		});
+	});
+
+	$(document).on("click", "#btnEnabledIglesia", function(e){
+		e.preventDefault();
+		var resource = $(this).data("resource");
+		var id = $(this).parent().parent().find('.iglesia_number').text();
+		var name = $(this).parent().parent().find('.iglesia_name').text();
+		data.id = id;
+
+		ajaxForm(resource, "put", data, "form", "restore")
+		.done(function(result){
+			if(result == 1){
+				window.location.href = server + 'iglesias';
+				responseUI("Se habilito la "+name+" .", "green");
+			}
+			else {
+				responseUI("No se pueden grabar los datos.", "red");
+				console.log(result);	
+			}
+		});
+	});
+
+	$(document).on("click", "#editIglesia", function(e){
+		e.preventDefault();
+		var id = $(this).parent().parent().find('.iglesia_number').text();
+		var name = $(this).parent().parent().find('.iglesia_name').text();
+		var address = $(this).parent().parent().find('.iglesia_address').text();
+		var phone = $(this).parent().parent().find('.iglesia_phone').text();
+		var state = $(this).parent().parent().find('.iglesia_state').text().toLowerCase();
+		if(state==='inactivo'){
+			state = "0";
+		}else{
+			state = "1";
+		}
+		$("#id_iglesia").val(id);
+		$("#name_iglesia").val(name);
+		$("#address_iglesia").val(address);
+		$("#phone_iglesia").val(phone);
+		$("#slcState_iglesia").val(state);
+		$('#modalEditIglesia').modal();
+	});
+
+	$(document).on("click", "#btnUpdateIglesia", function(e){
+		e.preventDefault();
+		var resource = $(this).data("resource");
+		var message = null;
+		data.id = $("#id_iglesia").val();;
+		data.name = $("#name_new_iglesia").val();
+		data.address = $("#address_new_iglesia").val();
+		data.phone = $("#phone_new_iglesia").val();
+		data.state = $("#slcState_new_iglesia").val();
+		$("#btnLaddaEdit").show();		
+		var l = Ladda.create(document.getElementById('btnLaddaEdit'));
+		l.start();
+		$("#msgEdit").html('');
+		ajaxForm(resource, "put", data)
+		.done(function(result){
+			l.stop();
+			$("#btnLaddaEdit").hide();
+			if(result == 1){
+				message = "<p class='color-green'><span class='glyphicon glyphicon-ok'></span> Se actualizaron los datos correctamente.</p>";
+				$("#msgEdit").html(message);
+				$("#modalEditTypeUser").attr('data-success', "1")
+			}
+			else {
+				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> No se pueden grabar los datos.</p>";
+				$("#msgEdit").html(message);
+				console.log(result);
+			}
+		});
+	});
+
+	$(document).on("click", "#btnCreateIglesia", function(e){
+		e.preventDefault();
+		var resource = $(this).data("resource");
+		var message = null;
+		data.name = $("#name_new_iglesia").val();
+		data.address = $("#address_new_iglesia").val();
+		data.phone = $("#phone_new_iglesia").val();
+		data.state = $("#slcState_new_iglesia").val();
+		$("#btnLaddaCreate").show();		
+		var l = Ladda.create(document.getElementById('btnLaddaCreate'));
+		l.start();
+		$("#msgCreate").html('');
+		ajaxForm(resource, "post", data)
+		.done(function(result){
+			l.stop();
+			$("#btnLaddaCreate").hide();
+			if(result == 1){
+				message = "<p class='color-green'><span class='glyphicon glyphicon-ok'></span> Se registraron los datos correctamente.</p>";
+				$("#msgCreate").html(message);
+				$("#modalCreateIglesia").attr('data-success', "1")
+			}
+			else {
+				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> Error al guardar los datos.</p>";
+				$("#msgCreate").html(message);
+				console.log(result);
+			}
+		});
+	});
+
+	$('#modalEditIglesia').on('hidden.bs.modal', function (e) {
+		if($(this).attr('data-success') === "1") window.location.href = server + 'iglesias';
+		$(this).attr('data-success', "0");
+	});
+
+	$('#modalCreateIglesia').on('hidden.bs.modal', function (e) {
+		if($(this).attr('data-success') === "1") window.location.href = server + 'iglesias';
+		$(this).attr('data-success', "0");
+	});
+
+	$('#modalEditIglesia').on('show.bs.modal', function (e) {
+		$("#msgEdit").html('');
+	});
+	
+	$('#modalCreateIglesia').on('show.bs.modal', function (e) {
+		$("#name_new_typeUser").val('');
+		$("#name_new_iglesia").val('');
+		$("#address_new_iglesia").val('');
+		$("#phone_new_iglesia").val('');
+		$("#slcState_new_iglesia").val('0');
 	});
 
 });

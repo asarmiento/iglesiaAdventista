@@ -34,7 +34,7 @@
                         </div>
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="{{url()}}/iglesias">Iglesia</a></li>
+                                <li><a href="{{url()}}/iglesias">Iglesias</a></li>
                                 <li><a href="{{url()}}/miembros">Miembros</a></li>
                                 <li><a href="{{url()}}/informes">Informe Semanal</a></li>
                                 <li><a href="{{url()}}/gastos">Gastos</a></li>
@@ -45,7 +45,7 @@
                                         <li><a href="{{url()}}/departamentos">Departamentos</a></li>
                                         <li><a href="{{url()}}/tipos_fijos">Tipos Fijos</a></li>
                                         <li><a href="{{url()}}/tipos_variables">Tipos Variables</a></li>
-                                        <li><a href="{{url()}}/type_users">Tipos Usuario</a></li>
+                                        <li><a href="{{url()}}/type_users">Tipos de Usuarios</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="{{url()}}">Salir</a></li>

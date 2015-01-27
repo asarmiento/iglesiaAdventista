@@ -67,6 +67,10 @@ ul li {
 	color: red;
 }
 
+.form-iglesia {
+	margin-bottom: 1em;
+}
+
 /* edit menu */
 .menu .dropdown-menu {
 	background-color: #C4D7D9;
@@ -94,10 +98,14 @@ ul li {
 .menu .navbar-default .navbar-toggle {
 	background-color: #F3F3F4;
 }
-/* */
+/*end menu*/
 
-.modal-footer {
+.modal-footer-type-user {
 	margin-top: 16%;
+}
+
+.modal-footer-iglesia {
+	margin-top: 35%;
 }
 
 .msgLadda {

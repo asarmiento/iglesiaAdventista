@@ -29,6 +29,6 @@ Route::resource('informes','HistorialController');
 Route::resource('users','UsersController');
 //restores
 Route::put('type_users/restore/{id}',array('as' => 'restore_tuser', 'uses' => 'TypeUsersController@restore'));
-Route::put('iglesias/restore/{id}',array('as' => 'restore_iglesia', 'uses' => 'IglesiasController'));
+Route::put('iglesias/restore/{id}',array('as' => 'restore_iglesia', 'uses' => 'IglesiasController@restore'));
 //test
 Route::get('test', 'TestController@show');
