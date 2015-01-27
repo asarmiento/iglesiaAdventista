@@ -4,11 +4,7 @@ class Iglesia extends \Eloquent {
     use SoftDeletingTrait;
     protected $softDelete = true;
     // Add your validation rules here
-    public static $rules = [
-        'name' => 'required',
-        'phone' => 'required',
-        'address' => 'required',
-    ];
+
     // Don't forget to fill this array
     protected $fillable = ['name', 'phone', 'address'];
 
@@ -31,7 +27,7 @@ class Iglesia extends \Eloquent {
         {
             $rules['name'] .= ',name,' . $this->id;
         }
-       
+      
          $validator = Validator::make($data, $rules);
         if ($validator->passes())
         {

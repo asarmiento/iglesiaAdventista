@@ -3,9 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/controllers/DepartamentosController.php</file>
-            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/controllers/TypeUsersController.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/validators.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/start/global.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/controllers/IglesiasController.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/lang/es/validation.php</file>
             <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/TiposUser.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/routes.php</file>
+            <file>file:/C:/xampp/htdocs/iglesiaQuepos/app/models/Iglesia.php</file>
         </group>
     </open-files>
 </project-private>
