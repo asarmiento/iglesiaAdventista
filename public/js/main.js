@@ -158,6 +158,8 @@ $(function(){
 			}
 		})
 		.fail(function(){
+            l.stop();
+            $("#btnLaddaEdit").hide();
             message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> Error del servidor.</p>";
             $("#msgEdit").html(message);
         });
@@ -189,6 +191,8 @@ $(function(){
 			}
 		})
 		.fail(function(){
+            l.stop();
+            $("#btnLaddaCreate").hide();
             message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> Error del servidor.</p>";
             $("#msgEdit").html(message);
         });
@@ -314,6 +318,8 @@ $(function(){
 			}
 		})
 		.fail(function(){
+            l.stop();
+            $("#btnLaddaEdit").hide();
             message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> Error del servidor.</p>";
             $("#msgEdit").html(message);
         });
@@ -351,6 +357,8 @@ $(function(){
 			}
 		})
 		.fail(function(){
+            l.stop();
+            $("#btnLaddaCreate").hide();
             message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> Error del servidor.</p>";
             $("#msgEdit").html(message);
         });
