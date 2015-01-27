@@ -37,9 +37,9 @@
                             @foreach($iglesias as $iglesia)
                             <tr>
                                 <td class="text-center iglesia_number">{{$iglesia->id}}</td>
-                                <td class="iglesia_name">{{mb_convert_case($iglesia->name, MB_CASE_TITLE, 'UTF-8')}}</td>
-                                <td class="iglesia_address">{{mb_convert_case($iglesia->address, MB_CASE_TITLE, 'UTF-8')}}</td>
-                                <td class="text-center iglesia_phone">{{$iglesia->phone}}</td>
+                                <td class="iglesia_name">{{{mb_convert_case($iglesia->name, MB_CASE_TITLE, 'UTF-8')}}}</td>
+                                <td class="iglesia_address">{{{mb_convert_case($iglesia->address, MB_CASE_TITLE, 'UTF-8')}}}</td>
+                                <td class="text-center iglesia_phone">{{{$iglesia->phone}}}</td>
                                 @if($iglesia->deleted_at)
                                     <td class="text-center iglesia_state">Inactivo</td>
                                 @else

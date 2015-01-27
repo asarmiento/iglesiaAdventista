@@ -36,7 +36,7 @@
                             @foreach($typeusers as $typeuser)
                             <tr>
                                 <td class="text-center user_number">{{$typeuser->id}}</td>
-                                <td class="user_name">{{mb_convert_case($typeuser->name, MB_CASE_TITLE, 'UTF-8')}}</td>
+                                <td class="user_name">{{{mb_convert_case($typeuser->name, MB_CASE_TITLE, 'UTF-8')}}}</td>
                                 @if($typeuser->deleted_at)
                                     <td class="text-center user_state">Inactivo</td>
                                 @else
