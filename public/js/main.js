@@ -301,7 +301,7 @@ $(function(){
 			if(result == 1){
 				message = "<p class='color-green'><span class='glyphicon glyphicon-ok'></span> Se actualizaron los datos correctamente.</p>";
 				$("#msgEdit").html(message);
-				$("#modalEditTypeUser").attr('data-success', "1")
+				$("#modalEditIglesia").attr('data-success', "1")
 			}
 			else {
 				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> No se pueden grabar los datos.";
