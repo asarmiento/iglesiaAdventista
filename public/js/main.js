@@ -76,7 +76,6 @@ $(function(){
 		var id = $(this).parent().parent().find('.user_number').text();
 		var name = $(this).parent().parent().find('.user_name').text();
 		data.id = id;
-
 		ajaxForm(resource, "delete", data, "form")
 		.done(function(result){
 			if(result == 1){
@@ -87,7 +86,10 @@ $(function(){
 				responseUI("No se pueden grabar los datos.", "red");
 				console.log(result);
 			}
-		});
+		})
+		.fail(function(){
+            responseUI("Error del servidor","red");
+        });
 	});
 
 	$(document).on("click", "#btnEnabledTypeUser", function(e){
@@ -107,7 +109,10 @@ $(function(){
 				responseUI("No se pueden grabar los datos.", "red");
 				console.log(result);	
 			}
-		});
+		})
+		.fail(function(){
+            responseUI("Error del servidor","red");
+        });
 	});
 
 	$(document).on("click", "#editTypeUser", function(e){
@@ -151,7 +156,11 @@ $(function(){
 				$("#msgEdit").html(message);
 				console.log(result);
 			}
-		});
+		})
+		.fail(function(){
+            message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> Error del servidor.</p>";
+            $("#msgEdit").html(message);
+        });
 	});
 
 	$(document).on("click", "#btnCreateTypeUser", function(e){
@@ -178,7 +187,11 @@ $(function(){
 				$("#msgCreate").html(message);
 				console.log(result.errors.name[0]);
 			}
-		});
+		})
+		.fail(function(){
+            message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> Error del servidor.</p>";
+            $("#msgEdit").html(message);
+        });
 	});
 
 	$('#modalEditTypeUser').on('hidden.bs.modal', function (e) {
@@ -197,6 +210,7 @@ $(function(){
 	
 	$('#modalCreateTypeUser').on('show.bs.modal', function (e) {
 		$("#name_new_typeUser").val('');
+        $("#msgCreate").html('');
 	});
 
 	/* Iglesias */
@@ -218,7 +232,10 @@ $(function(){
 				responseUI("No se pueden grabar los datos.", "red");
 				console.log(result);
 			}
-		});
+		})
+		.fail(function(){
+            responseUI("Error del servidor","red");
+        });
 	});
 
 	$(document).on("click", "#btnEnabledIglesia", function(e){
@@ -238,7 +255,10 @@ $(function(){
 				responseUI("No se pueden grabar los datos.", "red");
 				console.log(result);	
 			}
-		});
+		})
+		.fail(function(){
+            responseUI("Error del servidor","red");
+        });
 	});
 
 	$(document).on("click", "#editIglesia", function(e){
@@ -270,7 +290,6 @@ $(function(){
 		data.address = $("#address_iglesia").val();
 		data.phone = $("#phone_iglesia").val();
 		data.state = $("#slcState_iglesia").val();
-		console.log(data);
 		$("#btnLaddaEdit").show();		
 		var l = Ladda.create(document.getElementById('btnLaddaEdit'));
 		l.start();
@@ -285,11 +304,19 @@ $(function(){
 				$("#modalEditTypeUser").attr('data-success', "1")
 			}
 			else {
-				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> No se pueden grabar los datos.</p>";
+				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> No se pueden grabar los datos.";
+                $.each(result.errors, function(){
+                    message += " " + this + ".";
+                });
+                message += "</p>";
 				$("#msgEdit").html(message);
 				console.log(result);
 			}
-		});
+		})
+		.fail(function(){
+            message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> Error del servidor.</p>";
+            $("#msgEdit").html(message);
+        });
 	});
 
 	$(document).on("click", "#btnCreateIglesia", function(e){
@@ -314,11 +341,19 @@ $(function(){
 				$("#modalCreateIglesia").attr('data-success', "1")
 			}
 			else {
-				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> Error al guardar los datos.</p>";
-				$("#msgCreate").html(message);
-				console.log(result);
+				message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> No se pueden grabar los datos.";
+                $.each(result.errors, function(){
+                    message += " " + this + ".";
+                });
+                message += "</p>";
+                $("#msgCreate").html(message);
+                console.log(result);
 			}
-		});
+		})
+		.fail(function(){
+            message = "<p class='color-red'><span class='glyphicon glyphicon-remove'></span> Error del servidor.</p>";
+            $("#msgEdit").html(message);
+        });
 	});
 
 	$('#modalEditIglesia').on('hidden.bs.modal', function (e) {
@@ -341,6 +376,7 @@ $(function(){
 		$("#address_new_iglesia").val('');
 		$("#phone_new_iglesia").val('');
 		$("#slcState_new_iglesia").val('0');
+        $("#msgCreate").html('');
 	});
 
 });

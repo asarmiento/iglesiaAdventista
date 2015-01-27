@@ -120,7 +120,7 @@ return array(
     'password' => 'contraseña',
     'name'     => 'nombre',
     'address'     => 'Dirección',
-    'phone'     => 'Telefono',
+    'phone'     => 'Teléfono',
     'name group'     => 'nombre grupo',
     'group'     => 'grupo',
 ),
