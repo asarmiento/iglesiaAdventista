@@ -266,10 +266,11 @@ $(function(){
 		var resource = $(this).data("resource");
 		var message = null;
 		data.id = $("#id_iglesia").val();;
-		data.name = $("#name_new_iglesia").val();
-		data.address = $("#address_new_iglesia").val();
-		data.phone = $("#phone_new_iglesia").val();
-		data.state = $("#slcState_new_iglesia").val();
+		data.name = $("#name_iglesia").val();
+		data.address = $("#address_iglesia").val();
+		data.phone = $("#phone_iglesia").val();
+		data.state = $("#slcState_iglesia").val();
+		console.log(data);
 		$("#btnLaddaEdit").show();		
 		var l = Ladda.create(document.getElementById('btnLaddaEdit'));
 		l.start();
