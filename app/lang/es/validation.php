@@ -77,7 +77,7 @@ return array(
 
 "unique" => "El campo :attribute ya ha sido tomado.",
 "url"    => "El formato de :attribute es inválido.",
-
+"alpha_custom"     => "The :attribute may only contain letters and (@, *, _, .).",
 /*
 |--------------------------------------------------------------------------
 | Custom Validation Language Lines

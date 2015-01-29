@@ -19,15 +19,15 @@ class Iglesia extends \Eloquent {
     }
      public function isValid($data)
     {  
-        $rules = ['name'=> 'required|unique:iglesias',
+        $rules = ['name'=> 'alpha_custom|required|unique:iglesias',
             'phone' => 'required',
         'address' => 'required'];
        
-        if ($this->exists)
+       if ($this->exists)
         {
             $rules['name'] .= ',name,' . $this->id;
         }
-      
+     
          $validator = Validator::make($data, $rules);
         if ($validator->passes())
         {

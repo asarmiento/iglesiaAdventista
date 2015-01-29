@@ -20,8 +20,8 @@ return array(
 	'default' => 'mysql',
 
 	'connections' => array(
-
-		'mysql' => array(
+           
+          	'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => '192.185.173.45',
 			'database'  => 'friendly_iglesia',

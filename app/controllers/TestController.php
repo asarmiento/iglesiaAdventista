@@ -19,10 +19,10 @@ class TestController extends \BaseController {
 //        $test = Cheque::all();
 //        $test = Ingreso::all();
 //        dd($test->miembro);
-      
- $data= new  TypeUsersController();
- // echo $data->destroy(3);  
-    echo $data->restore(1);  
+// $data= new  TypeUsersController();
+// // echo $data->destroy(3);  
+//    echo $data->restore(1);  
+        
     }
 
 }
