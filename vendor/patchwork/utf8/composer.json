@@ -16,6 +16,7 @@
         "lib-pcre": ">=7.3"
     },
     "suggest": {
+        "ext-wfio": "Use WFIO for UTF-8 filesystem access on Windows",
         "ext-intl": "Use Intl for best performance",
         "ext-iconv": "Use iconv for best performance",
         "ext-mbstring": "Use Mbstring for best performance"
@@ -24,6 +25,11 @@
         "psr-0": {
             "Patchwork": "class/",
             "Normalizer": "class/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.2-dev"
         }
     }
 }
