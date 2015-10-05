@@ -62,11 +62,27 @@ class Collection extends BaseCollection {
 	 * Determine if a key exists in the collection.
 	 *
 	 * @param  mixed  $key
+	 * @param  mixed  $value
 	 * @return bool
 	 */
-	public function contains($key)
+	public function contains($key, $value = null)
 	{
-		return ! is_null($this->find($key));
+		if (func_num_args() == 1 && ! $key instanceof Closure)
+		{
+			$key = $key instanceof Model ? $key->getKey() : $key;
+
+			return $this->filter(function($m) use ($key)
+			{
+				return $m->getKey() === $key;
+
+			})->count() > 0;
+		}
+		elseif (func_num_args() == 2)
+		{
+			return $this->where($key, $value)->count() > 0;
+		}
+
+		return parent::contains($key);
 	}
 
 	/**
@@ -90,7 +106,7 @@ class Collection extends BaseCollection {
 	{
 		return $this->reduce(function($result, $item) use ($key)
 		{
-			return (is_null($result) || $item->{$key} > $result) ? $item->{$key} : $result;
+			return is_null($result) || $item->{$key} > $result ? $item->{$key} : $result;
 		});
 	}
 
@@ -104,7 +120,7 @@ class Collection extends BaseCollection {
 	{
 		return $this->reduce(function($result, $item) use ($key)
 		{
-			return (is_null($result) || $item->{$key} < $result) ? $item->{$key} : $result;
+			return is_null($result) || $item->{$key} < $result ? $item->{$key} : $result;
 		});
 	}
 

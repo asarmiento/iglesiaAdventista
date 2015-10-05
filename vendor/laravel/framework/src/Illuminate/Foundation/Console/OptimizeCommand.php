@@ -1,5 +1,6 @@
 <?php namespace Illuminate\Foundation\Console;
 
+use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Composer;
 use Illuminate\View\Engines\CompilerEngine;
@@ -65,10 +66,6 @@ class OptimizeCommand extends Command {
 			$this->info('Compiling common classes');
 
 			$this->compileClasses();
-
-			$this->info('Compiling views');
-
-			$this->compileViews();
 		}
 		else
 		{
@@ -85,7 +82,7 @@ class OptimizeCommand extends Command {
 	{
 		$this->registerClassPreloaderCommand();
 
-		$outputPath = $this->laravel['path.base'].'/bootstrap/compiled.php';
+		$outputPath = $this->laravel['path.base'].'/vendor/compiled.php';
 
 		$this->callSilent('compile', array(
 			'--config' => implode(',', $this->getClassFiles()),
@@ -105,7 +102,14 @@ class OptimizeCommand extends Command {
 
 		$core = require __DIR__.'/Optimize/config.php';
 
-		return array_merge($core, $this->laravel['config']['compile']);
+		$files = array_merge($core, $this->laravel['config']->get('compile.files', []));
+
+		foreach ($this->laravel['config']->get('compile.providers', []) as $provider)
+		{
+			$files = array_merge($files, forward_static_call([$provider, 'compiles']));
+		}
+
+		return $files;
 	}
 
 	/**
@@ -116,34 +120,6 @@ class OptimizeCommand extends Command {
 	protected function registerClassPreloaderCommand()
 	{
 		$this->getApplication()->add(new PreCompileCommand);
-	}
-
-	/**
-	 * Compile all view files.
-	 *
-	 * @return void
-	 */
-	protected function compileViews()
-	{
-		foreach ($this->laravel['view']->getFinder()->getPaths() as $path)
-		{
-			foreach ($this->laravel['files']->allFiles($path) as $file)
-			{
-				try
-				{
-					$engine = $this->laravel['view']->getEngineFromPath($file);
-				}
-				catch (\InvalidArgumentException $e)
-				{
-					continue;
-				}
-
-				if ($engine instanceof CompilerEngine)
-				{
-					$engine->getCompiler()->compile($file);
-				}
-			}
-		}
 	}
 
 	/**

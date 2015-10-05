@@ -8,13 +8,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 
 class Command extends \Symfony\Component\Console\Command\Command {
 
 	/**
 	 * The Laravel application instance.
 	 *
-	 * @var \Illuminate\Foundation\Application
+	 * @var \Illuminate\Contracts\Foundation\Application
 	 */
 	protected $laravel;
 
@@ -109,7 +110,9 @@ class Command extends \Symfony\Component\Console\Command\Command {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		return $this->fire();
+		$method = method_exists($this, 'handle') ? 'handle' : 'fire';
+
+		return $this->laravel->call([$this, $method]);
 	}
 
 	/**
@@ -197,7 +200,7 @@ class Command extends \Symfony\Component\Console\Command\Command {
 	{
 		$helper = $this->getHelperSet()->get('question');
 
-		$question = new Question("<question>$question</question>", $default);
+		$question = new Question("<question>$question</question> ", $default);
 
 		return $helper->ask($this->input, $this->output, $question);
 	}
@@ -214,7 +217,7 @@ class Command extends \Symfony\Component\Console\Command\Command {
 	{
 		$helper = $this->getHelperSet()->get('question');
 
-		$question = new Question("<question>$question</question>", $default);
+		$question = new Question("<question>$question</question> ", $default);
 
 		$question->setAutocompleterValues($choices);
 
@@ -232,7 +235,7 @@ class Command extends \Symfony\Component\Console\Command\Command {
 	{
 		$helper = $this->getHelperSet()->get('question');
 
-		$question = new Question("<question>$question</question>");
+		$question = new Question("<question>$question</question> ");
 
 		$question->setHidden(true)->setHiddenFallback($fallback);
 
@@ -253,7 +256,7 @@ class Command extends \Symfony\Component\Console\Command\Command {
 	{
 		$helper = $this->getHelperSet()->get('question');
 
-		$question = new ChoiceQuestion("<question>$question</question>", $choices, $default);
+		$question = new ChoiceQuestion("<question>$question</question> ", $choices, $default);
 
 		$question->setMaxAttempts($attempts)->setMultiselect($multiple);
 
@@ -363,7 +366,7 @@ class Command extends \Symfony\Component\Console\Command\Command {
 	/**
 	 * Get the Laravel application instance.
 	 *
-	 * @return \Illuminate\Foundation\Application
+	 * @return \Illuminate\Contracts\Foundation\Application
 	 */
 	public function getLaravel()
 	{
@@ -373,10 +376,10 @@ class Command extends \Symfony\Component\Console\Command\Command {
 	/**
 	 * Set the Laravel application instance.
 	 *
-	 * @param  \Illuminate\Foundation\Application  $laravel
+	 * @param  \Illuminate\Contracts\Foundation\Application  $laravel
 	 * @return void
 	 */
-	public function setLaravel($laravel)
+	public function setLaravel(LaravelApplication $laravel)
 	{
 		$this->laravel = $laravel;
 	}

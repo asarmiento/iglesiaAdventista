@@ -1,8 +1,10 @@
 <?php namespace Illuminate\Cache;
 
+use Exception;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Contracts\Cache\Store;
 
-class FileStore implements StoreInterface {
+class FileStore implements Store {
 
 	/**
 	 * The Illuminate Filesystem instance.
@@ -55,16 +57,11 @@ class FileStore implements StoreInterface {
 		// If the file doesn't exists, we obviously can't return the cache so we will
 		// just return null. Otherwise, we'll get the contents of the file and get
 		// the expiration UNIX timestamps from the start of the file's contents.
-		if ( ! $this->files->exists($path))
-		{
-			return array('data' => null, 'time' => null);
-		}
-
 		try
 		{
 			$expire = substr($contents = $this->files->get($path), 0, 10);
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			return array('data' => null, 'time' => null);
 		}
@@ -118,7 +115,7 @@ class FileStore implements StoreInterface {
 		{
 			$this->files->makeDirectory(dirname($path), 0777, true, true);
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			//
 		}
@@ -170,7 +167,7 @@ class FileStore implements StoreInterface {
 	 * Remove an item from the cache.
 	 *
 	 * @param  string  $key
-	 * @return void
+	 * @return bool
 	 */
 	public function forget($key)
 	{
@@ -178,8 +175,10 @@ class FileStore implements StoreInterface {
 
 		if ($this->files->exists($file))
 		{
-			$this->files->delete($file);
+			return $this->files->delete($file);
 		}
+
+		return false;
 	}
 
 	/**
