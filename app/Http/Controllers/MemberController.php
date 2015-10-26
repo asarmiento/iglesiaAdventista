@@ -63,8 +63,6 @@ class MemberController extends Controller {
             $members->save();
 
         }
-            echo json_encode($members);
-            die;
             DB::rollback();
             return redirect('miembros/crear')
                 ->withErrors($members)

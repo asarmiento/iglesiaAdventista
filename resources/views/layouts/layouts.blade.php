@@ -64,7 +64,7 @@
     </main>
     <footer>
         <div class="container">
-            <p class="text-center">Elaborado por: Sistemas Amigables de Costa Rica &AMP; Otros Colaboradores &copy; Copyright </p>
+            <p class="text-center">Elaborado por: Sistemas Amigables de Costa Rica SAOR S.A. &AMP; Otros Colaboradores &copy; Copyright </p>
         </div>
     </footer>
     <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
