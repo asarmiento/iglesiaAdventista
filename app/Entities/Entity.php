@@ -11,11 +11,26 @@ namespace SistemasAmigables\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Entity extends Model
+abstract class Entity extends Model
 {
+    abstract public function getRules();
 
     public function getClass()
     {
         return get_class(new static);
+    }
+
+    public function isValid($data) {
+        $rules = $this->getRules();
+
+        $validator = \Validator::make($data, $rules);
+       
+        if ($validator->fails()) {
+            return true;
+        }
+
+        $this->errors = $validator->errors();
+
+        return false;
     }
 }

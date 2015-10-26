@@ -1,6 +1,6 @@
-<?php
+<?php namespace SistemasAmigables\Http\Controllers;
 
-class TypeUsersController extends \BaseController {
+class TypeUsersController extends Controller {
 
     /**
      * Display a listing of typeusers

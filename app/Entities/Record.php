@@ -2,19 +2,20 @@
 
 namespace SistemasAmigables\Entities;
 
-use Illuminate\Database\Eloquent\Model;
+
 
 class Record extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['numbers','controlNumber','saturday','balance'];
+    protected $fillable= ['numbers','controlNumber','saturday','balance','rows','_token'];
 
     public function getRules()
     {
         return [
-            'numbers'    =>'required',
-            'controlNumber'      =>'required',
+            'rows'       =>'required',
+            'numbers'       =>'required',
+            'controlNumber' =>'required',
             'saturday'      =>'required'
         ];
     }

@@ -8,7 +8,7 @@ Lista Informes Semanales
 @stop
 
 @section('content')
-<div><a href="{{url()}}/informes/create"  class="button radius">Nuevo Informe</a></div>
+<div><a href="{{route('create-record')}}"  class="button radius">Nuevo Informe</a></div>
 <table>
     <thead>
         <tr> 

@@ -17,6 +17,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -29,6 +30,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '2777-4530',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -41,6 +43,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -53,6 +56,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -65,6 +69,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -77,6 +82,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -89,6 +95,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -101,6 +108,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -113,6 +121,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -125,6 +134,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -137,6 +147,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -149,6 +160,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -161,6 +173,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -173,6 +186,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -185,6 +199,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -197,6 +212,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -209,6 +225,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -221,6 +238,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -233,6 +251,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -245,6 +264,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -257,6 +277,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -269,6 +290,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -281,6 +303,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -293,6 +316,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -305,6 +329,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '0000-0000',
             'cell' => '0000-0000',
             'email' => 'user@mail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
         Member::create([
@@ -317,6 +342,7 @@ class MembersTableSeeder extends Seeder {
             'phone' => '2777-4435',
             'cell' => '8304-5030',
             'email' => 'anwarsadatsarmiento@hotmail.com',
+            'token' => bcrypt('1'),
             'church_id' => 1
         ]);
     }

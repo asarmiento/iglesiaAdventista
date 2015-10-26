@@ -1,6 +1,6 @@
-<?php
+<?php namespace SistemasAmigables\Http\Controllers;
 
-class TestController extends \BaseController {
+class TestController extends Controller {
 
     public function show() {
 

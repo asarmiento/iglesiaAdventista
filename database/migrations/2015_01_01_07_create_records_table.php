@@ -16,9 +16,11 @@ class CreateRecordsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('numbers');
-            $table->string('controlNumber');
+            $table->integer('controlNumber');
+            $table->integer('rows');
 			$table->date('saturday');
             $table->decimal('balance',20,2);
+            $table->string('_token');
             $table->engine = 'InnoDB';
             $table->timestamps();
             $table->softDeletes();
