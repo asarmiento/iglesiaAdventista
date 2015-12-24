@@ -3,6 +3,7 @@
 namespace SistemasAmigables\Entities;
 
 
+
 class Income extends Entity
 {
     protected $timestamp;
@@ -24,5 +25,13 @@ class Income extends Entity
     public function getExist()
     {
         // TODO: Implement getExist() method.
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function members()
+    {
+        return $this->belongsTo(Member::getClass(),'member_id','id');
     }
 }

@@ -21,16 +21,19 @@ Lista Ingresos
         </tr>
     </thead> 
     <tbody> 
-  @foreach($incomes AS $income)
+  @foreach($members AS $key=> $member)
+      @if($member->id == $incomes[0]->member_id)
         <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    </tr>
-        @endforeach
+            <td>{{$key+1}}</td>
+            <td>{{$member->name}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+      @endif
+  @endforeach
     </tbody>
 </table>
 @stop

@@ -63,7 +63,8 @@ class IncomeController extends Controller {
      */
     public function index() {
         $incomes = $this->incomeRepository->getModel()->all();
-        return View('incomes.index', compact('incomes'));
+        $members = $this->memberRepository->getModel()->all();
+        return View('incomes.index', compact('incomes','members'));
     }
 
     /**
@@ -81,12 +82,6 @@ class IncomeController extends Controller {
 
     }
 
-    /**
-     * Store a newly created ingreso in storage.
-     *
-     * @param Request $request
-     * @return Response
-     */
     /*
     |---------------------------------------------------------------------
     |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com

@@ -15,7 +15,7 @@ abstract class Entity extends Model
 {
     abstract public function getRules();
 
-    public function getClass()
+    public static function getClass()
     {
         return get_class(new static);
     }
