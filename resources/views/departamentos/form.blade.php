@@ -8,32 +8,29 @@ Formulario {{$action}} Departamentos
 @stop
 
 @section('content')
-{{Form::model($departamentos,$form_data,array('role'=>'form','class'=>'form-inline'))}}
-<div class="row">
-    <div class="large-4 columns">
+{!! Form::model($departamentos,$form_data,array('role'=>'form','class'=>'form-inline'))!!}
+<table class="row">
+    <tr class="large-4 columns">
         <label class="">Nombre Departamentos
-            {{Form::input('text','name',null,array('placeholder'=>"Departamentos"))}}
+            {!! Form::input('text','name',null,array('placeholder'=>"Departamentos"))!!}
         </label>
         <small class="error-message red-message">{{$errors->first('name')}}</small>
-    </div>
-    <div class="large-4 columns">
-        <label class="">Saldo Disponible
-            {{Form::input('text','saldo',null,array('placeholder'=>"Saldo Disponible"))}}
+    </tr>
+    <tr class="large-4 columns">
+        <label class="">Presupuesto
+            {!! Form::input('text','saldo',null,array('placeholder'=>"Saldo Disponible"))!!}
         </label>
         <small class="error-message red-message">{{$errors->first('saldo')}}</small>
-    </div>
-    <div class="large-4 columns">
-        <label class="">Iglesia
-            {{Form::select('iglesias_id',$iglesia,array('placeholder'=>"Iglesia"))}}
-        </label>
-        <small class="error-message red-message">{{$errors->first('iglesias_id')}}</small>
-    </div>
-</div>
-</br>
-<div class="row">
-    <div class="large-12 columns text-center">
-        <input type="submit" value="{{$action}}" class="button radius" />
-    </div>
-</div>
-{{Form::close()}}
+    </tr>
+    <tr>
+        {!! Form::input('hidden','church_id',$church,array('placeholder'=>"Iglesia"))!!}
+
+    </tr>
+<tr class="text-center">
+    <td colspan="4">
+        <input type="submit" value="{{$action}}" class="btn btn-info radius" />
+    </td>
+ </tr>
+</table>
+{!! Form::close()!!}
 @stop

@@ -1,16 +1,34 @@
 <?php namespace SistemasAmigables\Http\Controllers;
+use Illuminate\Support\Facades\Input;
+use SistemasAmigables\Entities\Church;
+use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
 
 class TypesTemporaryIncomeController extends Controller {
+    /**
+     * @var TypeTemporaryIncomeRepository
+     */
+    private $typeTemporaryIncomeRepository;
 
+    /**
+     * TypesTemporaryIncomeController constructor.
+     * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+     */
+    public function __construct(
+        TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+    )
+    {
+
+        $this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
+    }
     /**
      * Display a listing of tiposvariables
      *
      * @return Response
      */
     public function index() {
-        $tiposvariables = Tiposvariable::all();
+        $tiposvariables = $this->typeTemporaryIncomeRepository->getModel()->all();
 
-        return View::make('tipos_variables.index', compact('tiposvariables'));
+        return View('tipos_variables.index', compact('tiposvariables'));
     }
 
     /**
@@ -19,10 +37,11 @@ class TypesTemporaryIncomeController extends Controller {
      * @return Response
      */
     public function create() {
-        $form_data = array('route' => 'tipos_variables.store', 'method' => 'POST');
+        $form_data = array('route' => 'crear-variableTypes', 'method' => 'POST');
         $action = 'Agregar';
         $tiposvariable = array();
-        return View::make('tipos_variables.form', compact('tiposvariable', 'action', 'form_data'));
+        $iglesia = Church::lists('id');
+        return View('tipos_variables.form', compact('tiposvariable', 'action', 'form_data','iglesia'));
     }
 
     /**
@@ -31,15 +50,20 @@ class TypesTemporaryIncomeController extends Controller {
      * @return Response
      */
     public function store() {
-        $validator = Validator::make($data = Input::all(), Tiposvariable::$rules);
+        $data = Input::all();
+        $variableType = $this->typeTemporaryIncomeRepository->getModel();
 
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+        if ($variableType->isValid($data)) {
+            $variableType->fill($data);
+            $variableType->save();
+
+            return redirect()->route('crear-variableType');
         }
-
-        Tiposvariable::create($data);
-
-        return Redirect::route('tipos_variables.index');
+        echo json_encode($variableType);
+        die;
+        return redirect()->route('crear-variableType')
+            ->withErrors($variableType)
+            ->withInput();
     }
 
     /**

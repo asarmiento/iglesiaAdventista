@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use SistemasAmigables\Entities\Record;
 use SistemasAmigables\Entities\TypeFixedIncome;
 use SistemasAmigables\Entities\TypesTemporaryIncome;
+use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\MemberRepository;
 use SistemasAmigables\Repositories\RecordRepository;
 use SistemasAmigables\Repositories\TypeFixedRepository;
@@ -28,18 +29,24 @@ class IncomeController extends Controller {
      * @var TypeTemporaryIncomeRepository
      */
     private $typeTemporaryIncomeRepository;
+    /**
+     * @var IncomeRepository
+     */
+    private $incomeRepository;
 
     /**
      * @param RecordRepository $recordRepository
      * @param MemberRepository $memberRepository
      * @param TypeFixedRepository $typeFixedRepository
      * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+     * @param IncomeRepository $incomeRepository
      */
     public function __construct(
         RecordRepository $recordRepository,
         MemberRepository $memberRepository,
         TypeFixedRepository $typeFixedRepository,
-        TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+        TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository,
+        IncomeRepository $incomeRepository
     )
     {
 
@@ -47,6 +54,7 @@ class IncomeController extends Controller {
         $this->memberRepository = $memberRepository;
         $this->typeFixedRepository = $typeFixedRepository;
         $this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
+        $this->incomeRepository = $incomeRepository;
     }
     /**
      * Display a listing of incomes
@@ -54,8 +62,8 @@ class IncomeController extends Controller {
      * @return Response
      */
     public function index() {
-        $ingresos = Ingreso::all();
-        return View::make('incomes.index', compact('incomes'));
+        $incomes = $this->incomeRepository->getModel()->all();
+        return View('incomes.index', compact('incomes'));
     }
 
     /**
@@ -79,28 +87,44 @@ class IncomeController extends Controller {
      * @param Request $request
      * @return Response
      */
+    /*
+    |---------------------------------------------------------------------
+    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+    |@Date Create: 2015-12-23
+    |@Date Update: 2015-00-00
+    |---------------------------------------------------------------------
+    |@Description: con esta acción recibimos mediante post los datos del
+    |   formulario de detalles de los sobres y se insertan en la tabla
+    |   income
+    |----------------------------------------------------------------------
+    | @return mixed
+    |----------------------------------------------------------------------
+    */
     public function store(Request $request) {
         try {
             DB::beginTransaction();
             $datas = $this->dataAbout();
+            $control = Input::all();
 
-            $record = $this->recordRepository->getModel();
+            $balance = 0;
 
             foreach ($datas AS $data):
+                $record = $this->incomeRepository->getModel();
+               $balance += $data['balance'];
 
                 if ($record->isValid($data)):
                     $record->fill($data);
                     $record->save();
-                else:
-                    DB::rollback();
-                    return redirect('informes/create')
-                        ->withErrors($request->all())
-                        ->withInput();
 
                 endif;
             endforeach;
+
+            if($balance == $control['balanceControl']):
             DB::commit();
-            return redirect()->route('create-income', [$record->_token]);
+            return redirect()->route('index-income');
+            endif;
+            return redirect()->route('index-income')->withErrors(['balance'=>'Hay un monto mal no es igual'])
+                ->withInput();
             /* Enviamos el mensaje de error */
         }catch (Exception $e) {
             \Log::error($e);
@@ -108,18 +132,31 @@ class IncomeController extends Controller {
         }
     }
 
+    /*
+    |---------------------------------------------------------------------
+    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+    |@Date Create: 2015-12-22
+    |@Date Update: 2015-00-00
+    |---------------------------------------------------------------------
+    |@Description: Preparamos los datos recibidos y lo agrupamos en un array
+    |   para poder insertarlo individualmente uno por cada tipo ya sea fijo
+    |   o variables de cada miembro.
+    |----------------------------------------------------------------------
+    | @return mixed
+    |----------------------------------------------------------------------
+    */
     private function dataAbout()
     {
         $data = Input::all();
 
         $i=1;
         $record = $this->recordRepository->token(Input::get('tokenControlNumber'));
-        $fixeds = $this->typeFixedRepository->getModel()->count();
+        $fixeds = $this->typeFixedRepository->getModel()->get();
         $temps = $this->typeTemporaryIncomeRepository->getModel()->get();
 
         unset($data['tokenControlNumber']);
         unset($data['_token']);
-
+        $token = md5($record);
         $data = Input::all();
 
           $transaction = array();
@@ -127,7 +164,8 @@ class IncomeController extends Controller {
         for($i=1 ; $i<=$record->rows; $i++)
         {
             $numberOf = $data['numberAbout-'.$i];
-            $member_id = $data['members-'.$i];
+            $member = $this->memberRepository->token($data['members-'.$i]);
+
             if($numberOf == '' || $numberOf == null)
             {
                 continue;
@@ -143,8 +181,10 @@ class IncomeController extends Controller {
                     array_push($transaction, array(
                             'record_id' => $record->id,
                             'numberOf' => $numberOf,
-                            'member_id' => $member_id,
+                            'member_id' => $member->id,
                             'balance'    => $balance,
+                            'token'    => $token,
+                            'date'    => $data['date'],
                             'typeFixedIncome_id' => $fixed->id,
                             'typesTemporaryIncome_id' => null
                         )
@@ -162,8 +202,10 @@ class IncomeController extends Controller {
                     array_push($transaction, array(
                             'record_id' => $record->id,
                             'numberOf' => $numberOf,
-                            'member_id' => $member_id,
+                            'member_id' => $member->id,
                             'balance'    => $balance,
+                            'token'    => $token,
+                            'date'    => $data['date'],
                             'typeFixedIncome_id' => null,
                             'typesTemporaryIncome_id' => $temp->id
                         )

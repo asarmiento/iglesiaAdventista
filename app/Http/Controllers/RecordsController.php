@@ -20,26 +20,52 @@ class RecordsController extends Controller {
 
         $this->recordRepository = $recordRepository;
     }
-    /**
-     * Display a listing of the resource.
-     * GET /historial
-     *
-     * @return Response
-     */
+
+    /*
+    |---------------------------------------------------------------------
+    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+    |@Date Create: 2015-12-22
+    |@Date Update: 2015-00-00
+    |---------------------------------------------------------------------
+    |@Description: Consultamos todos los controles cruzados que existen y
+    |   lo enviamos a la vista para poder mostrarlo al usuario.
+    |----------------------------------------------------------------------
+    | @return view
+    |----------------------------------------------------------------------
+    */
     public function index() {
-        $informes = $this->recordRepository->getModel()->all();
+        $informes = $this->recordRepository->getModel()->orderBy('id','DESC')->paginate(20);
         return View('informes.index', compact('informes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * GET /historial/create
-     *
-     * @return Response
-     */
+    /*
+    |---------------------------------------------------------------------
+    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+    |@Date Create: 2015-12-22
+    |@Date Update: 2015-00-00
+    |---------------------------------------------------------------------
+    |@Description: Consultamos si existen registro para llevar el conteo de
+    |
+    |
+    |@Pasos:
+    |
+    |
+    |
+    |
+    |
+    |
+    |----------------------------------------------------------------------
+    | @return mixed
+    |----------------------------------------------------------------------
+    */
     public function create() {
-        $informes = Record::all();
-        $consecutive = $informes[0]->numbers+1;
+        $informes = $this->recordRepository->getModel()->all()->last();
+
+        $consecutive = '00001';
+        if(isset($informes)):
+        $consecutive = '0000'.($informes->numbers+1);
+          
+            endif;
         return View('informes.create', compact('informes','consecutive'));
     }
 
@@ -51,19 +77,21 @@ class RecordsController extends Controller {
      */
     public function store(Request $request) {
 
-      //  $validator = Validator::make($request->all(), $this->recordRepository->getModel()->getRules());
+        $record=  $this->recordRepository->getModel();
+        $data = $request->all();
+        $data['_token']= md5($data['controlNumber']);
 
-        $record= $this->recordRepository->getModel();
-        if ($record->isValid($request->all())):
-            $record->fill($request->all());
+        if ($record->isValid($data)):
+            $record->fill($data);
             $record->save();
             /* Comprobamos si viene activado o no para guardarlo de esa manera */
             /* Enviamos el mensaje de guardado correctamente */
             return redirect()->route('create-income', [$record->_token]);
         endif;
+
         /* Enviamos el mensaje de error */
-        return redirect('informes/create')
-            ->withErrors($request->all())
+        return redirect('iglesia/informes/create')
+            ->withErrors($record)
             ->withInput();
     }
 

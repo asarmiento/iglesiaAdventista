@@ -8,7 +8,7 @@ Lista Ingresos
 @stop
 
 @section('content')
-<div><a href="{{url()}}/ingresos/create"  class="button radius">Crear</a></div>
+<div><a href=""  class="button radius">Crear</a></div>
 <table>
     <thead>
         <tr> 
@@ -18,12 +18,10 @@ Lista Ingresos
             <th width="150">Ofrenda</th> 
             <th width="150">Materiales E.S.</th> 
             <th width="150">Proyecto Especial</th> 
-            <th width="50">Editar</th> 
-            <th width="50">Eliminar</th> 
         </tr>
     </thead> 
     <tbody> 
-  @foreach($ingresos AS $ingreso)
+  @foreach($incomes AS $income)
         <tr>
     <td></td>
     <td></td>
@@ -31,8 +29,6 @@ Lista Ingresos
     <td></td>
     <td></td>
     <td></td>
-    <td><a class="btn btn-warning" href="{{URL::action('IglesiasController@edit',$ingreso->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
-    <td><a class="btn btn-warning" href="{{URL::action('IglesiasController@destroy',$ingreso->id)}}"><span class="glyphicon glyphicon-remove"></span></a></td>
     </tr>
         @endforeach
     </tbody>

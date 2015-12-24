@@ -21,4 +21,6 @@ class MemberRepository extends BaseRepository
     {
         return new Member();
     }
+
+
 }

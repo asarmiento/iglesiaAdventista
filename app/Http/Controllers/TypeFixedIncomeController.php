@@ -1,16 +1,34 @@
 <?php namespace SistemasAmigables\Http\Controllers;
 
-class TypeFixedIncomeController extends Controller {
+use Illuminate\Support\Facades\Input;
+use SistemasAmigables\Entities\Church;
+use SistemasAmigables\Repositories\TypeFixedRepository;
 
+class TypeFixedIncomeController extends Controller {
+    /**
+     * @var TypeFixedRepository
+     */
+    private $typeFixedRepository;
+
+    /**
+     * TypeFixedIncomeController constructor.
+     * @param TypeFixedRepository $typeFixedRepository
+     */
+    public function __construct(
+        TypeFixedRepository $typeFixedRepository
+    )
+    {
+        $this->typeFixedRepository = $typeFixedRepository;
+    }
     /**
      * Display a listing of tiposfijos
      *
      * @return Response
      */
     public function index() {
-        $tiposfijos = Tiposfijo::all();
+        $tiposfijos = $this->typeFixedRepository->getModel()->all();
 
-        return View::make('tipos_fijos.index', compact('tiposfijos'));
+        return View('tipos_fijos.index', compact('tiposfijos'));
     }
 
     /**
@@ -19,10 +37,11 @@ class TypeFixedIncomeController extends Controller {
      * @return Response
      */
     public function create() {
-        $form_data = array('route' => 'tipos_fijos.store', 'method' => 'POST');
+        $form_data = array('route' => 'crear-typeFixs', 'method' => 'POST');
         $action = 'Agregar';
         $tiposfijo = array();
-        return View::make('tipos_fijos.form',  compact('action','form_data','tiposfijo'));
+        $iglesia = Church::lists('id');
+        return View('tipos_fijos.form',  compact('action','form_data','tiposfijo','iglesia'));
     }
 
     /**
@@ -31,15 +50,22 @@ class TypeFixedIncomeController extends Controller {
      * @return Response
      */
     public function store() {
-        $validator = Validator::make($data = Input::all(), Tiposfijo::$rules);
 
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+        $data = Input::all();
+        $typeFix = $this->typeFixedRepository->getModel();
+
+        if ($typeFix->isValid($data)) {
+            $typeFix->fill($data);
+            $typeFix->save();
+
+            return redirect()->route('crear-typeFix');
         }
+        echo json_encode($typeFix);
+        die;
+        return redirect()->route('crear-typeFix')
+            ->withErrors($typeFix)
+            ->withInput();
 
-        Tiposfijo::create($data);
-
-        return Redirect::route('tipos_fijos.index');
     }
 
     /**
@@ -61,7 +87,7 @@ class TypeFixedIncomeController extends Controller {
      * @return Response
      */
     public function edit($id) {        
-        $tiposfijo = Tiposfijo::find($id);
+        $tiposfijo = $this->typeFixedRepository->find($id);
         $form_data = array('route' => array('tipos_fijos.update', $tiposfijo->id), 'method' => 'PATCH');
         $action = 'Editar';  
         return View::make('tipos_fijos.form', compact('form_data','tiposfijo','action'));

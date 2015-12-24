@@ -35,17 +35,17 @@
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a href="">Iglesias</a></li>
-                                <li><a href="{{url()}}/miembros">Miembros</a></li>
-                                <li><a href="{{url()}}/informes">Informe Semanal</a></li>
+                                <li><a href="{{route('members-lista')}}">Miembros</a></li>
+                                <li><a href="{{url()}}/iglesia/informes">Informe Semanal</a></li>
                                 <li><a href="">Gastos</a></li>
                                 <li><a href="{{route('checks-lista')}}">Cheques</a></li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Configuración <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{url()}}/departamentos">Departamentos</a></li>
-                                        <li><a href="{{url()}}/tipos_fijos">Tipos Fijos</a></li>
-                                        <li><a href="{{url()}}/tipos_variables">Tipos Variables</a></li>
-                                        <li><a href="{{url()}}/type_users">Tipos de Usuarios</a></li>
+                                        <li><a href="{{route('index-depart')}}">Departamentos</a></li>
+                                        <li><a href="{{route('typeFix-lista')}}">Tipos Fijos</a></li>
+                                        <li><a href="{{route('variableType-lista')}}">Tipos Variables</a></li>
+                                        <li><a href="{{url()}}/iglesia/type_users">Tipos de Usuarios</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="{{url()}}">Salir</a></li>

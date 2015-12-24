@@ -1,16 +1,34 @@
 <?php namespace SistemasAmigables\Http\Controllers;
 
-class DepartamentsController extends Controller {
+use SistemasAmigables\Entities\Church;
+use SistemasAmigables\Repositories\DepartamentRepository;
 
+class DepartamentsController extends Controller {
+    /**
+     * @var DepartamentRepository
+     */
+    private $departamentRepository;
+
+    /**
+     * DepartamentsController constructor.
+     * @param DepartamentRepository $departamentRepository
+     */
+    public function __construct(
+        DepartamentRepository $departamentRepository
+    )
+    {
+
+        $this->departamentRepository = $departamentRepository;
+    }
     /**
      * Display a listing of departamentos
      *
      * @return Response
      */
     public function index() {
-        $departamentos = Departamento::paginate(10);
+        $departaments = $this->departamentRepository->getModel()->paginate(10);
 
-        return View::make('departamentos.index', compact('departamentos'));
+        return View('departamentos.index', compact('departaments'));
     }
 
     /**
@@ -19,11 +37,11 @@ class DepartamentsController extends Controller {
      * @return Response
      */
     public function create() {
-        $form_data = array('route' => 'departamentos.store', 'method' => 'POST');
+        $form_data = array('route' => 'depart-store', 'method' => 'POST');
         $action = 'Agregar';
         $departamentos = array();
-        $iglesia = Iglesia::lists('name', 'id');
-        return View::make('departamentos.form', compact('departamentos', 'action', 'form_data', 'iglesia'));
+        $church = Church::lists('id');
+        return View('departamentos.form', compact('departamentos', 'action', 'form_data', 'church'));
     }
 
     /**

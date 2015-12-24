@@ -8,28 +8,27 @@ Lista Departamentos
 @stop
 
 @section('content')
-<div><a href="{{url()}}/departamentos/create"  class="button radius">Crear</a></div>
-<table>
+<div class="btn btn-info"><a href="{{route('create-depart')}}"  class="button radius">Nuevo</a></div>
+<table class="table-condensed">
     <thead>
         <tr> 
             <th>Nº</th>
             <th width="200">Departamento</th> 
-            <th width="50">Editar</th> 
-            <th width="50">Eliminar</th> 
+            <th width="50">Presupuesto</th>
+            <th width="50">Saldo Mes</th>
+            <th width="50">Gastado</th>
         </tr>
     </thead> 
     <tbody> 
-@foreach($departamentos AS $departamento)
+@foreach($departaments AS $key=>$departament)
         <tr>
-    <td></td>
-    <td>{{$departamento->name}}</td>
-    <td><a class="btn btn-warning" href="{{URL::action('DepartamentosController@edit',$departamento->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
-    <td><a class="btn btn-warning" href="{{URL::action('DepartamentosController@destroy',$departamento->id)}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+    <td>{{$key+1}}</td>
+    <td>{{$departament->name}}</td>
     </tr>
         @endforeach
     </tbody>
 </table>
 <div class="container">
-    {{$departamentos->links()}}
+    {!! $departaments->render()!!}
 </div>
 @stop

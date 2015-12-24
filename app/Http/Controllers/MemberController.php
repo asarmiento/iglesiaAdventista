@@ -29,7 +29,7 @@ class MemberController extends Controller {
      * @return Response
      */
     public function index() {
-        $members = Member::paginate(100);
+        $members = Member::paginate(20);
 
         return View('members.index', compact('members'));
     }
@@ -58,13 +58,15 @@ class MemberController extends Controller {
         $data = Input::all();
 
         $members = $this->memberRepository->getModel();
+
         if ($members->isValid($data)) {
             $members->fill($data);
             $members->save();
-
+            DB::commit();
+            return redirect()->route('crear-miembro');
         }
             DB::rollback();
-            return redirect('miembros/crear')
+            return redirect('iglesia/miembros/crear')
                 ->withErrors($members)
                 ->withInput();
 

@@ -25,7 +25,7 @@ abstract class Entity extends Model
 
         $validator = \Validator::make($data, $rules);
 
-        if ($validator->fails()) {
+        if ($validator->passes()) {
             return true;
         }
 

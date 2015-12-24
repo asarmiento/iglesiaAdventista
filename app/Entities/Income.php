@@ -7,19 +7,17 @@ class Income extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['numberOf','url','image','date','balance','record_id','member_id','typeFixedIncome_id','typesTemporaryIncome_id'];
+    protected $fillable= ['numberOf','url','image','date','balance','record_id','member_id','typeFixedIncome_id','typesTemporaryIncome_id','token'];
 
     public function getRules()
     {
         return [
             'numberOf'    =>'required',
             'date'      =>'required',
-            'date'      =>'required',
             'balance'    =>'required',
             'record_id' =>'required',
-            'member_id' =>'required',
-            'typeFixedIncome_id' =>'required',
-            'typesTemporaryIncome_id'    =>'required'
+            'token' =>'required',
+            'member_id' =>'required'
         ];
     }
 

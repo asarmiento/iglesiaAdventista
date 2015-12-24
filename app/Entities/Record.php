@@ -16,6 +16,7 @@ class Record extends Entity
             'rows'       =>'required',
             'numbers'       =>'required',
             'controlNumber' =>'required',
+            'balance'      =>'required',
             'saturday'      =>'required'
         ];
     }

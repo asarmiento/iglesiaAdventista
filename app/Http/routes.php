@@ -11,49 +11,38 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
-
-Route::get('home', 'HomeController@index');
+Route::get('/', function () {
+	return redirect()->route('auth/login');
+});
 
 /* Log */
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
+// Authentication routes.
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', ['as' => 'auth/login', 'uses' => 'Auth\AuthController@postLogin']);
+Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController@getLogout']);
 
-Route::get('cheques',['as'=>'checks-lista','uses'=>'CheckController@index']);
-Route::get('cheques/{id}',['as'=>'checks-edit','uses'=>'CheckController@edit']);
-Route::get('cheques/{id}','CheckController@destroy');
-Route::resource('checks','CheckController');
+
 Route::resource('gastos','ExpenseController');
-Route::resource('iglesias','ChurchController');
-
-Route::get('sobres-diezmos/{token}',array('as'=>'create-income','uses'=>'IncomeController@create'));
-Route::post('sobres-diezmos',array('as'=>'incomes-store','uses'=>'IncomeController@store'));
-
-Route::resource('departamentos','DepartamentsController');
-
-Route::get('miembros',['as'=>'members-lista','uses'=>'MemberController@index']);
-Route::get('miembros/crear',['as'=>'crear-miembro','uses'=>'MemberController@create']);
-Route::post('miembros/crear',['as'=>'crear-members','uses'=>'MemberController@store']);
-Route::get('miembros/{id}',['as'=>'member-edit','uses'=>'MemberController@edit']);
-Route::get('miembros/{id}','MemberController@destroy');
-Route::resource('miembros','MemberController');
 
 
-Route::resource('tipos_fijos','TypeFixedIncomeController');
-Route::resource('tipos_variables','TypesTemporaryIncomeController');
+Route::group(['prefix' => 'iglesia'], function () {
+
+	Route::resource('iglesias','ChurchController');
+	/* Test para hacer pruebas */
+
+		$routes = ['members','checks','record','typeFix','variableTypes','incomes','departaments'];
+		/*
+        * Rutas de Bancos
+        */
+		foreach($routes AS $route):
+			require __DIR__.'/Routes/routes_'.$route.'.php';
+		endforeach;
+});
+
+
 Route::resource('type_users','TypeUsersController');
-
-
-Route::post('informes/create',array('as'=>'save-record','uses'=>'RecordsController@store'));
-Route::get('informes/create',array('as'=>'create-record','uses'=>'RecordsController@create'));
-Route::get('/informes','RecordsController@index');
-
-
-
 
 Route::resource('users','UsersController');
 //restores

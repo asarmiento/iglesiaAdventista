@@ -12,7 +12,6 @@ class TypesTemporaryIncome extends Entity
     public function getRules()
     {
         return [
-            'balance'    =>'required',
             'name'      =>'required',
             'church_id' =>'required'
         ];

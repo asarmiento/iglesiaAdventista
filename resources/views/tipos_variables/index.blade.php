@@ -8,23 +8,21 @@ Lista Tipos Variables
 @stop
 
 @section('content')
-<div><a href="{{url()}}/tipos_variables/create"  class="button radius">Crear</a></div>
+<div class="btn btn-info"><a href="{{route('crear-variableType')}}"  class="button radius">Nuevo</a></div>
 <table>
     <thead>
         <tr> 
             <th width="200">Nº</th>
             <th width="150">Nombre</th> 
             <th width="150">Editar</th> 
-            <th width="150">Eliminar</th> 
         </tr>
     </thead> 
     <tbody> 
-              @foreach($tiposvariables AS $tipoVariable)
+              @foreach($tiposvariables AS $key=>$tipoVariable)
         <tr>
-    <td></td>
+    <td>{{$key+1}}</td>
     <td>{{$tipoVariable->name}}</td>
-    <td><a class="btn btn-warning" href="{{URL::action('TiposVariablesController@edit',$tipoVariable->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
-    <td><a class="btn btn-warning" href="{{URL::action('TiposVariablesController@destroy',$tipoVariable->id)}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+    <td><a class="btn btn-warning" href="{{route('variableType-edit',$tipoVariable->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
     </tr>
         @endforeach
     </tbody>
