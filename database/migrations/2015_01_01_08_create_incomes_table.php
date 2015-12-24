@@ -26,6 +26,7 @@ class CreateIncomesTable extends Migration {
             $table->foreign('typeFixedIncome_id')->references('id')->on('type_fixed_incomes')->onDelete('no action');
             $table->integer('typesTemporaryIncome_id')->unsigned()->nullable()->index();
             $table->foreign('typesTemporaryIncome_id')->references('id')->on('types_temporary_incomes')->onDelete('no action');
+            $table->string('token');
             $table->engine = 'InnoDB';
             $table->timestamps();
             $table->softDeletes();

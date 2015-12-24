@@ -21,7 +21,7 @@ class CreateMembersTable extends Migration {
             $table->string('phone', 10);
             $table->string('cell', 10);
             $table->string('email');
-            $table->string('token');
+            $table->string('_token');
             $table->integer('church_id')->unsigned()->index();
             $table->foreign('church_id')->references('id')->on('churches')->onDelete('no action');
             $table->engine = 'InnoDB';
