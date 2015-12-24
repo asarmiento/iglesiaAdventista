@@ -217,10 +217,13 @@ class IncomeController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function show($id) {
-        $ingreso = Ingreso::findOrFail($id);
-
-        return View::make('incomes.show', compact('ingreso'));
+    public function showInforme($token) {
+        $control = $this->recordRepository->token($token);
+        $incomes = $this->incomeRepository->getModel()->where('record_id',$control->id)->get();
+        $fixeds=  TypeFixedIncome::all();
+        $temporaries=  TypesTemporaryIncome::all();
+        $members = $this->memberRepository->getModel()->all();
+        return View('incomes.show', compact('incomes','fixeds','temporaries','members'));
     }
 
     /**

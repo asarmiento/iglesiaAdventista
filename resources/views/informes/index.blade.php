@@ -18,19 +18,23 @@ Lista Informes Semanales
             <th width="150">Lineas</th>
             <th width="150">Sábado</th>
             <th width="150">Monto</th>
-            <th width="50">Editar</th> 
+            <th width="50">Ver Semanal </th>
             <th width="50">Eliminar</th> 
         </tr>
     </thead> 
     <tbody> 
-        @foreach($informes AS $key=>$informe)
+        @foreach($informes AS $key => $informe)
         <tr>
             <td>{{$key+1}}</td>
             <td>{{$informe->numbers}}</td>
             <td>{{$informe->controlNumber}}</td>
             <td>{{$informe->saturday}}</td>
             <td>{{number_format($informe->balance,2)}}</td>
-            <td></td>
+            @if(($informe->incomes->isEmpty()))
+            <td><a href="{{route('create-income',$informe->_token)}}">No tiene Inf.</a></td>
+            @else
+            <td><a class="btn btn-link" href="{{route('informe-semanal',$informe->_token )}}">Ver</a></td>
+            @endif
             <td></td>
         </tr>
         @endforeach

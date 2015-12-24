@@ -6,6 +6,7 @@
  * Time: 02:38 PM
  */
 
-Route::get('sobres-diezmos/{token}',['as'=>'create-income','uses'=>'IncomeController@create']);
+Route::get('sobres-de-diezmos/{token}',['as'=>'create-income','uses'=>'IncomeController@create']);
 Route::get('lista-detalle/sobres-diezmos',['as'=>'index-income','uses'=>'IncomeController@index']);
-Route::post('sobres-diezmos',['as'=>'incomes-store','uses'=>'IncomeController@store']);
+Route::get('informe-semanal/lista-detalle/{token}',['as'=>'informe-semanal','uses'=>'IncomeController@showInforme']);
+Route::post('save-informe',['as'=>'incomes-store','uses'=>'IncomeController@store']);

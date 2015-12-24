@@ -25,4 +25,10 @@ class Record extends Entity
     {
         // TODO: Implement getExist() method.
     }
+
+
+    public function incomes()
+    {
+        return $this->hasMany(Income::getClass());
+    }
 }
