@@ -229,16 +229,16 @@ class BelongsToMany extends Relation
      *
      * @param  int  $count
      * @param  callable  $callback
-     * @return void
+     * @return bool
      */
     public function chunk($count, callable $callback)
     {
         $this->query->addSelect($this->getSelectColumns());
 
-        $this->query->chunk($count, function ($results) use ($callback) {
+        return $this->query->chunk($count, function ($results) use ($callback) {
             $this->hydratePivotRelation($results->all());
 
-            call_user_func($callback, $results);
+            return $callback($results);
         });
     }
 
@@ -528,7 +528,7 @@ class BelongsToMany extends Relation
     /**
      * Get all of the IDs for the related models.
      *
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getRelatedIds()
     {
@@ -749,7 +749,7 @@ class BelongsToMany extends Relation
     /**
      * Sync the intermediate tables with a list of IDs or collection of models.
      *
-     * @param  array  $ids
+     * @param  \Illuminate\Database\Eloquent\Collection|array  $ids
      * @param  bool   $detaching
      * @return array
      */
@@ -1142,7 +1142,7 @@ class BelongsToMany extends Relation
     /**
      * Set the columns on the pivot table to retrieve.
      *
-     * @param  mixed  $columns
+     * @param  array|mixed  $columns
      * @return $this
      */
     public function withPivot($columns)

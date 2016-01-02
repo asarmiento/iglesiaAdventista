@@ -12,17 +12,22 @@ Formulario  Ingresos
     <div class="panel">@include('partials/errors')</div>
         <form method="post" action="{{route('incomes-store')}}" role='form' class='form-inline'>
         <div class="list-group">
-            <div class="large-4 columns">
+            <div class="col-sm-3">
                 <label class="">Numero Informe: {{$incomes->controlNumber}}</label>
                 <input name="tokenControlNumber" type="hidden" value="{{$incomes->_token}}">
             </div>
-            <div class="large-4 columns">
+            <div class="col-sm-3">
                 <label class="">Fecha: {{$incomes->saturday}}</label>
                 <input name="_token" type="hidden" value="{{csrf_token()}}">
                 <input name="date" type="hidden" value="{{$incomes->saturday}}">
             </div>
-            <div class="large-4 columns">
-                <label class="">Saldo Disponible: {{number_format($incomes->balance)}}
+            <div class="col-sm-3">
+                <label class="">Saldo Disponible: <span class="balance">{{number_format($incomes->balance)}}</span>
+                </label>
+                <input name="balanceControl" type="hidden" value="{{$incomes->balance}}">
+            </div>
+            <div class="col-sm-3">
+                <label>Saldo Por Ingresar: <span class="balance_in">{{number_format($incomes->balance)}}</span>
                 </label>
                 <input name="balanceControl" type="hidden" value="{{$incomes->balance}}">
             </div>
@@ -55,10 +60,10 @@ Formulario  Ingresos
                                 @endforeach
                             </select></td>
                         @foreach($fixeds AS $fixed)
-                        <td style="margin: 4px"><input type="text" placeholder="0.00" name="fixeds-{{$i}}-{{$fixed->id}}" style="height:30px; margin: 4px" size="10"></td>
+                        <td style="margin: 4px"><input type="text" placeholder="0.00" name="fixeds-{{$i}}-{{$fixed->id}}" class="number" style="height:30px; margin: 4px" size="10"></td>
                         @endforeach
                         @foreach($temporaries AS $temporary)
-                        <td style="margin: 4px"><input type="text" placeholder="0.00" name="temporary-{{$i}}-{{$temporary->id}}" style="height:30px; margin: 4px" size="5"></td>
+                        <td style="margin: 4px"><input type="text" placeholder="0.00" name="temporary-{{$i}}-{{$temporary->id}}" class="number" style="height:30px; margin: 4px" size="5"></td>
                         @endforeach
                         <td></td>
                     </tr>
@@ -67,13 +72,9 @@ Formulario  Ingresos
             </table>
 
         </div>
-
-
-
-
         <div class="row">
             <div class="large-12 columns text-center">
-                <input type="submit" value="Registrar" class="btn bg-success radius" />
+                <input type="submit" id="sendTotal" value="Registrar" class="btn bg-success radius" disabled="disabled" />
             </div>
         </div>
     </form>
