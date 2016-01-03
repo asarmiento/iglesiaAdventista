@@ -386,5 +386,31 @@ $(function(){
 		$("#slcState_new_iglesia").val('0');
         $("#msgCreate").html('');
 	});
+	$('.number').on('blur', function(e){
+		var that = $(this);
+		var total = calculateBalance();
+		var balance = parseFloat($('.balance').text().replace(/,/g, ''));
+		if(total <= balance){
+			if(total == balance)
+			{
+				$('#sendTotal').attr('disabled', false);
+			}
+			balance -= total;
+			$('.balance_in').text(balance);
+		}else{
+			alert("No puede registrar más saldo con lo que ya cuenta");
+			that.val('');
+		}
+	});
 
+	var calculateBalance = function(){
+		var total = 0;
+		$('.number').each(function(index, el) {
+			var number = parseFloat($(this).val());
+			if( ! isNaN(number) && number > 0 ){
+				total += number;
+			}
+		});
+		return total;
+	};
 });
