@@ -112,6 +112,7 @@
         "require": {
             "ext-tokenizer": "*",
             "php": ">=5.4"
+
         },
         "require-dev": {
             "phpunit/phpunit": "~4.0"
@@ -131,6 +132,7 @@
             "psr-4": {
                 "PhpParser\\": "lib/PhpParser"
             }
+
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -180,11 +182,12 @@
         "autoload": {
             "psr-4": {
                 "ClassPreloader\\": "src/"
+
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "BSD-2-Clause"
         ],
         "authors": [
             {
@@ -237,11 +240,12 @@
         "autoload": {
             "psr-4": {
                 "SuperClosure\\": "src/"
+
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "BSD"
         ],
         "authors": [
             {
@@ -311,6 +315,7 @@
             "videlalvaro/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib"
         },
         "time": "2015-10-14 12:51:02",
+
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -321,6 +326,7 @@
         "autoload": {
             "psr-4": {
                 "Monolog\\": "src/Monolog"
+
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -370,12 +376,14 @@
         "autoload": {
             "psr-4": {
                 "Carbon\\": "src/Carbon/"
+
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
+
         "authors": [
             {
                 "name": "Brian Nesbitt",
@@ -404,6 +412,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/0cac554ce06277e33ddf9f0b7ade4b8bbf2af3fa",
             "reference": "0cac554ce06277e33ddf9f0b7ade4b8bbf2af3fa",
+
             "shasum": ""
         },
         "require": {
@@ -413,11 +422,14 @@
             "phpunit/phpunit": "~4.0"
         },
         "time": "2015-05-30 15:59:26",
+
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-0": {
+
                 "Dotenv": "src/"
+
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -426,6 +438,7 @@
         ],
         "authors": [
             {
+
                 "name": "Vance Lucas",
                 "email": "vance@vancelucas.com",
                 "homepage": "http://www.vancelucas.com"
@@ -470,6 +483,7 @@
         "autoload": {
             "psr-0": {
                 "JakubOnderka\\PhpConsoleColor": "src/"
+
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -481,6 +495,7 @@
                 "name": "Jakub Onderka",
                 "email": "jakub.onderka@gmail.com",
                 "homepage": "http://www.acci.cz"
+
             }
         ]
     },
@@ -517,10 +532,11 @@
             "psr-0": {
                 "JakubOnderka\\PhpConsoleHighlighter": "src/"
             }
+
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "BSD-3-Clause"
         ],
         "authors": [
             {
@@ -550,6 +566,7 @@
         },
         "require-dev": {
             "phpunit/phpunit": "@stable"
+
         },
         "time": "2014-10-24 07:27:01",
         "type": "project",
@@ -558,10 +575,11 @@
             "psr-4": {
                 "XdgBaseDir\\": "src/"
             }
+
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "BSD-3-Clause"
         ],
         "description": "implementation of xdg base directory specification for php"
     },
@@ -592,6 +610,7 @@
         "autoload": {
             "psr-0": {
                 "Cron": "src/"
+
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -658,12 +677,15 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "1.1-dev"
+
             }
         },
         "installation-source": "dist",
         "autoload": {
+
             "psr-4": {
                 "League\\Flysystem\\": "src/"
+
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -729,11 +751,12 @@
         "autoload": {
             "psr-0": {
                 "Doctrine\\Common\\Inflector\\": "lib/"
+
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "BSD-3-Clause"
         ],
         "authors": [
             {
@@ -797,11 +820,12 @@
             },
             "files": [
                 "src/Create.php"
+
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "BSD-3-Clause"
         ],
         "authors": [
             {
@@ -863,6 +887,7 @@
         "bin": [
             "bin/psysh"
         ],
+
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -928,11 +953,12 @@
         "autoload": {
             "files": [
                 "lib/random.php"
+
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "BSD-3-Clause"
         ],
         "authors": [
             {
@@ -978,20 +1004,23 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "1.0.x-dev"
+
             }
         },
         "installation-source": "dist",
         "autoload": {
+
             "psr-4": {
                 "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "BSD-3-Clause"
         ],
         "authors": [
             {
+
                 "name": "Marco Pivetta",
                 "email": "ocramius@gmail.com",
                 "homepage": "http://ocramius.github.com/"
@@ -1017,6 +1046,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/sebastianbergmann/recursion-context/zipball/913401df809e99e4f47b27cdd781f4a258d58791",
             "reference": "913401df809e99e4f47b27cdd781f4a258d58791",
+
             "shasum": ""
         },
         "require": {
@@ -1086,6 +1116,7 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "1.2.x-dev"
+
             }
         },
         "installation-source": "dist",
@@ -1143,12 +1174,19 @@
             "shasum": ""
         },
         "time": "2013-11-01 13:02:21",
+
         "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0-dev"
+            }
+        },
         "installation-source": "dist",
         "autoload": {
             "psr-0": {
                 "Diff": "lib/"
             }
+
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -1189,6 +1227,7 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "1.4-dev"
+
             }
         },
         "installation-source": "dist",
@@ -1245,12 +1284,14 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "1.2.x-dev"
+
             }
         },
         "installation-source": "dist",
         "autoload": {
             "classmap": [
                 "src/"
+
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -1313,6 +1354,7 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "2.0.x-dev"
+
             }
         },
         "installation-source": "dist",
@@ -1362,6 +1404,7 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "1.4.x-dev"
+
             }
         },
         "installation-source": "dist",
@@ -1423,6 +1466,7 @@
             "phpunit/phpunit": "~4.0"
         },
         "time": "2015-11-28 08:27:09",
+
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1431,11 +1475,12 @@
             },
             "files": [
                 "src/helpers.php"
+
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "BSD-3-Clause"
         ],
         "authors": [
             {
@@ -1478,6 +1523,7 @@
         },
         "installation-source": "dist",
         "autoload": {
+
             "psr-0": {
                 "Whoops": "src/"
             },
@@ -1487,7 +1533,7 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "BSD-3-Clause"
         ],
         "authors": [
             {
@@ -1574,6 +1620,7 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "1.0-dev"
+
             }
         },
         "installation-source": "dist",
@@ -1624,6 +1671,7 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "1.3.x-dev"
+
             }
         },
         "installation-source": "dist",
@@ -1631,6 +1679,7 @@
             "classmap": [
                 "src/"
             ]
+
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -1669,12 +1718,19 @@
             "php": ">=5.3.3"
         },
         "time": "2015-06-21 13:50:34",
+
         "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0-dev"
+            }
+        },
         "installation-source": "dist",
         "autoload": {
             "classmap": [
                 "src/"
             ]
+
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -1725,6 +1781,7 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "2.3.x-dev"
+
             }
         },
         "installation-source": "dist",
@@ -1776,6 +1833,7 @@
             "classmap": [
                 "src/"
             ]
+
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -1907,6 +1965,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/eabf68b476ac7d0f73793aada060f1c1a9bf8979",
             "reference": "eabf68b476ac7d0f73793aada060f1c1a9bf8979",
+
             "shasum": ""
         },
         "require": {
@@ -1927,6 +1986,7 @@
             "ext-xmlwriter": "*"
         },
         "time": "2015-10-06 15:47:00",
+
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1935,13 +1995,13 @@
         },
         "installation-source": "dist",
         "autoload": {
-            "classmap": [
-                "src/"
-            ]
+            "psr-4": {
+                "Symfony\\Polyfill\\Util\\": ""
+            }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "BSD-3-Clause"
+            "MIT"
         ],
         "authors": [
             {
@@ -2005,17 +2065,21 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "4.8.x-dev"
+
             }
         },
         "installation-source": "dist",
         "autoload": {
-            "classmap": [
-                "src/"
+            "psr-4": {
+                "Symfony\\Polyfill\\Php56\\": ""
+            },
+            "files": [
+                "bootstrap.php"
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "BSD-3-Clause"
+            "MIT"
         ],
         "authors": [
             {
@@ -2058,6 +2122,7 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "2.7-dev"
+
             }
         },
         "installation-source": "dist",
@@ -2071,6 +2136,7 @@
             "exclude-from-classmap": [
                 "/Tests/"
             ]
+
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -2078,6 +2144,7 @@
         ],
         "authors": [
             {
+
                 "name": "Nicolas Grekas",
                 "email": "p@tchwork.com"
             },
@@ -2130,16 +2197,19 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "2.7-dev"
+
             }
         },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
+
                 "Symfony\\Component\\Translation\\": ""
             },
             "exclude-from-classmap": [
                 "/Tests/"
             ]
+
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -2199,6 +2269,7 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "2.7-dev"
+
             }
         },
         "installation-source": "dist",
@@ -2209,6 +2280,7 @@
             "exclude-from-classmap": [
                 "/Tests/"
             ]
+
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -2235,6 +2307,7 @@
     },
     {
         "name": "symfony/process",
+
         "version": "v2.7.8",
         "version_normalized": "2.7.8.0",
         "source": {
@@ -2300,18 +2373,15 @@
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.9"
+            "php": ">=5.3.0",
+            "symfony/translation": "~2.6|~3.0"
         },
         "require-dev": {
             "symfony/expression-language": "~2.4"
         },
         "time": "2015-12-18 15:35:58",
+
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.7-dev"
-            }
-        },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
@@ -2330,12 +2400,9 @@
         ],
         "authors": [
             {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
+                "name": "Brian Nesbitt",
+                "email": "brian@nesbot.com",
+                "homepage": "http://nesbot.com"
             }
         ],
         "description": "Symfony HttpFoundation Component",
@@ -2379,8 +2446,13 @@
         },
         "installation-source": "dist",
         "autoload": {
+            "files": [
+                "Resources/functions/dump.php"
+            ],
             "psr-4": {
+
                 "Symfony\\Component\\EventDispatcher\\": ""
+
             },
             "exclude-from-classmap": [
                 "/Tests/"
@@ -2394,6 +2466,7 @@
             {
                 "name": "Fabien Potencier",
                 "email": "fabien@symfony.com"
+
             },
             {
                 "name": "Symfony Community",
@@ -2434,6 +2507,7 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "2.7-dev"
+
             }
         },
         "installation-source": "dist",
@@ -2468,6 +2542,7 @@
         "version_normalized": "2.7.8.0",
         "source": {
             "type": "git",
+
             "url": "https://github.com/symfony/http-kernel.git",
             "reference": "2dea13800e1a48710cf23a2c60c804c88e72ed57"
         },
@@ -2523,7 +2598,20 @@
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
+
                 "Symfony\\Component\\HttpKernel\\": ""
+
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+
+
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Debug\\": ""
             },
             "exclude-from-classmap": [
                 "/Tests/"
@@ -2543,6 +2631,7 @@
                 "homepage": "https://symfony.com/contributors"
             }
         ],
+
         "description": "Symfony HttpKernel Component",
         "homepage": "https://symfony.com"
     },
@@ -2578,6 +2667,7 @@
             },
             "exclude-from-classmap": [
                 "/Tests/"
+
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -2635,6 +2725,7 @@
             },
             "exclude-from-classmap": [
                 "/Tests/"
+
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -2677,15 +2768,18 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "2.7-dev"
+
             }
         },
         "installation-source": "dist",
         "autoload": {
+
             "psr-4": {
                 "Symfony\\Component\\CssSelector\\": ""
             },
             "exclude-from-classmap": [
                 "/Tests/"
+
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -2694,6 +2788,7 @@
         ],
         "authors": [
             {
+
                 "name": "Jean-François Simon",
                 "email": "jeanfrancois.simon@sensiolabs.com"
             },
@@ -2726,6 +2821,7 @@
         },
         "require": {
             "php": ">=5.3.9"
+
         },
         "require-dev": {
             "psr/log": "~1.0",
@@ -2742,6 +2838,7 @@
         "extra": {
             "branch-alias": {
                 "dev-master": "2.7-dev"
+
             }
         },
         "installation-source": "dist",
@@ -2783,16 +2880,19 @@
             "type": "zip",
             "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/4271c55cbc0a77b2641f861b978123e46b3da969",
             "reference": "4271c55cbc0a77b2641f861b978123e46b3da969",
+
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
+
         "time": "2015-11-04 20:28:58",
         "type": "library",
         "extra": {
             "branch-alias": {
                 "dev-master": "1.0-dev"
+
             }
         },
         "installation-source": "dist",
@@ -2807,6 +2907,7 @@
         ],
         "authors": [
             {
+
                 "name": "Nicolas Grekas",
                 "email": "p@tchwork.com"
             },
@@ -2837,13 +2938,16 @@
             "type": "zip",
             "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/e2e77609a9e2328eb370fbb0e0d8b2000ebb488f",
             "reference": "e2e77609a9e2328eb370fbb0e0d8b2000ebb488f",
+
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3",
             "symfony/polyfill-util": "~1.0"
         },
+
         "time": "2015-12-18 15:10:25",
+
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2895,6 +2999,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/laravel/framework/zipball/3f0fd27939dfdafb1e50058423cd24e640894ba2",
             "reference": "3f0fd27939dfdafb1e50058423cd24e640894ba2",
+
             "shasum": ""
         },
         "require": {
@@ -2975,7 +3080,9 @@
             "predis/predis": "Required to use the redis cache and queue drivers (~1.0).",
             "pusher/pusher-php-server": "Required to use the Pusher broadcast driver (~2.0)."
         },
+
         "time": "2015-12-31 17:41:30",
+
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3013,6 +3120,7 @@
         ]
     },
     {
+
         "name": "symfony/yaml",
         "version": "v3.0.1",
         "version_normalized": "3.0.1.0",
@@ -3104,16 +3212,15 @@
         "bin": [
             "bin/phpspec"
         ],
+
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.2.x-dev"
-            }
-        },
         "installation-source": "dist",
         "autoload": {
+            "classmap": [
+                "src/controllers"
+            ],
             "psr-0": {
-                "PhpSpec": "src/"
+                "Rap2hpoutre\\LaravelLogViewer\\": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -3122,25 +3229,16 @@
         ],
         "authors": [
             {
-                "name": "Konstantin Kudryashov",
-                "email": "ever.zet@gmail.com",
-                "homepage": "http://everzet.com"
-            },
-            {
-                "name": "Marcello Duarte",
-                "homepage": "http://marcelloduarte.net/"
+                "name": "rap2hpoutre",
+                "email": "raphael@ornikar.com"
             }
         ],
-        "description": "Specification-oriented BDD framework for PHP 5.3+",
-        "homepage": "http://phpspec.net/",
+        "description": "A Laravel log reader",
         "keywords": [
-            "BDD",
-            "SpecBDD",
-            "TDD",
-            "spec",
-            "specification",
-            "testing",
-            "tests"
+            "log",
+            "log-reader",
+            "log-viewer",
+            "logging"
         ]
     },
     {

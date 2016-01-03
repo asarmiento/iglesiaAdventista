@@ -12,7 +12,10 @@ return array(
     $vendorDir . '/danielstjules/stringy/src/Create.php',
     $vendorDir . '/psy/psysh/src/Psy/functions.php',
     $vendorDir . '/paragonie/random_compat/lib/random.php',
+<<<<<<< HEAD
     $vendorDir . '/laravelcollective/html/src/helpers.php',
+=======
+>>>>>>> ed2243c202a776340d87e426507370ecdeee07b4
     $vendorDir . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
     $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
 );
