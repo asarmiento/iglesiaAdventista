@@ -23,7 +23,7 @@ Lista Tipos Variables
         <tr>
     <td>{{$key+1}}</td>
     <td>{{$tipoVariable->name}}</td>
-    <td>{{$tipoVariable->balance}}</td>
+    <td>{{number_format($tipoVariable->balance,2)}}</td>
     <td><a class="btn btn-warning" href="{{route('variableType-edit',$tipoVariable->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
     </tr>
         @endforeach

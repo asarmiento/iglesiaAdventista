@@ -25,7 +25,7 @@ Lista Tipos Fijos
                 <tr>
             <td>{{$key+1}}</td>
             <td>{{$tipoFijo->name}}</td>
-            <td>{{$tipoFijo->balance}}</td>
+            <td>{{number_format($tipoFijo->balance,2)}}</td>
             <td><a class="btn btn-warning" href="{{route('typeFix-edit',$tipoFijo->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
             </tr>
                 @endforeach

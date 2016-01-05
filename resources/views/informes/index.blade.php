@@ -15,6 +15,7 @@ Lista Informes Semanales
         <tr> 
             <th>Nº</th>
             <th width="200">Numero</th> 
+            <th width="150">Numero de Control</th>
             <th width="150">Lineas</th>
             <th width="150">Sábado</th>
             <th width="150">Monto</th>
@@ -28,6 +29,7 @@ Lista Informes Semanales
             <td>{{$key+1}}</td>
             <td>{{$informe->numbers}}</td>
             <td>{{$informe->controlNumber}}</td>
+            <td>{{$informe->rows}}</td>
             <td>{{$informe->saturday}}</td>
             <td>{{number_format($informe->balance,2)}}</td>
             @if(($informe->incomes->isEmpty()))
