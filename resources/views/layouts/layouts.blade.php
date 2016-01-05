@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/ladda-themeless.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/main.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/lib/select2.min.css') }}">
 </head>
 <body>
     <header>
@@ -67,6 +68,7 @@
             <p class="text-center">Elaborado por: Sistemas Amigables de Costa Rica SAOR S.A. &AMP; Otros Colaboradores &copy; Copyright </p>
         </div>
     </footer>
+	<script src="{{ asset('js/lib/select2.min.js') }}"></script>
     <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('js/lib/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/lib/jquery.blockUI.min.js') }}"></script>

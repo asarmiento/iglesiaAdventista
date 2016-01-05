@@ -37,8 +37,8 @@ Formulario  Ingresos
                 <thead class="headerTable color-green">
                     <tr>
                         <th>#</th>
-                        <th>Numero Sobre</th>
                         <th>Miembro</th>
+                        <th>Numero Sobre</th>
                         @foreach($fixeds AS $fixed)
                         <th>{{$fixed->name}}</th>
                         @endforeach
@@ -51,19 +51,19 @@ Formulario  Ingresos
                   <?php for($i=1;$i<=$incomes->rows;$i++): ?>
                     <tr style="margin: 2px">
                         <td>{{$i}}</td>
-                        <td style="margin: 4px"><input type="text" placeholder="Numero Sobre" name="numberAbout-{{$i}}" style="height:30px; margin: 4px" size="10"></td>
                         <td style="margin: 4px">
-                            <select  name="members-{{$i}}" style="height:40px; margin: 4px" >
+                            <select  name="members-{{$i}}" style="height:40px; margin: 4px" class="form-control select2" data-type="select" >
                                 <option selected value="">Seleccione un Miembro</option>
                                 @foreach($members AS $member)
                                     <option value="{{$member->_token}}">{{$member->name.' '.$member->last}}</option>
                                 @endforeach
                             </select></td>
+                        <td style="margin: 4px"><input type="text" placeholder="Numero Sobre" name="numberAbout-{{$i}}" class="form-control" style="height:30px; margin: 4px" size="10"></td>
                         @foreach($fixeds AS $fixed)
-                        <td style="margin: 4px"><input type="text" placeholder="0.00" name="fixeds-{{$i}}-{{$fixed->id}}" class="number" style="height:30px; margin: 4px" size="10"></td>
+                        <td style="margin: 4px"><input type="text" placeholder="0.00" name="fixeds-{{$i}}-{{$fixed->id}}" class="form-control number" style="height:30px; margin: 4px" size="10"></td>
                         @endforeach
                         @foreach($temporaries AS $temporary)
-                        <td style="margin: 4px"><input type="text" placeholder="0.00" name="temporary-{{$i}}-{{$temporary->id}}" class="number" style="height:30px; margin: 4px" size="5"></td>
+                        <td style="margin: 4px"><input type="text" placeholder="0.00" name="temporary-{{$i}}-{{$temporary->id}}" class="form-control number" style="height:30px; margin: 4px" size="5"></td>
                         @endforeach
                         <td></td>
                     </tr>
