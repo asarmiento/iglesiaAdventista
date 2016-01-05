@@ -42,6 +42,7 @@ echo 'hola';
         $tipoFijos = $this->typeFixedRepository->allData();
 
         foreach($tipoFijos AS $tipoFijo):
+
             $income = $this->incomeRepository->oneWhere('typeFixedIncome_id',$tipoFijo->id);
 
         $this->typeFixedRepository->updateBalance($tipoFijo->id,$income[0]->balance);
@@ -50,7 +51,8 @@ echo 'hola';
         $tipoVars = $this->typeTemporaryIncomeRepository->allData();
 
         foreach($tipoVars AS $tipoVar):
-            $income = $this->incomeRepository->oneWhere('typeFixedIncome_id',$tipoVar->id);
+
+            $income = $this->incomeRepository->oneWhere('typesTemporaryIncome_id',$tipoVar->id);
 
             $this->typeTemporaryIncomeRepository->updateBalance($tipoVar->id,$income[0]->balance);
         endforeach;
