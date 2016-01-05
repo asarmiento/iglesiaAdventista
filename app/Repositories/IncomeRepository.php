@@ -13,6 +13,23 @@ use SistemasAmigables\Entities\Income;
 
 class IncomeRepository extends BaseRepository
 {
+    /**
+     * @var TypeFixedRepository
+     */
+    private $typeFixedRepository;
+
+    /**
+     * IncomeRepository constructor.
+     * @param TypeFixedRepository $typeFixedRepository
+     */
+    public function __construct(
+        TypeFixedRepository $typeFixedRepository
+
+    )
+    {
+
+        $this->typeFixedRepository = $typeFixedRepository;
+    }
 
     /**
      * @return mixed
@@ -21,4 +38,7 @@ class IncomeRepository extends BaseRepository
     {
        return new Income(); // TODO: Implement getModel() method.
     }
+
+
+
 }

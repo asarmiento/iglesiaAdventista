@@ -1,8 +1,61 @@
 <?php namespace SistemasAmigables\Http\Controllers;
 
-class TestController extends Controller {
+use SistemasAmigables\Entities\Income;
+use SistemasAmigables\Repositories\IncomeRepository;
+use SistemasAmigables\Repositories\TypeFixedRepository;
+use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
 
+class TestController extends Controller {
+    /**
+     * @var IncomeRepository
+     */
+    private $incomeRepository;
+    /**
+     * @var TypeFixedRepository
+     */
+    private $typeFixedRepository;
+    /**
+     * @var TypeTemporaryIncomeRepository
+     */
+    private $typeTemporaryIncomeRepository;
+
+    /**
+     * TestController constructor.
+     * @param IncomeRepository $incomeRepository
+     * @param TypeFixedRepository $typeFixedRepository
+     * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+     */
+    public function __construct(
+        IncomeRepository $incomeRepository,
+        TypeFixedRepository $typeFixedRepository,
+        TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+    )
+    {
+
+        $this->incomeRepository = $incomeRepository;
+        $this->typeFixedRepository = $typeFixedRepository;
+        $this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
+    }
     public function show() {
+
+
+        $tipoFijos = $this->typeFixedRepository->allData();
+
+        foreach($tipoFijos AS $tipoFijo):
+            $income = $this->incomeRepository->oneWhere('typeFixedIncome_id',$tipoFijo->id);
+
+        $this->typeFixedRepository->updateBalance($tipoFijo->id,$income[0]->balance);
+            endforeach;
+
+        $tipoVars = $this->typeTemporaryIncomeRepository->allData();
+
+        foreach($tipoVars AS $tipoVar):
+
+            $incomer = $this->incomeRepository->oneWhere('typeFixedIncome_id',$tipoVar->id);
+
+            $this->typeTemporaryIncomeRepository->updateBalance($tipoVar->id,$incomer[0]->balance);
+        endforeach;
+
 
 //        $test = TiposVariable::find(1);
 //        $test = TiposFijo::find(1);

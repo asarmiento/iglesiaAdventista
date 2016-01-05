@@ -47,4 +47,17 @@ abstract class BaseRepository {
     {
         return $this->newQuery()->get();
     }
+
+    public function oneWhere($data,$id)
+    {
+        return $this->newQuery()->where($data,$id)->get();
+    }
+
+    public function updateBalance($id,$amount)
+    {
+        $balance= $this->oneWhere('id',$id);
+        $newbalance= $balance[0]->balance + $amount;
+        $this->newQuery()->where('id',$id)->update(['balance'=>$newbalance]);
+
+    }
 }

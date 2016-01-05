@@ -21,4 +21,6 @@ class TypeFixedRepository extends BaseRepository
     {
         return new TypeFixedIncome();
     }
+
+
 }

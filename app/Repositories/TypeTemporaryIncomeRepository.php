@@ -22,4 +22,6 @@ class TypeTemporaryIncomeRepository extends BaseRepository
     {
        return new TypesTemporaryIncome(); // TODO: Implement getModel() method.
     }
+
+
 }
