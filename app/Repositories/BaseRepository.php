@@ -52,10 +52,12 @@ abstract class BaseRepository {
     {
         return $this->newQuery()->where($data,$id)->get();
     }
+
     public function oneWhereList($data,$id)
     {
-        return $this->newQuery()->where($data,$id)->lists('id');
+        return $this->newQuery()->where($data,$id)->sum('balance');
     }
+
     public function updateBalance($id,$amount)
     {
         $balance= $this->oneWhere('id',$id);
