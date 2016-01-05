@@ -172,7 +172,7 @@ class IncomeController extends Controller {
                 if($data['fixeds-'.$i.'-'.$fixed->id] > 0)
                 {
                     $balance = $data['fixeds-'.$i.'-'.$fixed->id];
-
+                    $this->typeFixedRepository->updateBalance($fixed->id,$balance);
                     array_push($transaction, array(
                             'record_id' => $record->id,
                             'numberOf' => $numberOf,
@@ -193,7 +193,7 @@ class IncomeController extends Controller {
                 if(($data['temporary-'.$i.'-'.$temp->id]) > 0)
                 {
                     $balance = $data['temporary-'.$i.'-'.$temp->id];
-
+                    $this->typeTemporaryIncomeRepository->updateBalance($temp->id,$balance);
                     array_push($transaction, array(
                             'record_id' => $record->id,
                             'numberOf' => $numberOf,

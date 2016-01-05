@@ -16,6 +16,7 @@ Lista Tipos Fijos
                 <tr>
                     <th width="200">Nº</th>
                     <th width="150">Nombre</th>
+                    <th width="150">Ingreso</th>
                     <th width="150">Editar</th>
                </tr>
             </thead>
@@ -24,6 +25,7 @@ Lista Tipos Fijos
                 <tr>
             <td>{{$key+1}}</td>
             <td>{{$tipoFijo->name}}</td>
+            <td>{{$tipoFijo->balance}}</td>
             <td><a class="btn btn-warning" href="{{route('typeFix-edit',$tipoFijo->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
             </tr>
                 @endforeach

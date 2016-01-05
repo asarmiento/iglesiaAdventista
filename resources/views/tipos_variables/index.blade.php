@@ -14,7 +14,8 @@ Lista Tipos Variables
         <tr> 
             <th width="200">Nº</th>
             <th width="150">Nombre</th> 
-            <th width="150">Editar</th> 
+            <th width="150">Ingresos</th>
+            <th width="150">Editar</th>
         </tr>
     </thead> 
     <tbody> 
@@ -22,6 +23,7 @@ Lista Tipos Variables
         <tr>
     <td>{{$key+1}}</td>
     <td>{{$tipoVariable->name}}</td>
+    <td>{{$tipoVariable->balance}}</td>
     <td><a class="btn btn-warning" href="{{route('variableType-edit',$tipoVariable->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
     </tr>
         @endforeach
