@@ -37,24 +37,27 @@ class TestController extends Controller {
         $this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
     }
     public function show() {
-echo 'hola';
+
 
         $tipoFijos = $this->typeFixedRepository->allData();
 
         foreach($tipoFijos AS $tipoFijo):
 
-            $income = $this->incomeRepository->oneWhere('typeFixedIncome_id',$tipoFijo->id);
+            $incomes = $this->incomeRepository->oneWhereList('typeFixedIncome_id',$tipoFijo->id);
 
-        $this->typeFixedRepository->updateBalance($tipoFijo->id,$income[0]->balance);
+            foreach($incomes AS $income):
+                $this->typeFixedRepository->updateBalance($tipoFijo->id,$income);
             endforeach;
+        endforeach;
 
         $tipoVars = $this->typeTemporaryIncomeRepository->allData();
 
         foreach($tipoVars AS $tipoVar):
 
-            $income = $this->incomeRepository->oneWhere('typesTemporaryIncome_id',$tipoVar->id);
-
-            $this->typeTemporaryIncomeRepository->updateBalance($tipoVar->id,$income[0]->balance);
+            $incomes = $this->incomeRepository->oneWhereList('typesTemporaryIncome_id',$tipoVar->id);
+            foreach($incomes AS $income):
+                $this->typeTemporaryIncomeRepository->updateBalance($tipoVar->id,$income);
+            endforeach;
         endforeach;
 
 
