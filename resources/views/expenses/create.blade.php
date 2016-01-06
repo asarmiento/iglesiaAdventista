@@ -8,7 +8,7 @@
 @stop
 
 @section('content')
-    <h2>Numero de Cheque: {{$checks->number}} Por: {{$checks->amount}}</h2>
+    <h2>Numero de Cheque: {{$checks->number}} Por: {{$checks->balance}}</h2>
    <form action="{{route('gasto-store')}}" method="post">
     <div class="row">
         <div class="col-sm-6 col-md-6">
