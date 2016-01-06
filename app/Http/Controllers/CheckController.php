@@ -70,7 +70,7 @@ class CheckController extends Controller {
 		if($checks->isValid($check)):
 			$checks->fill($check);
 			$checks->save();
-
+			$this->checkRepository->updateBalance($checks->id,$checks->amount);
 			return redirect()->route('create-gasto',$checks->id);
 		endif;
 
