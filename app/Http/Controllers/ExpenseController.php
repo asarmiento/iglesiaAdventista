@@ -84,8 +84,10 @@ class ExpenseController extends Controller {
 		if($expenses->isValid($gasto)):
 			$expenses->fill($gasto);
 			$expenses->save();
-			$expenses->typeExpenses()->attach($gasto['typeExpenses'],['balance'=>$expenses->amount]);
-			$this->typeExpenseRepository->updateBalance($gasto['typeExpenses'],$expenses->amount,'balance');
+			if($gasto['typeExpenses']):
+				$expenses->typeExpenses()->attach($gasto['typeExpenses'],['balance'=>$expenses->amount]);
+				$this->typeExpenseRepository->updateBalance($gasto['typeExpenses'],$expenses->amount,'balance');
+			endif;
 			$this->departamentRepository->updateBalance($expenses->departament_id,$expenses->amount,'balance');
 			return redirect()->route('create-gasto',$gasto['check_id']);
 		endif;
