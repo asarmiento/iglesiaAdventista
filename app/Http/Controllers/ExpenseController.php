@@ -57,7 +57,8 @@ class ExpenseController extends Controller {
 		$checks = $this->checkRepository->getModel()->find($id);
 		$departaments = $this->departamentRepository->allData();
 		$expenses= $this->expensesRepository->oneWhere('check_id',$id);
-		return View('expenses.create',compact('checks','departaments','expenses'));
+		$total= $this->expensesRepository->oneWhereList('check_id',$id,'amount');
+		return View('expenses.create',compact('checks','departaments','expenses','total'));
 	}
 
 	/**
@@ -74,7 +75,7 @@ class ExpenseController extends Controller {
 		if($checks->isValid($gasto)):
 			$checks->fill($gasto);
 			$checks->save();
-			$this->departamentRepository->updateBalance($checks->departament_id,$checks->amount);
+			$this->departamentRepository->updateBalance($checks->departament_id,$checks->amount,'balance');
 			return redirect()->route('create-gasto',$gasto['check_id']);
 		endif;
 

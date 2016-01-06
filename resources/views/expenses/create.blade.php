@@ -81,7 +81,7 @@
                     <th>Monto</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody><?php ?>
                 @foreach($expenses AS $key=>$expense)
                     <tr>
                         <td>{{$key+1}}</td>
@@ -91,6 +91,13 @@
                         <td>{{$expense->amount}}</td>
                     </tr>
                 @endforeach
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Total: </td>
+                        <td>{{$total}}</td>
+                    </tr>
             </tbody>
         </table>
             <div class="btn btn-info"><a href="{{route('index-gasto')}}"  class="button radius">Finalizar</a></div>
