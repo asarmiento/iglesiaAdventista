@@ -70,7 +70,8 @@ class CheckController extends Controller {
 		if($checks->isValid($check)):
 			$checks->fill($check);
 			$checks->save();
-
+			$checks->accounts()->attach(['account_id'=>$checks->account_id,'amount'=>$checks->amount]);
+			$this->checkRepository->updateBalance($checks->id,$checks->amount);
 			return redirect()->route('create-gasto',$checks->id);
 		endif;
 
