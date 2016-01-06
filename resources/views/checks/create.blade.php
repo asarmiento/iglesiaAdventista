@@ -49,7 +49,7 @@
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
                     <input name="church_id" class="form-control" type="hidden" value="1" >
-                    <input name="amount" class="form-control" type="text" >
+                    <input name="balance" class="form-control" type="text" >
                 </div>
             </div>
         </div>
