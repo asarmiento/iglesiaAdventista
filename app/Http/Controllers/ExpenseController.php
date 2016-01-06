@@ -74,7 +74,7 @@ class ExpenseController extends Controller {
 		if($checks->isValid($gasto)):
 			$checks->fill($gasto);
 			$checks->save();
-
+			$this->departamentRepository->updateBalance($checks->departament_id,$checks->amount);
 			return redirect()->route('create-gasto',$gasto['check_id']);
 		endif;
 

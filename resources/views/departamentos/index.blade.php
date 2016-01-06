@@ -24,6 +24,9 @@ Lista Departamentos
         <tr>
     <td>{{$key+1}}</td>
     <td>{{$departament->name}}</td>
+    <td>{{$departament->budget}}</td>
+            <td></td>
+    <td>{{$departament->balance}}</td>
     </tr>
         @endforeach
     </tbody>
