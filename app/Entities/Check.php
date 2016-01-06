@@ -23,7 +23,10 @@ class Check extends Entity
     {
         // TODO: Implement getExist() method.
     }
-
+    public function accounts()
+    {
+        return $this->belongsToMany(Account::getClass(),'account_check')->withPivot('amount');
+    }
     public function departaments()
     {
         return $this->belongsTo(Departament::getClass(),'departament_id','id');
