@@ -7,7 +7,7 @@ class Check extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['number','name','date','detail','amount','church_id','account_id'];
+    protected $fillable= ['number','name','date','detail','balance','church_id','account_id'];
 
     public function getRules()
     {
@@ -15,7 +15,7 @@ class Check extends Entity
             'number'    =>'required',
             'name'      =>'required',
             'date'      =>'required',
-            'amount'    =>'required'
+            'balance'    =>'required'
         ];
     }
 
@@ -25,7 +25,7 @@ class Check extends Entity
     }
     public function accounts()
     {
-        return $this->belongsToMany(Account::getClass(),'account_check')->withPivot('amount');
+        return $this->belongsToMany(Account::getClass(),'account_check')->withPivot('balance');
     }
     public function departaments()
     {
