@@ -3,6 +3,7 @@
 use SistemasAmigables\Repositories\CheckRepository;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
+use SistemasAmigables\Repositories\TypeExpenseRepository;
 
 class ExpenseController extends Controller {
 	/**
@@ -17,23 +18,30 @@ class ExpenseController extends Controller {
 	 * @var DepartamentRepository
 	 */
 	private $departamentRepository;
+	/**
+	 * @var TypeExpenseRepository
+	 */
+	private $typeExpenseRepository;
 
 	/**
 	 * ExpenseController constructor.
 	 * @param ExpensesRepository $expensesRepository
 	 * @param CheckRepository $checkRepository
 	 * @param DepartamentRepository $departamentRepository
+	 * @param TypeExpenseRepository $typeExpenseRepository
 	 */
 	public function __construct(
 		ExpensesRepository $expensesRepository,
 		CheckRepository $checkRepository,
-		DepartamentRepository $departamentRepository
+		DepartamentRepository $departamentRepository,
+		TypeExpenseRepository $typeExpenseRepository
 	)
 	{
 
 		$this->expensesRepository = $expensesRepository;
 		$this->checkRepository = $checkRepository;
 		$this->departamentRepository = $departamentRepository;
+		$this->typeExpenseRepository = $typeExpenseRepository;
 	}
 	/**
 	 * Display a listing of expenses
@@ -58,7 +66,8 @@ class ExpenseController extends Controller {
 		$departaments = $this->departamentRepository->allData();
 		$expenses= $this->expensesRepository->oneWhere('check_id',$id);
 		$total= $this->expensesRepository->oneWhereList('check_id',$id,'amount');
-		return View('expenses.create',compact('checks','departaments','expenses','total'));
+		$typeExpenses= $this->typeExpenseRepository->allData();
+		return View('expenses.create',compact('checks','departaments','expenses','total','typeExpenses'));
 	}
 
 	/**
@@ -70,16 +79,18 @@ class ExpenseController extends Controller {
 	{
 		$gasto = $this->convertionObjeto();
 
-		$checks = $this->expensesRepository->getModel();
+		$expenses = $this->expensesRepository->getModel();
 
-		if($checks->isValid($gasto)):
-			$checks->fill($gasto);
-			$checks->save();
-			$this->departamentRepository->updateBalance($checks->departament_id,$checks->amount,'balance');
+		if($expenses->isValid($gasto)):
+			$expenses->fill($gasto);
+			$expenses->save();
+			$expenses->typeExpenses()->attach($expenses->typeExpense,['balance'=>$expenses->balance]);
+			$this->typeExpenseRepository->updateBalance($expenses->typeExpense,$expenses->balance,'balance');
+			$this->departamentRepository->updateBalance($expenses->departament_id,$expenses->amount,'balance');
 			return redirect()->route('create-gasto',$gasto['check_id']);
 		endif;
 
-		return redirect('iglesia/cheques/create')->withErrors($checks)->withInput();
+		return redirect('iglesia/cheques/create')->withErrors($expenses)->withInput();
 	}
 
 	/**
