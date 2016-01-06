@@ -2,10 +2,38 @@
 
 
 
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use SistemasAmigables\Entities\Check;
+use SistemasAmigables\Entities\Expense;
+use SistemasAmigables\Repositories\AccountRepository;
+use SistemasAmigables\Repositories\CheckRepository;
 
 class CheckController extends Controller {
+	/**
+	 * @var AccountRepository
+	 */
+	private $accountRepository;
+	/**
+	 * @var CheckRepository
+	 */
+	private $checkRepository;
 
+	/**
+	 * CheckController constructor.
+	 * @param AccountRepository $accountRepository
+	 * @param CheckRepository $checkRepository
+	 */
+	public function __construct(
+		AccountRepository $accountRepository,
+		CheckRepository $checkRepository
+	)
+	{
+
+		$this->accountRepository = $accountRepository;
+		$this->checkRepository = $checkRepository;
+	}
 	/**
 	 * Display a listing of checks
 	 *
@@ -24,7 +52,8 @@ class CheckController extends Controller {
 	 */
 	public function create()
 	{
-		return View::make('checks.create');
+		$accounts = $this->accountRepository->allData();
+		return View('checks.create', compact('accounts'));
 	}
 
 	/**
@@ -34,16 +63,18 @@ class CheckController extends Controller {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), Cheque::$rules);
+		$check = $this->convertionObjeto();
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+		$checks = $this->checkRepository->getModel();
 
-		Cheque::create($data);
+		if($checks->isValid($check)):
+			$checks->fill($check);
+			$checks->save();
 
-		return Redirect::route('checks.index');
+			return redirect()->route('create-gasto',$checks->id);
+		endif;
+
+		return redirect('iglesia/cheques/create')->withErrors($checks)->withInput();
 	}
 
 	/**

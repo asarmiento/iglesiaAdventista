@@ -7,6 +7,6 @@
  */
 
 Route::get('cheques',['as'=>'checks-lista','uses'=>'CheckController@index']);
-Route::get('cheques/{id}',['as'=>'checks-edit','uses'=>'CheckController@edit']);
+Route::get('cheques/create',['as'=>'checks-create','uses'=>'CheckController@create']);
+Route::post('cheques/create',['as'=>'checks-save','uses'=>'CheckController@store']);
 Route::get('cheques/{id}','CheckController@destroy');
-Route::resource('checks','CheckController');

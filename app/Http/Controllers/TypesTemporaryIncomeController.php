@@ -59,11 +59,8 @@ class TypesTemporaryIncomeController extends Controller {
 
             return redirect()->route('crear-variableType');
         }
-        echo json_encode($variableType);
-        die;
-        return redirect()->route('crear-variableType')
-            ->withErrors($variableType)
-            ->withInput();
+
+        return $this->errores($variableType->errors);
     }
 
     /**

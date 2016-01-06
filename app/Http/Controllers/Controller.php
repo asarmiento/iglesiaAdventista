@@ -1,8 +1,11 @@
 <?php namespace SistemasAmigables\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
+
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
 
 abstract class Controller extends BaseController {
 
@@ -34,9 +37,9 @@ abstract class Controller extends BaseController {
 	 */
 	public function convertionObjeto()
 	{
-		$datos = Input::get('data');
-		$DatosController = json_decode($datos);
-		return $DatosController;
+		$datos = Input::all();
+		//$DatosController = json_decode($datos);
+		return $datos;
 	}
 
 	protected function formatValidationErrors(Validator $validator)
