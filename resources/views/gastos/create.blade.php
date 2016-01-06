@@ -1,1 +1,0 @@
-C:\xampp\htdocs\iglesiaQuepos\app/views/gastos/create.blade.php

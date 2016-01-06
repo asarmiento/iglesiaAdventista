@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="{{ asset( 'img/favicon.png' ) }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/ladda-themeless.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.css')}}">
     <link rel="stylesheet" href="{{ asset('css/main.css')}}">
-</head>
+ </head>
 <body>
     <header>
         <div>
@@ -37,7 +38,7 @@
                                 <li><a href="">Iglesias</a></li>
                                 <li><a href="{{route('members-lista')}}">Miembros</a></li>
                                 <li><a href="{{url()}}/iglesia/informes">Informe Semanal</a></li>
-                                <li><a href="">Gastos</a></li>
+                                <li><a href="{{route('index-gasto')}}">Gastos</a></li>
                                 <li><a href="{{route('checks-lista')}}">Cheques</a></li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Configuración <span class="caret"></span></a>
@@ -67,11 +68,13 @@
             <p class="text-center">Elaborado por: Sistemas Amigables de Costa Rica SAOR S.A. &AMP; Otros Colaboradores &copy; Copyright </p>
         </div>
     </footer>
-    <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
+
+    <script src="{{ asset('js/lib/jquery.js') }}"></script>
     <script src="{{ asset('js/lib/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/lib/jquery.blockUI.min.js') }}"></script>
     <script src="{{ asset('js/lib/spin.min.js') }}"></script>
     <script src="{{ asset('js/lib/ladda.min.js') }}"></script>
+    <script src="{{ asset('js/lib/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
 </body>
 </html>

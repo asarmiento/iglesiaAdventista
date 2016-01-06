@@ -24,7 +24,7 @@ Route::post('auth/login', ['as' => 'auth/login', 'uses' => 'Auth\AuthController@
 Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController@getLogout']);
 
 
-Route::resource('gastos','ExpenseController');
+Route::resource('expenses','ExpenseController');
 
 
 Route::group(['prefix' => 'iglesia'], function () {
@@ -32,7 +32,8 @@ Route::group(['prefix' => 'iglesia'], function () {
 	Route::resource('iglesias','ChurchController');
 	/* Test para hacer pruebas */
 
-		$routes = ['members','checks','record','typeFix','variableTypes','incomes','departaments'];
+		$routes = ['members','checks','record','typeFix','variableTypes','incomes',
+			'departaments','expenses'];
 		/*
         * Rutas de Bancos
         */

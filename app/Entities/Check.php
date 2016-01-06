@@ -7,7 +7,7 @@ class Check extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['number','name','date','detail','amount','church_id'];
+    protected $fillable= ['number','name','date','detail','amount','church_id','account_id'];
 
     public function getRules()
     {
@@ -15,14 +15,17 @@ class Check extends Entity
             'number'    =>'required',
             'name'      =>'required',
             'date'      =>'required',
-            'amount'    =>'required',
-            'church_id' =>'required',
-            'detail'    =>'required'
+            'amount'    =>'required'
         ];
     }
 
     public function getExist()
     {
         // TODO: Implement getExist() method.
+    }
+
+    public function departaments()
+    {
+        return $this->belongsTo(Departament::getClass(),'departament_id','id');
     }
 }

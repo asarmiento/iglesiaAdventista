@@ -22,6 +22,10 @@ class Expense extends Entity
         ];
     }
 
+    public function departaments()
+    {
+        return $this->belongsTo(Departament::getClass(),'departament_id','id');
+    }
     public function getExist()
     {
         // TODO: Implement getExist() method.
