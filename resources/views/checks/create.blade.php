@@ -38,7 +38,9 @@
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
                     <select name="account_id" class="form-control" >
-                        <option value="1">Seleccione una cuenta</option>
+                        @foreach($accounts AS $account)
+                            <option value="{{$account->id}}">{{$account->name}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
