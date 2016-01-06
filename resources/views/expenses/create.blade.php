@@ -24,9 +24,21 @@
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
                 <select name="departament_id" class="form-control">
-                    <option></option>
+                    <option value=""></option>
                     @foreach($departaments AS $departament)
                         <option value="{{$departament->id}}">{{$departament->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <label for="date">Tipo de Gasto</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <select name="typeExpenses" class="form-control">
+                    <option value="">Elija una Opcion</option>
+                    @foreach($typeExpenses AS $typeExpense)
+                        <option value="{{$typeExpense->id}}">{{$typeExpense->name}}</option>
                     @endforeach
                 </select>
             </div>

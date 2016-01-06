@@ -26,6 +26,11 @@ class Expense extends Entity
     {
         return $this->belongsTo(Departament::getClass(),'departament_id','id');
     }
+
+    public function typeExpenses()
+    {
+        return $this->belongsToMany(TypeExpense::getClass(),'expense_typeExpense')->withPivot('balance');
+    }
     public function getExist()
     {
         // TODO: Implement getExist() method.
