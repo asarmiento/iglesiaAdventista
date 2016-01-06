@@ -56,7 +56,7 @@ class ExpenseController extends Controller {
 	{
 		$checks = $this->checkRepository->getModel()->find($id);
 		$departaments = $this->departamentRepository->allData();
-		$expenses= $this->expensesRepository->allData();
+		$expenses= $this->expensesRepository->oneWhere('check_id',$id);
 		return View('expenses.create',compact('checks','departaments','expenses'));
 	}
 
