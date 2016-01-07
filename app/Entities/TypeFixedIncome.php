@@ -24,7 +24,7 @@ class TypeFixedIncome extends Entity
 
     public function fixExponses()
     {
-        return $this->belongsToMany(Expense::getClass(),'expense_income','id','type_fixed_income_id')->withPivot('amount','types_temporary_income_id')->sum('expense_income.amount');
+        return $this->belongsToMany(Expense::getClass(),'expense_income','id','typeFixedIncome_id')->sum('expense_income.amount');
     }
 
     public function fixIncomes()
