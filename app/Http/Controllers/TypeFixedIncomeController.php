@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Input;
 use SistemasAmigables\Entities\Church;
+use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\TypeFixedRepository;
 
 class TypeFixedIncomeController extends Controller {
@@ -9,16 +10,24 @@ class TypeFixedIncomeController extends Controller {
      * @var TypeFixedRepository
      */
     private $typeFixedRepository;
+    /**
+     * @var IncomeRepository
+     */
+    private $incomeRepository;
 
     /**
      * TypeFixedIncomeController constructor.
      * @param TypeFixedRepository $typeFixedRepository
+     * @param IncomeRepository $incomeRepository
      */
     public function __construct(
-        TypeFixedRepository $typeFixedRepository
+        TypeFixedRepository $typeFixedRepository,
+        IncomeRepository $incomeRepository
+
     )
     {
         $this->typeFixedRepository = $typeFixedRepository;
+        $this->incomeRepository = $incomeRepository;
     }
     /**
      * Display a listing of tiposfijos
@@ -27,8 +36,8 @@ class TypeFixedIncomeController extends Controller {
      */
     public function index() {
         $tiposfijos = $this->typeFixedRepository->getModel()->all();
-
-        return View('tipos_fijos.index', compact('tiposfijos'));
+        $incomes = $this->incomeRepository->oneWhereList('typeFixedIncome_id',$tiposfijos[0]->id,'balance');
+        return View('tipos_fijos.index', compact('tiposfijos','incomes'));
     }
 
     /**
