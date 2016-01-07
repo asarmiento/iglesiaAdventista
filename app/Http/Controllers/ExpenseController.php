@@ -105,17 +105,17 @@ class ExpenseController extends Controller {
 			$expenses->save();
 			if($gasto['typeExpenses']):
 				$expenses->typeExpenses()->attach($gasto['typeExpenses'],['balance'=>$expenses->amount]);
-				$this->typeExpenseRepository->updateBalance($gasto['typeExpenses'],$expenses->amount,'balance');
+				$this->typeExpenseRepository->updatesOutBalance($gasto['typeExpenses'],$expenses->amount,'balance');
 			endif;
 			if($gasto['typeVar']):
 				$expenses->expenseVarIncome()->attach($gasto['typeVar'],['amount'=>$expenses->amount]);
-				$this->typeTemporaryIncomeRepository->updateBalance($gasto['typeVar'],$expenses->amount,'balance');
+				$this->typeTemporaryIncomeRepository->updatesOutBalance($gasto['typeVar'],$expenses->amount,'balance');
 			endif;
 			if($gasto['typefix']):
 				$expenses->expenseFixIncome()->attach($gasto['typefix'],['amount'=>$expenses->amount]);
-				$this->typeFixedRepository->updateBalance($gasto['typefix'],$expenses->amount,'balance');
+				$this->typeFixedRepository->updatesOutBalance($gasto['typefix'],$expenses->amount,'balance');
 			endif;
-			$this->departamentRepository->updateBalance($expenses->departament_id,$expenses->amount,'balance');
+			$this->departamentRepository->updatesOutBalance($expenses->departament_id,$expenses->amount,'balance');
 			return redirect()->route('create-gasto',$gasto['check_id']);
 		endif;
 
