@@ -31,6 +31,17 @@ class Expense extends Entity
     {
         return $this->belongsToMany(TypeExpense::getClass(),'expense_typeExpense')->withPivot('balance');
     }
+
+    public function expenseFixIncome()
+    {
+        return $this->belongsToMany(TypeFixedIncome::getClass(),'expense_income')->withPivot('amount','typesTemporaryIncome_id');
+    }
+
+    public function expenseVarIncome()
+    {
+        return $this->belongsToMany(TypesTemporaryIncome::getClass(),'expense_income')->withPivot('amount','typeFixedIncome_id');
+    }
+
     public function getExist()
     {
         // TODO: Implement getExist() method.
