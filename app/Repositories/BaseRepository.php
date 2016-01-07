@@ -65,4 +65,12 @@ abstract class BaseRepository {
         $this->newQuery()->where('id',$id)->update([$data=>$newbalance]);
 
     }
+
+    public function updatesOutBalance($id,$amount,$data)
+    {
+        $balance= $this->oneWhere('id',$id);
+        $newbalance= $balance[0]->balance - $amount;
+        $this->newQuery()->where('id',$id)->update([$data=>$newbalance]);
+
+    }
 }

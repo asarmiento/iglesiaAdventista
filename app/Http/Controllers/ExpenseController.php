@@ -4,6 +4,8 @@ use SistemasAmigables\Repositories\CheckRepository;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\TypeExpenseRepository;
+use SistemasAmigables\Repositories\TypeFixedRepository;
+use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
 
 class ExpenseController extends Controller {
 	/**
@@ -22,6 +24,14 @@ class ExpenseController extends Controller {
 	 * @var TypeExpenseRepository
 	 */
 	private $typeExpenseRepository;
+	/**
+	 * @var TypeTemporaryIncomeRepository
+	 */
+	private $typeTemporaryIncomeRepository;
+	/**
+	 * @var TypeFixedRepository
+	 */
+	private $typeFixedRepository;
 
 	/**
 	 * ExpenseController constructor.
@@ -29,12 +39,16 @@ class ExpenseController extends Controller {
 	 * @param CheckRepository $checkRepository
 	 * @param DepartamentRepository $departamentRepository
 	 * @param TypeExpenseRepository $typeExpenseRepository
+	 * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+	 * @param TypeFixedRepository $typeFixedRepository
 	 */
 	public function __construct(
 		ExpensesRepository $expensesRepository,
 		CheckRepository $checkRepository,
 		DepartamentRepository $departamentRepository,
-		TypeExpenseRepository $typeExpenseRepository
+		TypeExpenseRepository $typeExpenseRepository,
+		TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository,
+		TypeFixedRepository $typeFixedRepository
 	)
 	{
 
@@ -42,6 +56,8 @@ class ExpenseController extends Controller {
 		$this->checkRepository = $checkRepository;
 		$this->departamentRepository = $departamentRepository;
 		$this->typeExpenseRepository = $typeExpenseRepository;
+		$this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
+		$this->typeFixedRepository = $typeFixedRepository;
 	}
 	/**
 	 * Display a listing of expenses
@@ -67,7 +83,10 @@ class ExpenseController extends Controller {
 		$expenses= $this->expensesRepository->oneWhere('check_id',$id);
 		$total= $this->expensesRepository->oneWhereList('check_id',$id,'amount');
 		$typeExpenses= $this->typeExpenseRepository->allData();
-		return View('expenses.create',compact('checks','departaments','expenses','total','typeExpenses'));
+		$typeFixs = $this->typeFixedRepository->allData();
+		$typeVars = $this->typeTemporaryIncomeRepository->allData();
+		return View('expenses.create',compact('checks','departaments',
+			'expenses','total','typeExpenses','typeFixs','typeVars'));
 	}
 
 	/**
@@ -87,6 +106,14 @@ class ExpenseController extends Controller {
 			if($gasto['typeExpenses']):
 				$expenses->typeExpenses()->attach($gasto['typeExpenses'],['balance'=>$expenses->amount]);
 				$this->typeExpenseRepository->updateBalance($gasto['typeExpenses'],$expenses->amount,'balance');
+			endif;
+			if($gasto['typeVar']):
+				$expenses->expenseVarIncome()->attach($gasto['typeVar'],['amount'=>$expenses->amount]);
+				$this->typeTemporaryIncomeRepository->updateBalance($gasto['typeVar'],$expenses->amount,'balance');
+			endif;
+			if($gasto['typefix']):
+				$expenses->expenseFixIncome()->attach($gasto['typefix'],['amount'=>$expenses->amount]);
+				$this->typeFixedRepository->updateBalance($gasto['typefix'],$expenses->amount,'balance');
 			endif;
 			$this->departamentRepository->updateBalance($expenses->departament_id,$expenses->amount,'balance');
 			return redirect()->route('create-gasto',$gasto['check_id']);

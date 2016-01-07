@@ -71,7 +71,7 @@ class CheckController extends Controller {
 			$checks->fill($check);
 			$checks->save();
 			$checks->accounts()->attach($checks->account_id,['balance'=>($checks->balance*-1)]);
-			$this->accountRepository->updateBalance($checks->account_id,$checks->balance,'balance');
+			$this->accountRepository->updatesOutBalance($checks->account_id,$checks->balance,'balance');
 			return redirect()->route('create-gasto',$checks->id);
 		endif;
 

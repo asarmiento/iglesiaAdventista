@@ -32,13 +32,25 @@
             </div>
         </div>
         <div class="col-sm-6 col-md-6">
-            <label for="date">Tipo de Gasto</label>
+            <label for="date">Tipo de Fijos</label>
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                <select name="typeExpenses" class="form-control">
+                <select name="typefix" class="form-control">
                     <option value="">Elija una Opcion</option>
-                    @foreach($typeExpenses AS $typeExpense)
-                        <option value="{{$typeExpense->id}}">{{$typeExpense->name}}</option>
+                    @foreach($typeFixs AS $typeFix)
+                        <option value="{{$typeFix->id}}">{{$typeFix->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <label for="date">Tipo  Variables</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <select name="typeVar" class="form-control">
+                    <option value="">Elija una Opcion</option>
+                    @foreach($typeVars AS $typeVar)
+                        <option value="{{$typeVar->id}}">{{$typeVar->name}}</option>
                     @endforeach
                 </select>
             </div>
