@@ -24,7 +24,7 @@ class TypesTemporaryIncome extends Entity
 
     public function varExponses()
     {
-        return $this->belongsToMany(Expense::getClass(),'expense_income','id','types_temporary_income_id')->withPivot('amount','type_fixed_income_id')->sum('expense_income.amount');
+        return $this->belongsToMany(Expense::getClass(),'expense_income','id','types_temporary_income_id')->sum('expense_income.amount');
     }
 
     public function varIncomes()
