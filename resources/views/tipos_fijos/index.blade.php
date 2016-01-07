@@ -27,8 +27,8 @@ Lista Tipos Fijos
                 <tr>
             <td>{{$key+1}}</td>
             <td>{{$tipoFijo->name}}</td>
-                    <td>{{number_format($incomes,2)}}</td>
-                    <td></td>
+                    <td>{{number_format($tipoFijo->fixIncomes(),2)}}</td>
+                    <td>{{number_format($tipoFijo->fixExponses(),2)}}</td>
                     <td>{{number_format($tipoFijo->balance,2)}}</td>
                     <td><a class="btn btn-warning" href="{{route('typeFix-edit',$tipoFijo->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
             </tr>
