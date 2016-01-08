@@ -40,7 +40,7 @@ class CheckController extends Controller {
 	 * @return Response
 	 */
 	public function index()
-	{   $checks = Check::all();
+	{   $checks = Check::orderBy('date','DESC')->orderBy('number','DESC')->get();
                
 		return View('checks.index', compact('checks'));
 	}

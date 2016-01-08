@@ -21,6 +21,9 @@ class TypeFixedRepository extends BaseRepository
     {
         return new TypeFixedIncome();
     }
-
-
+	
+	public function sumaTotal($id)
+	{
+		$this->newQuery()->where('id',$id)->sum('amount');
+	}
 }
