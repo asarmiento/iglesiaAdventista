@@ -37,7 +37,7 @@
                 <label for="date">Cuenta Bancaria: </label>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                    <select name="account_id" class="form-control" >
+                    <select name="account_id" class="form-control select2" >
                         @foreach($accounts AS $account)
                             <option value="{{$account->id}}">{{$account->name}}</option>
                         @endforeach

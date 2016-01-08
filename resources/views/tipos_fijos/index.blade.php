@@ -2,7 +2,9 @@
 @section('title')
 Tipos Fijos
 @stop
-
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}">
+@stop
 @section('title-form')
 Lista Tipos Fijos
 @stop
@@ -11,7 +13,7 @@ Lista Tipos Fijos
     <div class="panel-body">
         <div class="btn btn-info"><a href="{{route('crear-typeFix')}}"  class="button radius">Nuevo</a></div>
 
-        <table class="table-bordered">
+        <table id="type_fix" class="table-bordered">
             <thead>
                 <tr>
                     <th width="200">Nº</th>
@@ -36,4 +38,7 @@ Lista Tipos Fijos
             </tbody>
         </table>
     </div>
+@stop
+@section('scripts')
+    <script src="{{ asset('js/lib/dataTables.bootstrap.js') }}"></script>
 @stop

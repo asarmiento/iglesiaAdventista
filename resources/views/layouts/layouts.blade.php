@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/ladda-themeless.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.css')}}">
-    <link rel="stylesheet" href="{{ asset('css/main.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/lib/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main.css')}}">
+    @yield('styles')
 </head>
 <body>
     <header>
@@ -69,14 +70,14 @@
             <p class="text-center">Elaborado por: Sistemas Amigables de Costa Rica SAOR S.A. &AMP; Otros Colaboradores &copy; Copyright </p>
         </div>
     </footer>
-
-	<script src="{{ asset('js/lib/select2.min.js') }}"></script>
-	<script src="{{ asset('js/lib/jquery.js') }}"></script>
+    <script src="{{ asset('js/lib/jquery.js') }}"></script>
     <script src="{{ asset('js/lib/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/lib/jquery.blockUI.min.js') }}"></script>
     <script src="{{ asset('js/lib/spin.min.js') }}"></script>
     <script src="{{ asset('js/lib/ladda.min.js') }}"></script>
     <script src="{{ asset('js/lib/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('js/lib/select2.min.js') }}"></script>
+    @yield('scripts')
     <script src="{{ asset('js/main.js') }}"></script>
 </body>
 </html>

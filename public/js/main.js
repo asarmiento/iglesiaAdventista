@@ -1,6 +1,38 @@
+/**
+ * [exists description]
+ * @return {[type]} [description]
+ */
+jQuery.fn.exists = function() {
+    return this.length>0;
+}
 
-
-
+/**
+ * @param  {[string]} selector [id table]
+ * @param  {[string]} list [comment the table]
+ * @return {[dataTable]}   [table with options dataTable]
+ */
+var dataTable = function(selector, list){
+	var options = {
+		"order": [
+            [0, "asc"]
+        ],
+        "bLengthChange": true,
+        //'iDisplayLength': 7,
+        "oLanguage": {
+        	"sLengthMenu": "_MENU_ registros por página",
+        	"sInfoFiltered": " - filtrada de _MAX_ registros",
+            "sSearch": "Buscar: ",
+            "sZeroRecords": "No existen, " + list,
+            "sInfoEmpty": " ",
+            "sInfo": 'Mostrando _END_ de _TOTAL_',
+            "oPaginate": {
+                "sPrevious": "Anterior",
+                "sNext": "Siguiente"
+            }
+        }
+	};
+	$(selector).DataTable(options);
+};
 
 var ajaxForm = function (resource, type, data, form, method){
 	var url= server + resource;
@@ -389,6 +421,9 @@ $(function(){
 		});
 		return total;
 	};
+	dataTable('#type_fix', 'tipos fijos');
 
-
+	if($('.select2').exists()){
+		$('.select2').select2();
+	}
 });
