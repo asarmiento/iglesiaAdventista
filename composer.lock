@@ -5,7 +5,6 @@
         "This file is @generated automatically"
     ],
     "hash": "1bf0584238b878ef391c2309b379a95c",
-    "content-hash": "5f8cb24937cbd6a14255b726b41dbf38",
     "packages": [
         {
             "name": "anouar/fpdf",
