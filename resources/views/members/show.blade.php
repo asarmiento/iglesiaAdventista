@@ -26,7 +26,7 @@
             </div>
         @endforeach
         <div>
-            <label>Total Del Año: {{number_format($miembro->incomes->oneWhere('typesTemporaryIncome_id',$temporal->id)) }} </label>
+            <label>Total Del Año: {{number_format($miembro->incomes->oneWhere('member_id',$miembro->id)) }} </label>
         </div>
         @else
         <div>No tiene Registros</div>
