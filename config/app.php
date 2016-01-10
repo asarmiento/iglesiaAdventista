@@ -137,6 +137,7 @@ return [
 		'Illuminate\View\ViewServiceProvider',
 		Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
+		Anouar\Fpdf\FpdfServiceProvider::class,
 		/*
 		 * Application Service Providers...
 		 */
@@ -194,8 +195,9 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 
-		'Form' => Collective\Html\FormFacade::class,
-		'Html' => Collective\Html\HtmlFacade::class,
+		'Form' 		=> Collective\Html\FormFacade::class,
+		'Html' 		=> Collective\Html\HtmlFacade::class,
+		'Fpdf'    	=> Anouar\Fpdf\Facades\Fpdf::class,
 
 	],
 

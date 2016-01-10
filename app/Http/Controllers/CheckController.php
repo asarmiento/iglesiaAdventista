@@ -40,7 +40,7 @@ class CheckController extends Controller {
 	 * @return Response
 	 */
 	public function index()
-	{   $checks = Check::orderBy('date','DESC')->orderBy('number','DESC')->get();
+	{   $checks = Check::orderBy('number','DESC')->get();
                
 		return View('checks.index', compact('checks'));
 	}
@@ -65,6 +65,12 @@ class CheckController extends Controller {
 	{
 		$check = $this->convertionObjeto();
 
+		$very = $this->checkRepository->oneWhere('number',$check['number']);
+
+		if(!$very->isEmpty()):
+			return redirect('iglesia/cheques/create')
+				->with(['message'=>'EL Cheque numero #: '.$check['number'].' ya Existe ']);
+		endif;
 		$checks = $this->checkRepository->getModel();
 
 		if($checks->isValid($check)):
