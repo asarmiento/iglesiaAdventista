@@ -75,7 +75,7 @@ class TestController extends Controller {
         $members= $this->memberRepository->allData();
 
         foreach ($members as $member) {
-            $this->memberRepository->getModel()->where('id',$member->id)->update('_token',Crypt::encrypt($member->name));
+            $this->memberRepository->getModel()->where('id',$member->id)->update(['_token'=>Crypt::encrypt($member->name)]);
         }
     }
 
