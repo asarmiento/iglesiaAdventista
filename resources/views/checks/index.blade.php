@@ -17,8 +17,8 @@ Lista Cheques
             <th width="150">Fecha</th> 
             <th width="150">Monto</th> 
             <th width="150">Numero</th>
-            <th width="50">Editar</th> 
-            <th width="50">Eliminar</th> 
+            <th width="50">detalle</th>
+            <th width="50"></th>
         </tr>
     </thead> 
     <tbody>
@@ -27,10 +27,10 @@ Lista Cheques
     <td>{{$key+1}}</td>
     <td>{{$check->name}}</td>
     <td>{{$check->date}}</td>
-    <td>{{$check->amount}}</td>
+    <td>{{$check->balance}}</td>
     <td>{{$check->number}}</td>
-    <td><a class="btn btn-warning" href="#"><span class="glyphicon glyphicon-pencil"></span></a></td>
-    <td><a class="btn btn-warning" href="#"><span class="glyphicon glyphicon-remove"></span></a></td>
+    <td><a href="{{route('ver-gasto',$check->id)}}"><i class="fa fa-eye"></i></a></td>
+    <td></td>
     </tr>
         @endforeach
     </tbody>
