@@ -51,12 +51,15 @@ class TestController extends Controller {
         $tipoFijos = $this->typeFixedRepository->allData();
 
         foreach($tipoFijos AS $tipoFijo):
+            foreach($tipoFijo->expenses AS $expense):
+            echo json_encode($expense->pivot->amount);
 
-            $incomes = $this->incomeRepository->oneWhereList('typeFixedIncome_id',$tipoFijo->id);
-            $this->typeFixedRepository->updateBalance($tipoFijo->id,$incomes);
+        //    $incomes = $this->incomeRepository->oneWhereList('typeFixedIncome_id',$tipoFijo->id);
+          //  $this->typeFixedRepository->updateBalance($tipoFijo->id,$incomes);
 
         endforeach;
-
+        endforeach;
+        die;
         $tipoVars = $this->typeTemporaryIncomeRepository->allData();
 
         foreach($tipoVars AS $tipoVar):
