@@ -32,7 +32,7 @@ Route::group(['prefix' => 'iglesia'], function () {
 	Route::resource('iglesias','ChurchController');
 	/* Test para hacer pruebas */
 	Route::get('reportes/fondos', ['as' => 'fondos-report', 'uses' => 'ReportController@index']);
-	Route::post('reportes/fondos', ['as' => 'post-report', 'uses' => 'ReportController@store']);
+	Route::get('reportes/fondos/{date}', ['as' => 'post-report', 'uses' => 'ReportController@store']);
 		$routes = ['members','checks','record','typeFix','variableTypes','incomes',
 			'departaments','expenses','test'];
 		/*

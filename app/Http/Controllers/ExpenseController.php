@@ -128,11 +128,12 @@ class ExpenseController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($token)
 	{
-		$gasto = Gasto::findOrFail($id);
-
-		return View::make('expenses.show', compact('gasto'));
+		$cheques = $this->checkRepository->getModel()->find($token);
+		$gastos = $this->expensesRepository->oneWhere('check_id',$token);
+		$monto = $this->expensesRepository->oneWhereList('check_id',$token,'amount');
+		return View('expenses.show', compact('cheques','gastos','monto'));
 	}
 
 	/**

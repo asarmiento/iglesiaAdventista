@@ -40,8 +40,15 @@ class Income extends Entity
         return $this->where($data,$id)->where($data1,$id1)->sum('balance');
     }
 
+    public function treeWhere($data,$id,$data1,$id1,$data2,$id2)
+    {
+        return $this->where($data,$id)->where($data2,$id2)->where($data1,$id1)->sum('balance');
+    }
+
     public function oneWhere($data,$id)
     {
         return $this->where($data,$id)->sum('balance');
     }
+
+
 }
