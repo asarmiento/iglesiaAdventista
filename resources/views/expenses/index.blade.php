@@ -8,8 +8,8 @@ Lista Gastos
 @stop
 
 @section('content')
-    <div>
-<table id="table_gastos" class="table">
+    <div class="panel-body">
+<table  id="table_expense" class="table-bordered">
     <thead>
         <tr> 
             <th>Nº</th>

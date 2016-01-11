@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Input;
 use SistemasAmigables\Entities\Church;
+use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\TypeFixedRepository;
 
@@ -14,20 +15,27 @@ class TypeFixedIncomeController extends Controller {
      * @var IncomeRepository
      */
     private $incomeRepository;
+    /**
+     * @var ExpensesRepository
+     */
+    private $expensesRepository;
 
     /**
      * TypeFixedIncomeController constructor.
      * @param TypeFixedRepository $typeFixedRepository
      * @param IncomeRepository $incomeRepository
+     * @param ExpensesRepository $expensesRepository
      */
     public function __construct(
         TypeFixedRepository $typeFixedRepository,
-        IncomeRepository $incomeRepository
+        IncomeRepository $incomeRepository,
+        ExpensesRepository $expensesRepository
 
     )
     {
         $this->typeFixedRepository = $typeFixedRepository;
         $this->incomeRepository = $incomeRepository;
+        $this->expensesRepository = $expensesRepository;
     }
     /**
      * Display a listing of tiposfijos
@@ -37,6 +45,7 @@ class TypeFixedIncomeController extends Controller {
     public function index() {
         $tiposfijos = $this->typeFixedRepository->getModel()->all();
         $incomes = $this->incomeRepository->oneWhereList('typeFixedIncome_id',$tiposfijos[0]->id,'balance');
+       // $expenses = $this->expensesRepository->oneWhereList('typeFixedIncome_id',$tiposfijos[0]->id,'balance');
         return View('tipos_fijos.index', compact('tiposfijos','incomes'));
     }
 

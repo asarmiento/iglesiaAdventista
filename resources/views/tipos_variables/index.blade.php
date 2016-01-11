@@ -14,7 +14,8 @@ Lista Tipos Variables
         } );
     </script>
 <div class="btn btn-info"><a href="{{route('crear-variableType')}}"  class="button radius">Nuevo</a></div>
-<table id="table_variable" class="display">
+    <div class="panel-body">
+<table id="table_variable" class="table-bordered">
     <thead>
         <tr> 
             <th width="200">Nº</th>
@@ -39,4 +40,5 @@ Lista Tipos Variables
         @endforeach
     </tbody>
 </table>
+    </div>
 @stop

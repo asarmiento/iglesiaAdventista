@@ -426,4 +426,12 @@ $(function(){
 	if($('.select2').exists()){
 		$('.select2').select2();
 	}
+
+	dataTable('#table_check', 'Cheques');
+	dataTable('#table_expense', 'Gastos');
+	dataTable('#table_income', 'Ingresos');
+	dataTable('#table_informe', 'Informe');
+	dataTable('#table_variable', 'Tipos Variables');
+	dataTable('#table_member', 'Miembros');
+	dataTable('#table_depart', 'Departamentos');
 });

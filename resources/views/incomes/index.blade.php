@@ -9,7 +9,7 @@ Lista Ingresos
 
 @section('content')
 <div><a href=""  class="button radius">Crear</a></div>
-<table>
+<table  id="table_income" class="table-bordered">
     <thead>
         <tr> 
             <th>Nº</th>
