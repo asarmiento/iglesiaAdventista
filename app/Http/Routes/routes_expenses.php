@@ -11,4 +11,5 @@
 Route::get('gastos/create/{id}',['as'=>'create-gasto','uses'=>'ExpenseController@create']);
 Route::get('gastos',['as'=>'index-gasto','uses'=>'ExpenseController@index']);
 Route::get('gastos/edit/{token}',['as'=>'editar-gasto','uses'=>'ExpenseController@showInforme']);
+Route::get('gastos/ver/{token}',['as'=>'ver-gasto','uses'=>'ExpenseController@show']);
 Route::post('gastos/create',['as'=>'gasto-store','uses'=>'ExpenseController@store']);

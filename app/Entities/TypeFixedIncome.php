@@ -31,4 +31,9 @@ class TypeFixedIncome extends Entity
     {
         return $this->belongsTo(Income::getClass(),'id','typeFixedIncome_id')->sum('balance');
     }
+
+    public function incomes()
+    {
+        return $this->belongsTo(Income::getClass(),'id','typeFixedIncome_id');
+    }
 }

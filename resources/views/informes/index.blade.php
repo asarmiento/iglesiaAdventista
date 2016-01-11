@@ -19,8 +19,8 @@ Lista Informes Semanales
             <th width="150">Lineas</th>
             <th width="150">Sábado</th>
             <th width="150">Monto</th>
-            <th width="50">Ver Semanal </th>
-            <th width="50">Eliminar</th> 
+            <th width="50">Ver / Ingresar</th>
+            <th width="50">Pdf</th>
         </tr>
     </thead> 
     <tbody> 
@@ -33,11 +33,11 @@ Lista Informes Semanales
             <td>{{$informe->saturday}}</td>
             <td>{{number_format($informe->balance,2)}}</td>
             @if(($informe->incomes->isEmpty()))
-            <td><a href="{{route('create-income',$informe->_token)}}">No tiene Inf.</a></td>
+            <td><a href="{{route('create-income',$informe->_token)}}"><i class="fa fa-book"></i></a></td>
             @else
-            <td><a class="btn btn-link" href="{{route('informe-semanal',$informe->_token )}}">Ver</a></td>
+            <td><a href="{{route('informe-semanal',$informe->_token )}}"><i class="fa fa-check"></i></a></td>
             @endif
-            <td></td>
+            <td><a  href="{{route('post-report',$informe->saturday )}}"><i class="fa fa-file-pdf-o"></i></a></td>
         </tr>
         @endforeach
     </tbody>
