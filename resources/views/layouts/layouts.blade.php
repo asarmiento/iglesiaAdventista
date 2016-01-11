@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset( 'img/favicon.png' ) }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/ladda-themeless.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('packages/font-awesome-4.5.0/css/font-awesome.css')}}">
     <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/lib/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css')}}">
@@ -18,7 +19,7 @@
             <a href="#"><img id="logo" src="{{ asset('img/LogoEs.png') }}" alt=""></a>
             <div class="auth">
                 <span class="user">
-                    hola
+
                 </span>
                 <span class="church">
                     Bienvenido a la Iglesia Quepos
@@ -48,6 +49,7 @@
                                         <li><a href="{{route('index-depart')}}">Departamentos</a></li>
                                         <li><a href="{{route('typeFix-lista')}}">Tipos Fijos</a></li>
                                         <li><a href="{{route('variableType-lista')}}">Tipos Variables</a></li>
+                                        <li><a href="{{route('fondos-report')}}">Reporte Fondos</a></li>
                                         <li><a href="{{url()}}/iglesia/type_users">Tipos de Usuarios</a></li>
                                     </ul>
                                 </li>

@@ -8,20 +8,38 @@ use Illuminate\Support\Facades\Redirect;
 use SistemasAmigables\Entities\Church;
 use SistemasAmigables\Entities\Member;
 use SistemasAmigables\Repositories\MemberRepository;
+use SistemasAmigables\Repositories\TypeFixedRepository;
+use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
 
 class MemberController extends Controller {
     /**
      * @var MemberRepository
      */
     private $memberRepository;
+    /**
+     * @var TypeFixedRepository
+     */
+    private $typeFixedRepository;
+    /**
+     * @var TypeTemporaryIncomeRepository
+     */
+    private $typeTemporaryIncomeRepository;
 
     /**
      * @param MemberRepository $memberRepository
+     * @param TypeFixedRepository $typeFixedRepository
+     * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
      */
-    public function __construct(MemberRepository $memberRepository)
+    public function __construct(
+        MemberRepository $memberRepository,
+        TypeFixedRepository $typeFixedRepository,
+        TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+    )
     {
 
         $this->memberRepository = $memberRepository;
+        $this->typeFixedRepository = $typeFixedRepository;
+        $this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
     }
     /**
      * Display a listing of members
@@ -77,16 +95,31 @@ class MemberController extends Controller {
 
     }
 
-    /**
-     * Display the specified miembro.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id) {
-        $miembro = Member::findOrFail($id);
-
-        return View::make('members.show', compact('miembro'));
+    /*
+    |---------------------------------------------------------------------
+    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+    |@Date Create: 2015-01-10
+    |@Date Update: 2015-00-00
+    |---------------------------------------------------------------------
+    |@Description:
+    |
+    |
+    |@Pasos:
+    |
+    |
+    |
+    |
+    |
+    |
+    |----------------------------------------------------------------------
+    | @return mixed
+    |----------------------------------------------------------------------
+    */
+    public function view($token) {
+        $miembro = $this->memberRepository->token($token);
+        $fixes = $this->typeFixedRepository->allData();
+        $temporals = $this->typeTemporaryIncomeRepository->allData();
+        return View('members.show', compact('miembro','fixes','temporals'));
     }
 
     /**

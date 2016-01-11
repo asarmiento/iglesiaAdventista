@@ -8,7 +8,7 @@ class Member extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['name','last','bautizmoDate','birthdate','phone','cell','email','church_id'];
+    protected $fillable= ['name','last','bautizmoDate','birthdate','phone','cell','email','church_id','_token'];
 
     public function getRules()
     {
@@ -22,5 +22,13 @@ class Member extends Entity
     public function getExist()
     {
         // TODO: Implement getExist() method.
+    }
+    public function incomes()
+    {
+        return $this->belongsTo(Income::getClass(),'id','member_id');
+    }
+    public function completo()
+    {
+        return $this->name. '  '.$this->last;
     }
 }

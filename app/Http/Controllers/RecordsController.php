@@ -69,16 +69,38 @@ class RecordsController extends Controller {
         return View('informes.create', compact('informes','consecutive'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * POST /historial
-     *
-     * @return Response
-     */
+    /*
+    |---------------------------------------------------------------------
+    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+    |@Date Create: 2015-00-00
+    |@Date Update: 2015-00-00
+    |---------------------------------------------------------------------
+    |@Description:
+    |
+    |
+    |@Pasos:
+    |
+    |
+    |
+    |
+    |
+    |
+    |----------------------------------------------------------------------
+    | @return mixed
+    |----------------------------------------------------------------------
+    */
     public function store(Request $request) {
 
         $record=  $this->recordRepository->getModel();
         $data = $request->all();
+
+        $very = $this->recordRepository->oneWhere('controlNumber',$data['controlNumber']);
+
+        if(!$very->isEmpty()):
+            return redirect('iglesia/informes/create')
+                ->with(['message'=>'EL Informe numero #: '.$data['controlNumber'].' ya Existe ']);
+        endif;
+
         $data['_token']= md5($data['controlNumber']);
 
         if ($record->isValid($data)):
@@ -95,48 +117,6 @@ class RecordsController extends Controller {
             ->withInput();
     }
 
-    /**
-     * Display the specified resource.
-     * GET /historial/{id}
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id) {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     * GET /historial/{id}/edit
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id) {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * PUT /historial/{id}
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function update($id) {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * DELETE /historial/{id}
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id) {
-        //
-    }
 
 }

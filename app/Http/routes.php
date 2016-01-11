@@ -31,9 +31,10 @@ Route::group(['prefix' => 'iglesia'], function () {
 
 	Route::resource('iglesias','ChurchController');
 	/* Test para hacer pruebas */
-
+	Route::get('reportes/fondos', ['as' => 'fondos-report', 'uses' => 'ReportController@index']);
+	Route::post('reportes/fondos', ['as' => 'post-report', 'uses' => 'ReportController@store']);
 		$routes = ['members','checks','record','typeFix','variableTypes','incomes',
-			'departaments','expenses'];
+			'departaments','expenses','test'];
 		/*
         * Rutas de Bancos
         */
@@ -50,5 +51,5 @@ Route::resource('users','UsersController');
 Route::put('type_users/restore/{id}',array('as' => 'restore_tuser', 'uses' => 'TypeUsersController@restore'));
 Route::put('iglesias/restore/{id}',array('as' => 'restore_iglesia', 'uses' => 'ChurchController@restore'));
 //test
-Route::get('test', 'TestController@show');
+
 //Route::get('vista/{$variable}', array('as' => 'vista',    'uses' => 'vistaController@vista'));

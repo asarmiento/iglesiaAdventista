@@ -9,6 +9,7 @@
 
 @section('content')
     <div>@include('partials/errors')</div>
+    <div>@include('partials/message')</div>
     <form action="{{route('checks-save')}}" method="post">
         <div class="row">
             <div class="col-sm-6 col-md-6">
@@ -56,6 +57,7 @@
         </br>
         <div class="row">
             <div class="large-12 columns text-center">
+                <td><a href="{{url()}}/iglesia/cheques"  class="btn btn-info radius">Regresar</a></td>
                 <input type="submit" value="Guardar" class="btn btn-info radius" />
             </div>
         </div>

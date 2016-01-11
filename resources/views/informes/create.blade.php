@@ -11,6 +11,7 @@ Lista Informes Semanales
     <div class="panel">
 
 <div>@include('partials/errors')</div>
+<div>@include('partials/message')</div>
 <form action="{{route('save-record')}}" method="post" role="form" class="form-inline">
 <table class="table">
 
@@ -34,7 +35,7 @@ Lista Informes Semanales
     </tr>
 
     <tr>
-        <td><a href="{{url()}}/informes"  class="btn btn-info radius">Regresar</a></td>
+        <td><a href="{{url()}}/iglesia/informes"  class="btn btn-info radius">Regresar</a></td>
         <td class="center-block" colspan="6"><input type="submit" value="Agregar" class="btn btn-info radius" /></td>
     </tr>
     </tbody>
