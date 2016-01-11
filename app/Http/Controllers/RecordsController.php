@@ -34,7 +34,7 @@ class RecordsController extends Controller {
     |----------------------------------------------------------------------
     */
     public function index() {
-        $informes = $this->recordRepository->getModel()->orderBy('id','DESC')->paginate(20);
+        $informes = $this->recordRepository->getModel()->orderBy('id','DESC')->get();
         return View('informes.index', compact('informes'));
     }
 
