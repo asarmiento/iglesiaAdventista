@@ -9,29 +9,28 @@ Lista Departamentos
 
 @section('content')
 <div class="btn btn-info"><a href="{{route('create-depart')}}"  class="button radius">Nuevo</a></div>
-<table class="table-condensed">
+<div class="panel-body">
+<table id="table_depart" class="table-condensed">
     <thead>
         <tr> 
             <th>Nº</th>
-            <th width="200">Departamento</th> 
-            <th width="50">Presupuesto</th>
-            <th width="50">Saldo Mes</th>
-            <th width="50">Gastado</th>
+            <th>Departamento</th>
+            <th>Presupuesto</th>
+            <th>Saldo Mes</th>
+            <th>Gastado</th>
         </tr>
     </thead> 
     <tbody> 
 @foreach($departaments AS $key=>$departament)
         <tr>
-    <td>{{$key+1}}</td>
-    <td>{{$departament->name}}</td>
-    <td>{{$departament->budget}}</td>
+            <td>{{$key+1}}</td>
+            <td>{{$departament->name}}</td>
+            <td>{{$departament->budget}}</td>
             <td></td>
-    <td>{{$departament->balance}}</td>
-    </tr>
+            <td>{{$departament->balance}}</td>
+        </tr>
         @endforeach
     </tbody>
 </table>
-<div class="container">
-    {!! $departaments->render()!!}
 </div>
 @stop

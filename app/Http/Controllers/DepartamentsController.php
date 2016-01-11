@@ -26,7 +26,7 @@ class DepartamentsController extends Controller {
      * @return Response
      */
     public function index() {
-        $departaments = $this->departamentRepository->getModel()->paginate(10);
+        $departaments = $this->departamentRepository->allData();
 
         return View('departamentos.index', compact('departaments'));
     }

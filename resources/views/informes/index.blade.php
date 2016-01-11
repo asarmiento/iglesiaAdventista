@@ -10,7 +10,9 @@ Lista Informes Semanales
 @section('content')
     <div class="panel panel-body">
 <div class="btn btn-info"><a href="{{route('create-record')}}"  class="button radius">Nuevo Informe</a></div>
-<table class="table table-bordered">
+        <div class="panel-body">
+<table id="table_informe" class="table table-bordered">
+
     <thead>
         <tr> 
             <th>Nº</th>
@@ -42,6 +44,6 @@ Lista Informes Semanales
         @endforeach
     </tbody>
 </table>
-   <div class="pull-right"> {!! $informes->render()!!}</div>
+</div>
     </div>
 @stop

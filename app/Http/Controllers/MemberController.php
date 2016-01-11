@@ -47,7 +47,7 @@ class MemberController extends Controller {
      * @return Response
      */
     public function index() {
-        $members = Member::paginate(20);
+        $members = $this->memberRepository->allData();
 
         return View('members.index', compact('members'));
     }

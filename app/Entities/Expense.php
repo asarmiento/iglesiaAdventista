@@ -45,6 +45,16 @@ class Expense extends Entity
         return $this->belongsToMany(TypesTemporaryIncome::getClass(),'expense_income')->withPivot('amount','typeFixedIncome_id');
     }
 
+    public function suma()
+    {
+        return $this->sum('amount');
+    }
+
+    public function oneWhere($data,$id)
+    {
+        return $this->where($data,$id)->sum('balance');
+    }
+
     public function getExist()
     {
         // TODO: Implement getExist() method.
