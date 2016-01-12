@@ -81,12 +81,13 @@ class ReportController extends  Controller
 
     public function store($date)
     {
-        $date = Input::get('date');
+        //$date = Input::get('date');
 
         $fixs = $this->typeFixedRepository->allData();
         $temporals = $this->typeTemporaryIncomeRepository->allData();
         $miembros = $this->memberRepository->allData();
-        $this->header($miembros);
+        $income = $this->incomeRepository->getModel();
+        $this->header($date);
 
         $pdf    = Fpdf::SetFont('Arial','B',7);
         $pdf    = Fpdf::SetX(5);
@@ -95,25 +96,33 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::Cell(13,7,utf8_decode('Recibo N°'),1,0,'C');
         $i=0;
         foreach($fixs AS $fix): $i++;
-        $pdf  .= Fpdf::Cell(12,7,substr(utf8_decode($fix->name),0,8),1,0,'C');
+
+        $pdf  .= Fpdf::Cell(13,7,substr(utf8_decode($fix->name),0,8),1,0,'C');
+
         endforeach;
         foreach($temporals AS $temporal): $i++;
-            $pdf  .= Fpdf::Cell(12,7,substr(utf8_decode($temporal->name),0,8),1,0,'C');
+            if($this->Search('typesTemporaryIncome_id',$temporal->id,'date',$date)>0):
+                $pdf  .= Fpdf::Cell(13,7,substr(utf8_decode($temporal->name),0,8),1,0,'C');
+            endif;
         endforeach;
         $pdf  .= Fpdf::ln();
         $e =0;
         /* INICIO DE CUERPO */
         foreach($miembros AS $miembro):
-            if($miembro->incomes): $e++;
+            if(!$income->where('member_id',$miembro->id)->where('date',$date)->get()->isEmpty()): $e++;
             $pdf    .= Fpdf::SetX(5);
             $pdf  .= Fpdf::Cell(5,7,utf8_decode($e),1,0,'C');
             $pdf  .= Fpdf::Cell(40,7,substr(utf8_decode($miembro->completo()),0,30),1,0,'L');
             $pdf  .= Fpdf::Cell(13,7,$miembro->incomes->numberOf,1,0,'C');
             foreach($fixs AS $fix):
-                $pdf  .= Fpdf::Cell(12,7,number_format($miembro->incomes->treeWhere('typeFixedIncome_id',$fix->id,'member_id',$miembro->id,'date',$date)),1,0,'C');
-            endforeach;
+                //if($this->Search('typeFixedIncome_id',$fix->id,'date',$date) > 0):
+                $pdf  .= Fpdf::Cell(13,7,number_format($miembro->incomes->treeWhere('typeFixedIncome_id',$fix->id,'member_id',$miembro->id,'date',$date),2),1,0,'C');
+           // endif;
+                endforeach;
             foreach($temporals AS $temporal):
-                $pdf  .= Fpdf::Cell(12,7,number_format($miembro->incomes->treeWhere('typesTemporaryIncome_id',$temporal->id,'member_id',$miembro->id,'date',$date)),1,0,'C');
+                if($this->Search('typesTemporaryIncome_id',$temporal->id,'date',$date) > 0):
+                    $pdf  .= Fpdf::Cell(13,7,number_format($miembro->incomes->treeWhere('typesTemporaryIncome_id',$temporal->id,'member_id',$miembro->id,'date',$date),2),1,0,'C');
+                endif;
             endforeach;
             $pdf  .= Fpdf::ln();
             endif;
@@ -122,10 +131,18 @@ class ReportController extends  Controller
         $pdf    = Fpdf::SetX(5);
         $pdf  .= Fpdf::Cell(58,7,'TOTALES _  _  _  _  _  _',0,0,'R');
         foreach($fixs AS $fix):
-            $pdf  .= Fpdf::Cell(12,7,number_format($miembro->incomes->twoWhere('typeFixedIncome_id',$fix->id,'date',$date)),1,0,'C');
+
+                $pdf  .= Fpdf::Cell(13,7,number_format($income->twoWhere('typeFixedIncome_id',$fix->id,'date',$date),2),1,0,'C');
+
+
         endforeach;
         foreach($temporals AS $temporal):
-            $pdf  .= Fpdf::Cell(12,7,number_format($miembro->incomes->twoWhere('typesTemporaryIncome_id',$temporal->id,'date',$date)),1,0,'C');
+            $amount= $this->Search('typesTemporaryIncome_id',$temporal->id,'date',$date);
+
+            if( $amount > 0):
+            $pdf  .= Fpdf::Cell(13,7,number_format($income->twoWhere('typesTemporaryIncome_id',$temporal->id,'date',$date),2),1,0,'C');
+
+            endif;
         endforeach;
 
 
@@ -138,7 +155,11 @@ class ReportController extends  Controller
         Fpdf::Output();
         exit;
     }
-
+    private function Search($campo,$data,$campo1,$data1)
+    {
+        return $this->incomeRepository->getModel()
+            ->where($campo,$data)->where($campo1,$data1)->sum('balance');
+    }
     /*
     |---------------------------------------------------------------------
     |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
@@ -152,7 +173,7 @@ class ReportController extends  Controller
     */
     public function header($data)
     {
-        $pdf  = Fpdf::AddPage();
+        $pdf  = Fpdf::AddPage('P','letter');
         $pdf .= Fpdf::SetFont('Arial','B',16);
         $pdf .= Fpdf::Cell(0,7,utf8_decode('Asociación Central Sur de Costa Rica de los Adventista del Séptimo Día'),0,1,'C');
         $pdf .= Fpdf::SetFont('Arial','',12);
@@ -163,7 +184,7 @@ class ReportController extends  Controller
         $pdf .= Fpdf::Cell(0,7,utf8_decode('Control Semanal de Diezmos y Ofrendas'),0,1,'C');
         $pdf .= Fpdf::SetFont('Arial','',12);
         $pdf .= Fpdf::Setx(5);
-        $pdf .= Fpdf::Cell(0,7,'Iglesia:  Quepos                                                            Fecha:  '.$data[0]->incomes->date,0,1,'L');
+        $pdf .= Fpdf::Cell(0,7,'Iglesia:  Quepos                                                            Fecha:  '.$data,0,1,'L');
             return $pdf;
     }
 
@@ -230,26 +251,44 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('DIEZMOS'),0,0,'L');
         $diezmo = $this->typeFixedRepository->name('name','Diezmos');
         $diezmoTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$diezmo[0]->id);
-        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($diezmoTotal),0,1,'L');
+        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($diezmoTotal,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('20% MUNDIAL'),0,0,'L');
         $ofrenda = $this->typeFixedRepository->name('name','Ofrenda');
         $ofrendaTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$ofrenda[0]->id);
         $fondo = $this->typeFixedRepository->name('name','Fondo Inv.');
         $fondoTotal =$this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$fondo[0]->id);
         $asoc = ($ofrendaTotal+$fondoTotal)/5;
-        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($asoc),0,1,'L');
+        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($asoc,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('20% DESARROLLO'),0,0,'L');
-        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($asoc),0,1,'L');
+        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($asoc,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('RECOLECCION'),0,0,'L');
         $diezmo = $this->typeFixedRepository->name('name','Recoleccion');
-        $recoleccion = $this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$diezmo[0]->id);
-        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($recoleccion),0,1,'L');
-        $pdf  .= Fpdf::Cell(30,5,utf8_decode('RADIO'),0,1,'L');
-        $pdf  .= Fpdf::Cell(30,5,utf8_decode('REVISTA'),0,1,'L');
+        if(!$diezmo->isEmpty()):
+            $recoleccion = $this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$diezmo[0]->id);
+        else:
+            $recoleccion =0;
+        endif;
+        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($recoleccion,2),0,1,'L');
+        $pdf  .= Fpdf::Cell(30,5,utf8_decode('RADIO'),0,0,'L');
+        $radio = $this->typeFixedRepository->name('name','Radio y T.V.');
+        if(!$radio->isEmpty()):
+        $radioTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$radio[0]->id);
+        else:
+            $radioTotal =0;
+        endif;
+        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($radioTotal,2),0,1,'L');
+        $pdf  .= Fpdf::Cell(30,5,utf8_decode('REVISTA'),0,0,'L');
+        $revista = $this->typeFixedRepository->name('name','Prioridades');
+            if(!$revista->isEmpty()):
+        $revistaTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$revista[0]->id);
+            else:
+                $revistaTotal =0;
+            endif;
+        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($revistaTotal,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('OTROS'),0,1,'L');
         $pdf  .= Fpdf::Cell(40,5,utf8_decode('TOTAL ASOCIACION'),0,0,'L');
-        $total = $diezmoTotal+$asoc+$recoleccion;
-        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($total),0,1,'L');
+        $total = $diezmoTotal+$asoc+$recoleccion+$revistaTotal+$radioTotal;
+        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($total,2),0,1,'L');
 
         $pdf  .= Fpdf::ln();
         $pdf  .= Fpdf::Cell(60,5,utf8_decode('FONDOS LOCALES 60% PRESUPUESTO'),0,0,'L');
@@ -260,7 +299,7 @@ class ReportController extends  Controller
             $fondo  += $this->incomeRepository->getModel()->twoWhere('typesTemporaryIncome_id',$temporal->id,'date',$date);
         endforeach;
 
-        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($fondo),0,1,'L');
+        $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($fondo,2),0,1,'L');
         return $pdf;
     }
 }

@@ -1,24 +1,22 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class CreateBanksTable extends Migration {
-
+class CreateAccountCheckTable extends Migration
+{
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up() {
-        Schema::create('banks', function(Blueprint $table) {
+    public function up()
+    {
+        Schema::create('account_check', function(Blueprint $table) {
             $table->increments('id');
             $table->decimal('balance', 20, 2);
-            $table->date('date');
-            $table->string('url');
-            $table->enum('type', ['entradas', 'salidas']);
-            $table->integer('record_id')->unsigned()->nullable()->index();
-            $table->foreign('record_id')->references('id')->on('records')->onDelete('no action');
+            $table->integer('account_id')->unsigned()->index();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('no action');
             $table->integer('check_id')->unsigned()->nullable()->index();
             $table->foreign('check_id')->references('id')->on('checks')->onDelete('no action');
             $table->engine = 'InnoDB';
@@ -33,7 +31,6 @@ class CreateBanksTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('banks');
+        Schema::drop('account_check');
     }
-
 }

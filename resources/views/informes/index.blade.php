@@ -37,9 +37,9 @@ Lista Informes Semanales
             @if(($informe->incomes->isEmpty()))
             <td><a href="{{route('create-income',$informe->_token)}}"><i class="fa fa-book"></i></a></td>
             @else
-            <td><a href="{{route('informe-semanal',$informe->_token )}}"><i class="fa fa-check"></i></a></td>
+            <td><a target="_blank" href="{{route('informe-semanal',$informe->_token )}}"><i class="fa fa-check"></i></a></td>
             @endif
-            <td><a  href="{{route('post-report',$informe->saturday )}}"><i class="fa fa-file-pdf-o"></i></a></td>
+            <td><a target="_blank"  href="{{route('post-report',$informe->saturday )}}"><i class="fa fa-file-pdf-o"></i></a></td>
         </tr>
         @endforeach
     </tbody>

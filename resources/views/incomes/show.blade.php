@@ -17,9 +17,10 @@
                     <h4>Teléfonos: 2224-8311 Fax:2225-0665</h4>
                     <h4>acscrtesoreria07@gmail.com acscr_tesoreria@hotmail.com</h4>
                     <h2>Control Semanal de Diezmos y Ofrendas</h2>
-                    <div class="row"><h4 class="pull-right">Iglesia: Quepos</h4> <h4 class="pull-left">Fecha:  de   de </h4></div>
+                    <div class="row"><h4 class="pull-left">Iglesia: Quepos</h4> <h4 class="pull-right">Fecha:  {{$control->saturday}} </h4></div>
                 </div>
-                <table class="table-bordered ">
+                <div class="panel-body">
+                <table class=" table table-bordered ">
                     <thead class="headerTable color-green">
                     <tr>
                         <th>#</th>
@@ -29,30 +30,46 @@
                             <th>{{$fixed->name}}</th>
                         @endforeach
                         @foreach($temporaries AS $temporary)
-                            <th>{{$temporary->name}}</th>
+                            @if($income->where('typesTemporaryIncome_id',$temporary->id)->where('date',$control->saturday)->sum('balance') >0 )
+                                <th>{{$temporary->name}}</th>
+                            @endif
                         @endforeach
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($members AS $i =>$member)
-                        @if($member->incomes)
-                            <tr style="margin: 2px">
-                                <td>{{$i+1}}</td>
+                    @foreach($members AS $member)
+                        @if($income->where('member_id',$member->id)->where('date',$control->saturday)->sum('balance') >0 )
+                            <tr style="margin: 2px"><?php $i++; ?>
+                                <td>{{$i}}</td>
                                 <td style="margin: 4px">{{$member->name}}</td>
 
                                 <td style="margin: 4px">{{$member->incomes->numberOf}}</td>
                                 @foreach($fixeds AS $fixed)
-                                    <td style="margin: 4px">{{number_format($member->incomes->twoWhere('typeFixedIncome_id',$fixed->id,'member_id',$member->id))}}</td>
+                                    <td style="margin: 4px">{{number_format($member->incomes->treeWhere('typeFixedIncome_id',$fixed->id,'member_id',$member->id,'date',$control->saturday))}}</td>
                                 @endforeach
                                 @foreach($temporaries AS $temporary)
-                                    <td style="margin: 4px">{{number_format($member->incomes->twoWhere('typesTemporaryIncome_id',$temporary->id,'member_id',$member->id))}}</td>
-                                 @endforeach
-                                <td></td>
+                                    @if($income->where('typesTemporaryIncome_id',$temporary->id)->where('date',$control->saturday)->sum('balance') >0 )
+                                        <td style="margin: 4px">{{number_format($member->incomes->treeWhere('typesTemporaryIncome_id',$temporary->id,'member_id',$member->id,'date',$control->saturday))}}</td>
+                                    @endif
+                                @endforeach
+
                             </tr>
                         @endif
                     @endforeach
+                        <tr>
+                            <td colspan="3" class="text-right"><strong>Total _ _ _ _ _</strong></td>
+                            @foreach($fixeds AS $fixed)
+                                <td style="margin: 4px"><strong>{{number_format($income->twoWhere('typeFixedIncome_id',$fixed->id,'date',$control->saturday))}}</strong></td>
+                            @endforeach
+                            @foreach($temporaries AS $temporary)
+                                @if($income->where('typesTemporaryIncome_id',$temporary->id)->where('date',$control->saturday)->sum('balance') >0 )
+                                    <td style="margin: 4px"><strong>{{number_format($income->twoWhere('typesTemporaryIncome_id',$temporary->id,'date',$control->saturday))}}</strong></td>
+                                @endif
+                            @endforeach
+                        </tr>
                     </tbody>
                 </table>
+                </div>
             </div>
     </div>
 @stop
