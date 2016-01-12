@@ -1929,6 +1929,45 @@
         ]
     },
     {
+        "name": "anouar/fpdf",
+        "version": "1.0.2",
+        "version_normalized": "1.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:xroot/laravel-fpdf.git",
+            "reference": "master"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/xroot/laravel-fpdf/zipball/1a357759191cfd8506c7ef6669d0406bcf7b289b",
+            "reference": "1a357759191cfd8506c7ef6669d0406bcf7b289b",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/support": "~5.0",
+            "php": ">=5.3.0"
+        },
+        "time": "2015-03-30 12:59:05",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Anouar\\Fpdf": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-2-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Anouar",
+                "email": "dtekind@gmail.com"
+            }
+        ],
+        "description": "Fpdf allows to generate PDF files"
+    },
+    {
         "name": "rap2hpoutre/laravel-log-viewer",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -3190,44 +3229,5 @@
             "testing",
             "xunit"
         ]
-    },
-    {
-        "name": "anouar/fpdf",
-        "version": "1.0.2",
-        "version_normalized": "1.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "git@github.com:xroot/laravel-fpdf.git",
-            "reference": "master"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/xroot/laravel-fpdf/zipball/1a357759191cfd8506c7ef6669d0406bcf7b289b",
-            "reference": "1a357759191cfd8506c7ef6669d0406bcf7b289b",
-            "shasum": ""
-        },
-        "require": {
-            "illuminate/support": "~5.0",
-            "php": ">=5.3.0"
-        },
-        "time": "2015-03-30 12:59:05",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Anouar\\Fpdf": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-2-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Anouar",
-                "email": "dtekind@gmail.com"
-            }
-        ],
-        "description": "Fpdf allows to generate PDF files"
     }
 ]
