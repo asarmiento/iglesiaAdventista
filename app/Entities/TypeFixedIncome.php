@@ -7,12 +7,13 @@ class TypeFixedIncome extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['balance','name', 'church_id'];
+    protected $fillable= ['balance','name', 'church_id','departament_id'];
 
     public function getRules()
     {
         return [
-            'name'      =>'required',
+            'name'                =>'required',
+            'departament_id'      =>'required',
             'church_id' =>'required'
         ];
     }
@@ -31,7 +32,10 @@ class TypeFixedIncome extends Entity
     {
         return $this->belongsTo(Income::getClass(),'id','typeFixedIncome_id')->sum('balance');
     }
-
+    public function departaments()
+    {
+        return $this->hasMany(Departament::getClass(),'id','departament_id');
+    }
     public function incomes()
     {
         return $this->belongsTo(Income::getClass(),'id','typeFixedIncome_id');
