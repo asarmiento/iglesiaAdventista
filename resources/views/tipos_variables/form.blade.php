@@ -17,6 +17,15 @@ Formulario {{$action}} Tipos Variables
         </label>
         <small class="error-message red-message">{!! $errors->first('name')!!}</small>
     </div>
+    <div  class="large-4 columns">
+        <label>Departamento</label>
+        <select class="form-control" name="departament_id">
+            <option value="">Selecciones un Departamento</option>
+            @foreach($departaments As $departament)
+                <option value="{{$departament->id}}">{{$departament->name}}</option>
+            @endforeach
+        </select>
+    </div>
 </div>
 </br>
 <div class="row">

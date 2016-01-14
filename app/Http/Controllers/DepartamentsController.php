@@ -2,23 +2,31 @@
 
 use SistemasAmigables\Entities\Church;
 use SistemasAmigables\Repositories\DepartamentRepository;
+use SistemasAmigables\Repositories\ExpensesRepository;
 
 class DepartamentsController extends Controller {
     /**
      * @var DepartamentRepository
      */
     private $departamentRepository;
+    /**
+     * @var ExpensesRepository
+     */
+    private $expensesRepository;
 
     /**
      * DepartamentsController constructor.
      * @param DepartamentRepository $departamentRepository
+     * @param ExpensesRepository $expensesRepository
      */
     public function __construct(
-        DepartamentRepository $departamentRepository
+        DepartamentRepository $departamentRepository,
+        ExpensesRepository $expensesRepository
     )
     {
 
         $this->departamentRepository = $departamentRepository;
+        $this->expensesRepository = $expensesRepository;
     }
     /**
      * Display a listing of departamentos
@@ -26,9 +34,13 @@ class DepartamentsController extends Controller {
      * @return Response
      */
     public function index() {
-        $departaments = $this->departamentRepository->allData();
-
-        return View('departamentos.index', compact('departaments'));
+        $departaments = $this->departamentRepository->getModel()->selectRaw('departaments.*,
+             ( SELECT SUM(amount) FROM expenses
+             WHERE expenses.departament_id = departaments.id) as expense'
+        )->with('expenses')->get();
+        $totalExpenses  = $this->expensesRepository->getModel()->sum('amount');
+        $totalPresupuesto = $this->departamentRepository->getModel()->sum('budget');
+        return View('departamentos.index', compact('departaments','totalExpenses','totalPresupuesto'));
     }
 
     /**

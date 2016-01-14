@@ -1,6 +1,7 @@
 <?php namespace SistemasAmigables\Http\Controllers;
 use Illuminate\Support\Facades\Input;
 use SistemasAmigables\Entities\Church;
+use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
 
 class TypesTemporaryIncomeController extends Controller {
@@ -8,17 +9,24 @@ class TypesTemporaryIncomeController extends Controller {
      * @var TypeTemporaryIncomeRepository
      */
     private $typeTemporaryIncomeRepository;
+    /**
+     * @var DepartamentRepository
+     */
+    private $departamentRepository;
 
     /**
      * TypesTemporaryIncomeController constructor.
      * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+     * @param DepartamentRepository $departamentRepository
      */
     public function __construct(
-        TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+        TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository,
+        DepartamentRepository $departamentRepository
     )
     {
 
         $this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
+        $this->departamentRepository = $departamentRepository;
     }
     /**
      * Display a listing of tiposvariables
@@ -26,7 +34,12 @@ class TypesTemporaryIncomeController extends Controller {
      * @return Response
      */
     public function index() {
-        $tiposvariables = $this->typeTemporaryIncomeRepository->getModel()->all();
+        $tiposvariables = $this->typeTemporaryIncomeRepository->getModel()
+            ->selectRaw('types_temporary_incomes.*,
+            ( SELECT SUM(balance) FROM incomes WHERE incomes.typesTemporaryIncome_id = types_temporary_incomes.id) as income,
+             ( SELECT SUM(amount) FROM expense_income
+             WHERE expense_income.types_temporary_income_id = types_temporary_incomes.id) as expense'
+            )->with('incomes')->get();
 
         return View('tipos_variables.index', compact('tiposvariables'));
     }
@@ -41,7 +54,8 @@ class TypesTemporaryIncomeController extends Controller {
         $action = 'Agregar';
         $tiposvariable = array();
         $iglesia = Church::lists('id');
-        return View('tipos_variables.form', compact('tiposvariable', 'action', 'form_data','iglesia'));
+        $departaments = $this->departamentRepository->allData();
+        return View('tipos_variables.form', compact('tiposvariable', 'action', 'form_data','iglesia','departaments'));
     }
 
     /**
@@ -82,10 +96,12 @@ class TypesTemporaryIncomeController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        $tiposvariable = Tiposvariable::find($id);
-        $form_data = array('route' => array('tipos_variables.update', $tiposvariable->id), 'method' => 'PATCH');
-        $action = 'Editar';  
-        return View::make('tipos_variables.form', compact('tiposvariable','action','form_data'));
+        $tiposvariable = $this->typeTemporaryIncomeRepository->getModel()->find($id);
+        $form_data = array('route' => array('update-variableTypes', $tiposvariable->id), 'method' => 'POST');
+        $action = 'Actualizar';
+        $iglesia = Church::lists('id');
+        $departaments = $this->departamentRepository->allData();
+        return View('tipos_variables.form', compact('tiposvariable','action','form_data','iglesia','departaments'));
     }
 
     /**
@@ -95,17 +111,17 @@ class TypesTemporaryIncomeController extends Controller {
      * @return Response
      */
     public function update($id) {
-        $tiposvariable = Tiposvariable::findOrFail($id);
+        $data = Input::all();
+        $variableType = $this->typeTemporaryIncomeRepository->getModel()->find($id);
 
-        $validator = Validator::make($data = Input::all(), Tiposvariable::$rules);
+        if ($variableType->isValid($data)) {
+            $variableType->fill($data);
+            $variableType->save();
 
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            return redirect()->route('variableType-lista');
         }
 
-        $tiposvariable->update($data);
-
-        return Redirect::route('tipos_variables.index');
+        return $this->errores($variableType->errors);
     }
 
     /**

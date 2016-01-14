@@ -20,17 +20,30 @@ Lista Departamentos
             <th>Gastado</th>
         </tr>
     </thead> 
-    <tbody> 
-@foreach($departaments AS $key=>$departament)
+    <tbody>
+        @foreach($departaments AS $key=>$departament)
         <tr>
             <td>{{$key+1}}</td>
             <td>{{$departament->name}}</td>
             <td>{{$departament->budget}}</td>
             <td></td>
-            <td>{{$departament->balance}}</td>
+            <td>{{number_format($departament->expense,2)}}</td>
         </tr>
         @endforeach
+
     </tbody>
 </table>
+    <table class="table-condensed">
+        <tbody>
+        <tr class="color-green">
+            <td></td>
+            <td>Total</td>
+            <td>Presupuesto: {{number_format($totalPresupuesto,2)}}</td>
+            <td>Ingresos: </td>
+            <td>Gastos: {{number_format($totalExpenses,2)}}</td>
+            <td class="color-red">Disponible para gasto: {{number_format(($totalPresupuesto+$totalExpenses),2)}}</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 @stop
