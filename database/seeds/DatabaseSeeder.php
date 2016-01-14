@@ -18,11 +18,13 @@ class DatabaseSeeder extends Seeder
         $this->call(ChurchesTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(TypeFixedIncomesTableSeeder::class);
+        $this->call(AccountsTableSeeder::class);
         $this->call(MembersTableSeeder::class);
         $this->call(RecordsTableSeeder::class);
         $this->call(DepartamentsTableSeeder::class);
         $this->call(TypeTemporaryIncomesTableSeeder::class);
         $this->call(ChecksTableSeeder::class);
+        $this->call(AccountCheckTableSeeder::class);
         $this->call(BanksTableSeeder::class);
         $this->call(ExpenseTableSeeder::class);
         $this->call(IncomesTableSeeder::class);

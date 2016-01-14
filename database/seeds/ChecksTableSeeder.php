@@ -15,8 +15,9 @@ class ChecksTableSeeder extends Seeder {
                             'name'=>'Anwar Sarmiento Sarmiento',
                             'date'=>'2015-01-05',
                             'detail'=>'Reembolso de caja chicas',
-                            'amount'=>'50000',
+                            'balance'=>'50000',
                             'church_id'=>1,
+                            'account_id'=>1,
                         ]);
 	}
 

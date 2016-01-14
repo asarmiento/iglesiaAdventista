@@ -222,8 +222,10 @@ class IncomeController extends Controller {
         $incomes = $this->incomeRepository->getModel()->where('record_id',$control->id)->get();
         $fixeds=  TypeFixedIncome::all();
         $temporaries=  TypesTemporaryIncome::all();
+        $income = $this->incomeRepository->getModel();
         $members = $this->memberRepository->getModel()->all();
-        return View('incomes.show', compact('incomes','fixeds','temporaries','members'));
+        $i =0;
+        return View('incomes.show', compact('incomes','fixeds','temporaries','members','income','control','i'));
     }
 
     /**

@@ -11,7 +11,7 @@ class BanksTableSeeder extends Seeder {
             'date' => '2015-01-05',
             'balance' => '55000',
             'record_id' => 1,
-            'check_id' => NULL,
+            'account_check_id' => 2,
             'type'=>'entradas'
         ]);
         Bank::create([
@@ -19,7 +19,7 @@ class BanksTableSeeder extends Seeder {
             'date' => '2015-01-05',
             'balance' => '50000',
             'record_id' => NULL,
-            'check_id' => 1,
+            'account_check_id' => 1,
             'type'=>'salidas'
         ]);
     }
