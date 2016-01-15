@@ -14,7 +14,9 @@ Lista Gastos
         <tr> 
             <th>Nº</th>
             <th width="200">Departamento</th> 
-            <th width="150">Fecha</th> 
+            <th width="200">Gasto</th>
+            <th width="200">N° Factura</th>
+            <th width="150">Fecha</th>
             <th width="150">Monto</th> 
             <th width="150">Descripcion</th> 
             <th width="50">Ver</th>
@@ -26,7 +28,9 @@ Lista Gastos
         <tr>
             <td>{{$key+1}}</td>
             <td>{{$expense->departaments->name}}</td>
-            <td>{{$expense->date}}</td>
+            <td>{{$expense->name}}</td>
+            <td>{{$expense->invoiceNumber}}</td>
+            <td>{{$expense->invoiceDate}}</td>
             <td>{{$expense->amount}}</td>
             <td>{{$expense->detail}}</td>
             <td><a href="{{route('ver-gasto',$expense->check_id)}}"><i class="fa fa-eye"></i></a></td>

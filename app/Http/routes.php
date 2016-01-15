@@ -33,8 +33,10 @@ Route::group(['prefix' => 'iglesia'], function () {
 	/* Test para hacer pruebas */
 	Route::get('reportes/fondos', ['as' => 'fondos-report', 'uses' => 'ReportController@index']);
 	Route::get('reportes/fondos/{date}', ['as' => 'post-report', 'uses' => 'ReportController@store']);
+
+
 		$routes = ['members','checks','record','typeFix','variableTypes','incomes',
-			'departaments','expenses','test'];
+			'departaments','expenses','test','typeExpenses'];
 		/*
         * Rutas de Bancos
         */

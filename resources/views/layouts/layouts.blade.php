@@ -48,6 +48,7 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="{{route('index-depart')}}">Departamentos</a></li>
                                         <li><a href="{{route('typeFix-lista')}}">Tipos Fijos</a></li>
+                                        <li><a href="{{route('typeExp-lista')}}">Tipos de Gastos</a></li>
                                         <li><a href="{{route('variableType-lista')}}">Tipos Variables</a></li>
                                         <li><a href="{{route('fondos-report')}}">Reporte Fondos</a></li>
                                         <li><a href="{{url()}}/iglesia/type_users">Tipos de Usuarios</a></li>
