@@ -66,7 +66,11 @@ class ExpenseController extends Controller {
 	 */
 	public function index()
 	{
-		$expenses = $this->expensesRepository->allData();
+		$expenses = $this->expensesRepository->getModel()
+			->select('expenses.*' , 'type_expenses.*' , 'expense_typeExpense.balance')
+			->join('expense_typeExpense','expense_typeExpense.expense_id','=','expenses.id')
+			->join('type_expenses','type_expenses.id','=','expense_typeExpense.type_expense_id')
+			->with('departaments')->get();
 
 		return View('expenses.index', compact('expenses'));
 	}

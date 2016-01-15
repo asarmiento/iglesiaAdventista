@@ -32,7 +32,7 @@ class Expense extends Entity
     }
     public function typeExpenses()
     {
-        return $this->belongsToMany(TypeExpense::getClass(),'expense_typeExpense')->withPivot('amount');
+        return $this->belongsToMany(TypeExpense::getClass(),'expense_typeExpense','type_expense_id','expense_id')->withPivot('balance');
     }
 
     public function expenseFixIncome()

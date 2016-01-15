@@ -21,7 +21,8 @@
 		],
 		"psr-4": {
 			"SistemasAmigables\\": "app/"
-		}
+		},
+		"files": ["app/helpers.php"]
 	},
 	"autoload-dev": {
 		"classmap": [

@@ -8,3 +8,4 @@
 
 Route::get('test', 'TestController@show');
 Route::get('test/token', 'TestController@token');
+Route::get('test/traslado', 'TestController@trasladoExpense');
