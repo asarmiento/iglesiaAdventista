@@ -15,6 +15,7 @@ Lista Gastos
             <th>Nº</th>
             <th width="200">Departamento</th> 
             <th width="200">Gasto</th>
+            <th width="200">N° Ck</th>
             <th width="200">N° Factura</th>
             <th width="150">Fecha</th>
             <th width="150">Monto</th> 
@@ -29,6 +30,7 @@ Lista Gastos
             <td>{{$key+1}}</td>
             <td>{{$expense->departaments->name}}</td>
             <td>{{$expense->name}}</td>
+            <td>{{$expense->checks->number}}</td>
             <td>{{$expense->invoiceNumber}}</td>
             <td>{{$expense->invoiceDate}}</td>
             <td>{{$expense->amount}}</td>
