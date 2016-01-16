@@ -64,7 +64,12 @@ class TypeExpensesController extends Controller
     */
     public function index()
     {
-        $typeExpenses = $this->typeExpenseRepository->allData();
+
+        $typeExpenses = $this->typeExpenseRepository->getModel()->selectRaw('type_expenses.*,
+        (SELECT SUM(amount) FROM expenses WHERE expenses.type_expense_id = type_expenses.id) as expense,
+        (SELECT SUM(amount) FROM expenses WHERE
+         expenses.type_expense_id = type_expenses.id) as month
+        ')->get();
         return view('type_expenses.index',compact('typeExpenses'));
     }
 

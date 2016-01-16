@@ -3,6 +3,7 @@
 use SistemasAmigables\Entities\Church;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
+use SistemasAmigables\Repositories\IncomeRepository;
 
 class DepartamentsController extends Controller {
     /**
@@ -13,20 +14,27 @@ class DepartamentsController extends Controller {
      * @var ExpensesRepository
      */
     private $expensesRepository;
+    /**
+     * @var IncomeRepository
+     */
+    private $incomeRepository;
 
     /**
      * DepartamentsController constructor.
      * @param DepartamentRepository $departamentRepository
      * @param ExpensesRepository $expensesRepository
+     * @param IncomeRepository $incomeRepository
      */
     public function __construct(
         DepartamentRepository $departamentRepository,
-        ExpensesRepository $expensesRepository
+        ExpensesRepository $expensesRepository,
+        IncomeRepository $incomeRepository
     )
     {
 
         $this->departamentRepository = $departamentRepository;
         $this->expensesRepository = $expensesRepository;
+        $this->incomeRepository = $incomeRepository;
     }
     /**
      * Display a listing of departamentos
@@ -35,12 +43,15 @@ class DepartamentsController extends Controller {
      */
     public function index() {
         $departaments = $this->departamentRepository->getModel()->selectRaw('departaments.*,
-             ( SELECT SUM(amount) FROM expenses
-             WHERE expenses.departament_id = departaments.id) as expense'
-        )->with('expenses')->get();
+             ( SELECT SUM(balance) FROM type_expenses
+             WHERE type_expenses.departament_id = departaments.id) as expense,
+            ( SELECT SUM(balance) FROM type_incomes
+             WHERE type_incomes.departament_id = departaments.id) as income'
+        )->with('typeExpenses')->get();
         $totalExpenses  = $this->expensesRepository->getModel()->sum('amount');
+        $totalIncomes  = $this->incomeRepository->getModel()->sum('balance');
         $totalPresupuesto = $this->departamentRepository->getModel()->sum('budget');
-        return View('departamentos.index', compact('departaments','totalExpenses','totalPresupuesto'));
+        return View('departamentos.index', compact('departaments','totalExpenses','totalPresupuesto','totalIncomes'));
     }
 
     /**

@@ -9,9 +9,9 @@
 namespace SistemasAmigables\Repositories;
 
 
-use SistemasAmigables\Entities\TypeFixedIncome;
+use SistemasAmigables\Entities\TypeIncome;
 
-class TypeFixedRepository extends BaseRepository
+class TypeIncomeRepository extends BaseRepository
 {
 
     /**
@@ -19,7 +19,7 @@ class TypeFixedRepository extends BaseRepository
      */
     public function getModel()
     {
-        return new TypeFixedIncome();
+        return new TypeIncome();
     }
 	
 	public function sumaTotal($id)

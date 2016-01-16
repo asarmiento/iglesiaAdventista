@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use SistemasAmigables\Entities\Church;
 use SistemasAmigables\Entities\Member;
 use SistemasAmigables\Repositories\MemberRepository;
-use SistemasAmigables\Repositories\TypeFixedRepository;
+use SistemasAmigables\Repositories\TypeIncomeRepository;
 use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
 
 class MemberController extends Controller {
@@ -17,9 +17,9 @@ class MemberController extends Controller {
      */
     private $memberRepository;
     /**
-     * @var TypeFixedRepository
+     * @var TypeIncomeRepository
      */
-    private $typeFixedRepository;
+    private $TypeIncomeRepository;
     /**
      * @var TypeTemporaryIncomeRepository
      */
@@ -27,19 +27,19 @@ class MemberController extends Controller {
 
     /**
      * @param MemberRepository $memberRepository
-     * @param TypeFixedRepository $typeFixedRepository
+     * @param TypeIncomeRepository $TypeIncomeRepository
      * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
      */
     public function __construct(
         MemberRepository $memberRepository,
-        TypeFixedRepository $typeFixedRepository,
+        TypeIncomeRepository $TypeIncomeRepository,
         TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
     )
     {
 
         $this->memberRepository = $memberRepository;
-        $this->typeFixedRepository = $typeFixedRepository;
-        $this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
+        $this->TypeIncomeRepository = $TypeIncomeRepository;
+
     }
     /**
      * Display a listing of members
@@ -117,7 +117,7 @@ class MemberController extends Controller {
     */
     public function view($token) {
         $miembro = $this->memberRepository->token($token);
-        $fixes = $this->typeFixedRepository->allData();
+        $fixes = $this->TypeIncomeRepository->allData();
         $temporals = $this->typeTemporaryIncomeRepository->allData();
         return View('members.show', compact('miembro','fixes','temporals'));
     }

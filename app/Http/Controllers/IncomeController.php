@@ -9,7 +9,7 @@ use SistemasAmigables\Entities\TypesTemporaryIncome;
 use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\MemberRepository;
 use SistemasAmigables\Repositories\RecordRepository;
-use SistemasAmigables\Repositories\TypeFixedRepository;
+use SistemasAmigables\Repositories\TypeIncomeRepository;
 use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
 
 class IncomeController extends Controller {
@@ -22,9 +22,9 @@ class IncomeController extends Controller {
      */
     private $memberRepository;
     /**
-     * @var TypeFixedRepository
+     * @var TypeIncomeRepository
      */
-    private $typeFixedRepository;
+    private $TypeIncomeRepository;
     /**
      * @var TypeTemporaryIncomeRepository
      */
@@ -37,23 +37,23 @@ class IncomeController extends Controller {
     /**
      * @param RecordRepository $recordRepository
      * @param MemberRepository $memberRepository
-     * @param TypeFixedRepository $typeFixedRepository
+     * @param TypeIncomeRepository $TypeIncomeRepository
      * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
      * @param IncomeRepository $incomeRepository
      */
     public function __construct(
         RecordRepository $recordRepository,
         MemberRepository $memberRepository,
-        TypeFixedRepository $typeFixedRepository,
-        TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository,
+        TypeIncomeRepository $TypeIncomeRepository,
+
         IncomeRepository $incomeRepository
     )
     {
 
         $this->recordRepository = $recordRepository;
         $this->memberRepository = $memberRepository;
-        $this->typeFixedRepository = $typeFixedRepository;
-        $this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
+        $this->TypeIncomeRepository = $TypeIncomeRepository;
+
         $this->incomeRepository = $incomeRepository;
     }
     /**
@@ -146,7 +146,7 @@ class IncomeController extends Controller {
 
         $i=1;
         $record = $this->recordRepository->token(Input::get('tokenControlNumber'));
-        $fixeds = $this->typeFixedRepository->getModel()->get();
+        $fixeds = $this->TypeIncomeRepository->getModel()->get();
         $temps = $this->typeTemporaryIncomeRepository->getModel()->get();
 
         unset($data['tokenControlNumber']);
@@ -172,7 +172,7 @@ class IncomeController extends Controller {
                 if($data['fixeds-'.$i.'-'.$fixed->id] > 0)
                 {
                     $balance = $data['fixeds-'.$i.'-'.$fixed->id];
-                    $this->typeFixedRepository->updateBalance($fixed->id,$balance,'balance');
+                    $this->TypeIncomeRepository->updateBalance($fixed->id,$balance,'balance');
                     array_push($transaction, array(
                             'record_id' => $record->id,
                             'numberOf' => $numberOf,

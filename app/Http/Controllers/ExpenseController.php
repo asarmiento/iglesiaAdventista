@@ -1,10 +1,11 @@
 <?php namespace SistemasAmigables\Http\Controllers;
 
+use Illuminate\Support\Facades\Redirect;
 use SistemasAmigables\Repositories\CheckRepository;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\TypeExpenseRepository;
-use SistemasAmigables\Repositories\TypeFixedRepository;
+use SistemasAmigables\Repositories\TypeIncomeRepository;
 use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
 
 class ExpenseController extends Controller {
@@ -29,9 +30,9 @@ class ExpenseController extends Controller {
 	 */
 	private $typeTemporaryIncomeRepository;
 	/**
-	 * @var TypeFixedRepository
+	 * @var TypeIncomeRepository
 	 */
-	private $typeFixedRepository;
+	private $TypeIncomeRepository;
 
 	/**
 	 * ExpenseController constructor.
@@ -40,15 +41,15 @@ class ExpenseController extends Controller {
 	 * @param DepartamentRepository $departamentRepository
 	 * @param TypeExpenseRepository $typeExpenseRepository
 	 * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
-	 * @param TypeFixedRepository $typeFixedRepository
+	 * @param TypeIncomeRepository $TypeIncomeRepository
 	 */
 	public function __construct(
 		ExpensesRepository $expensesRepository,
 		CheckRepository $checkRepository,
 		DepartamentRepository $departamentRepository,
 		TypeExpenseRepository $typeExpenseRepository,
-		TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository,
-		TypeFixedRepository $typeFixedRepository
+
+		TypeIncomeRepository $TypeIncomeRepository
 	)
 	{
 
@@ -56,8 +57,8 @@ class ExpenseController extends Controller {
 		$this->checkRepository = $checkRepository;
 		$this->departamentRepository = $departamentRepository;
 		$this->typeExpenseRepository = $typeExpenseRepository;
-		$this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
-		$this->typeFixedRepository = $typeFixedRepository;
+
+		$this->TypeIncomeRepository = $TypeIncomeRepository;
 	}
 	/**
 	 * Display a listing of expenses
@@ -67,9 +68,8 @@ class ExpenseController extends Controller {
 	public function index()
 	{
 		$expenses = $this->expensesRepository->getModel()
-			->select('expenses.*' , 'type_expenses.*' , 'expense_typeExpense.balance')
-			->join('expense_typeExpense','expense_typeExpense.expense_id','=','expenses.id')
-			->join('type_expenses','type_expenses.id','=','expense_typeExpense.type_expense_id')
+			->select('expenses.*' , 'type_expenses.*' , 'type_expenses.balance')
+			->join('type_expenses','type_expenses.id','=','expenses.type_expense_id')
 			->with('departaments')->get();
 
 		return View('expenses.index', compact('expenses'));
@@ -87,10 +87,9 @@ class ExpenseController extends Controller {
 		$expenses= $this->expensesRepository->oneWhere('check_id',$id);
 		$total= $this->expensesRepository->oneWhereList('check_id',$id,'amount');
 		$typeExpenses= $this->typeExpenseRepository->allData();
-		$typeFixs = $this->typeFixedRepository->allData();
-		$typeVars = $this->typeTemporaryIncomeRepository->allData();
+		$typeFixs = $this->TypeIncomeRepository->allData();
 		return View('expenses.create',compact('checks','departaments',
-			'expenses','total','typeExpenses','typeFixs','typeVars'));
+			'expenses','total','typeExpenses','typeFixs'));
 	}
 
 	/**
@@ -107,23 +106,12 @@ class ExpenseController extends Controller {
 		if($expenses->isValid($gasto)):
 			$expenses->fill($gasto);
 			$expenses->save();
-			if($gasto['typeExpenses']):
-				$expenses->typeExpenses()->attach($gasto['typeExpenses'],['balance'=>$expenses->amount]);
-				$this->typeExpenseRepository->updatesOutBalance($gasto['typeExpenses'],$expenses->amount,'balance');
-			endif;
-			if($gasto['typeVar']):
-				$expenses->expenseVarIncome()->attach($gasto['typeVar'],['amount'=>$expenses->amount]);
-				$this->typeTemporaryIncomeRepository->updatesOutBalance($gasto['typeVar'],$expenses->amount,'balance');
-			endif;
-			if($gasto['typefix']):
-				$expenses->expenseFixIncome()->attach($gasto['typefix'],['amount'=>$expenses->amount]);
-				$this->typeFixedRepository->updatesOutBalance($gasto['typefix'],$expenses->amount,'balance');
-			endif;
-			$this->departamentRepository->updatesOutBalance($expenses->departament_id,$expenses->amount,'balance');
+
+			$this->typeExpenseRepository->updatesOutBalance($expenses->type_expense_id,$expenses->amount,'balance');
 			return redirect()->route('create-gasto',$gasto['check_id']);
 		endif;
 
-		return redirect('iglesia/cheques/create')->withErrors($expenses)->withInput();
+		return redirect('iglesia/gastos/create/'.$gasto['check_id'])->withErrors($expenses)->withInput();
 	}
 
 	/**
@@ -181,11 +169,13 @@ class ExpenseController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function deleteExpense($id)
 	{
-		Gasto::destroy($id);
+		$expense=$this->expensesRepository->getModel()->find($id);
 
-		return Redirect::route('expenses.index');
+		$this->expensesRepository->getModel()->destroy($id);
+
+		return Redirect::route('create-gasto',$expense->check_id);
 	}
 
 }

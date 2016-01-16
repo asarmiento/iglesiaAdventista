@@ -8,13 +8,13 @@ use SistemasAmigables\Entities\TypeFixedIncome;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
-use SistemasAmigables\Repositories\TypeFixedRepository;
+use SistemasAmigables\Repositories\TypeIncomeRepository;
 
-class TypeFixedIncomeController extends Controller {
+class TypeIncomeController extends Controller {
     /**
-     * @var TypeFixedRepository
+     * @var TypeIncomeRepository
      */
-    private $typeFixedRepository;
+    private $TypeIncomeRepository;
     /**
      * @var IncomeRepository
      */
@@ -30,20 +30,20 @@ class TypeFixedIncomeController extends Controller {
 
     /**
      * TypeFixedIncomeController constructor.
-     * @param TypeFixedRepository $typeFixedRepository
+     * @param TypeIncomeRepository $TypeIncomeRepository
      * @param IncomeRepository $incomeRepository
      * @param ExpensesRepository $expensesRepository
      * @param DepartamentRepository $departamentRepository
      */
     public function __construct(
-        TypeFixedRepository $typeFixedRepository,
+        TypeIncomeRepository $TypeIncomeRepository,
         IncomeRepository $incomeRepository,
         ExpensesRepository $expensesRepository,
         DepartamentRepository $departamentRepository
 
     )
     {
-        $this->typeFixedRepository = $typeFixedRepository;
+        $this->TypeIncomeRepository = $TypeIncomeRepository;
         $this->incomeRepository = $incomeRepository;
         $this->expensesRepository = $expensesRepository;
         $this->departamentRepository = $departamentRepository;
@@ -54,7 +54,7 @@ class TypeFixedIncomeController extends Controller {
      * @return Response
      */
     public function index() {
-        $tiposfijos = $this->typeFixedRepository->getModel()
+        $tiposfijos = $this->TypeIncomeRepository->getModel()
             ->selectRaw('type_fixed_incomes.*,
             ( SELECT SUM(balance) FROM incomes WHERE incomes.typeFixedIncome_id=type_fixed_incomes.id) as income,
              ( SELECT SUM(amount) FROM expense_income WHERE expense_income.type_fixed_income_id=type_fixed_incomes.id) as expense'
@@ -85,7 +85,7 @@ class TypeFixedIncomeController extends Controller {
     public function store() {
 
         $data = Input::all();
-        $typeFix = $this->typeFixedRepository->getModel();
+        $typeFix = $this->TypeIncomeRepository->getModel();
 
         if ($typeFix->isValid($data)) {
             $typeFix->fill($data);
@@ -119,7 +119,7 @@ class TypeFixedIncomeController extends Controller {
      * @return Response
      */
     public function edit($id) {        
-        $tiposfijo = $this->typeFixedRepository->getModel()->find($id);
+        $tiposfijo = $this->TypeIncomeRepository->getModel()->find($id);
         $form_data = array('route' => array('update-typeFixs', $tiposfijo->id), 'method' => 'POST');
         $action = 'Actualizar';
         $iglesia = Church::lists('id');

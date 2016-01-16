@@ -24,9 +24,13 @@ class Departament extends Entity
         return $this->hasMany(Income::getClass(),'departament_id','id');
     }
 
-    public function expenses()
+    public function typeExpenses()
     {
-        return $this->belongsTo(Expense::getClass(),'id','departament_id');
+        return $this->belongsTo(TypeExpense::getClass(),'id','departament_id');
+    }
+    public function typeIncomes()
+    {
+        return $this->belongsTo(TypeIncome::getClass(),'id','departament_id');
     }
     public function getExist()
     {

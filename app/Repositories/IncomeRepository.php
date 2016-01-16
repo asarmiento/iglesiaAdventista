@@ -14,21 +14,21 @@ use SistemasAmigables\Entities\Income;
 class IncomeRepository extends BaseRepository
 {
     /**
-     * @var TypeFixedRepository
+     * @var TypeIncomeRepository
      */
-    private $typeFixedRepository;
+    private $TypeIncomeRepository;
 
     /**
      * IncomeRepository constructor.
-     * @param TypeFixedRepository $typeFixedRepository
+     * @param TypeIncomeRepository $TypeIncomeRepository
      */
     public function __construct(
-        TypeFixedRepository $typeFixedRepository
+        TypeIncomeRepository $TypeIncomeRepository
 
     )
     {
 
-        $this->typeFixedRepository = $typeFixedRepository;
+        $this->TypeIncomeRepository = $TypeIncomeRepository;
     }
 
     /**
