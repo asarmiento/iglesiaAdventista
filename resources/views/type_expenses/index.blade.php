@@ -31,15 +31,10 @@ Lista Tipos de Gastos
          @foreach($typeExpenses AS $key=>$typeExpense)
             <tr>
                     <td>{{$key+1}}</td>
-                    @if($typeExpense->departaments->isEmpty())
-                        <td></td>
-                    @else
-                        <td>{{$typeExpense->departaments[0]->name}}</td>
-                    @endif
+                    <td>{{$typeExpense->departaments[0]->name}}</td>
                     <td>{{convertTitle($typeExpense->name)}}</td>
-                <td>{{number_format($typeExpense->expense,2)}}</td>
-                <td>{{number_format($typeExpense->balance,2)}}</td>
-
+                    <td>{{number_format($typeExpense->expense,2)}}</td>
+                    <td>{{number_format($typeExpense->balance,2)}}</td>
                     <td class="text-center"><a class="" href="{{route('typeExp-edit',$typeExpense->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
             </tr>
         @endforeach

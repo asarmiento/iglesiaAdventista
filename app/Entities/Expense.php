@@ -7,7 +7,7 @@ class Expense extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['invoiceNumber','invoiceDate','date','detail','amount','check_id','departament_id','imagen'];
+    protected $fillable= ['invoiceNumber','invoiceDate','date','detail','amount','check_id','type_expense_id','imagen'];
 
     public function getRules()
     {
@@ -17,7 +17,7 @@ class Expense extends Entity
             'date'           =>'required',
             'amount'         =>'required',
             'check_id'       =>'required',
-            'departament_id' =>'required',
+            'type_expense_id' =>'required',
             'detail'         =>'required'
         ];
     }
@@ -32,7 +32,7 @@ class Expense extends Entity
     }
     public function typeExpenses()
     {
-        return $this->belongsToMany(TypeExpense::getClass(),'expense_typeExpense','type_expense_id','expense_id')->withPivot('balance');
+        return $this->belongsTo(TypeExpense::getClass(),'type_expense_id','id');
     }
 
     public function expenseFixIncome()

@@ -7,8 +7,8 @@ use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\MemberRepository;
 use SistemasAmigables\Repositories\TypeExpenseRepository;
-use SistemasAmigables\Repositories\TypeFixedRepository;
-use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
+use SistemasAmigables\Repositories\TypeIncomeRepository;
+
 
 class TestController extends Controller {
     /**
@@ -16,13 +16,10 @@ class TestController extends Controller {
      */
     private $incomeRepository;
     /**
-     * @var TypeFixedRepository
+     * @var TypeIncomeRepository
      */
-    private $typeFixedRepository;
-    /**
-     * @var TypeTemporaryIncomeRepository
-     */
-    private $typeTemporaryIncomeRepository;
+    private $typeIncomeRepository;
+
     /**
      * @var MemberRepository
      */
@@ -39,7 +36,7 @@ class TestController extends Controller {
     /**
      * TestController constructor.
      * @param IncomeRepository $incomeRepository
-     * @param TypeFixedRepository $typeFixedRepository
+     * @param TypeIncomeRepository $TypeIncomeRepository
      * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
      * @param MemberRepository $memberRepository
      * @param TypeExpenseRepository $typeExpenseRepository
@@ -47,8 +44,8 @@ class TestController extends Controller {
      */
     public function __construct(
         IncomeRepository $incomeRepository,
-        TypeFixedRepository $typeFixedRepository,
-        TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository,
+        TypeIncomeRepository $typeIncomeRepository,
+
         MemberRepository $memberRepository,
         TypeExpenseRepository $typeExpenseRepository,
         ExpensesRepository $expensesRepository
@@ -57,8 +54,8 @@ class TestController extends Controller {
     {
 
         $this->incomeRepository = $incomeRepository;
-        $this->typeFixedRepository = $typeFixedRepository;
-        $this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
+        $this->TypeIncomeRepository = $typeIncomeRepository;
+
         $this->memberRepository = $memberRepository;
         $this->typeExpenseRepository = $typeExpenseRepository;
         $this->expensesRepository = $expensesRepository;
@@ -66,19 +63,14 @@ class TestController extends Controller {
     public function show() {
 
 
-        $tipoFijos = $this->typeFixedRepository->allData();
+        $tipoFijos = $this->typeIncomeRepository->allData();
 
         foreach($tipoFijos AS $tipoFijo):
            $incomes = $this->incomeRepository->oneWhereList('typeFixedIncome_id',$tipoFijo->id);
-           $this->typeFixedRepository->updateBalance($tipoFijo->id,$incomes);
+           $this->typeIncomeRepository->updateBalance($tipoFijo->id,$incomes);
         endforeach;
 
-        $tipoVars = $this->typeTemporaryIncomeRepository->allData();
 
-        foreach($tipoVars AS $tipoVar):
-            $incomes = $this->incomeRepository->oneWhereList('typesTemporaryIncome_id',$tipoVar->id);
-            $this->typeTemporaryIncomeRepository->updateBalance($tipoVar->id,$incomes);
-        endforeach;
 
 
     }
@@ -101,6 +93,26 @@ class TestController extends Controller {
                 foreach($expenses AS $expense):
                     $this->expensesRepository->getModel()->where('id',$expense->expense_id)->update(['type_expense_id'=>$type->id]);
                 endforeach;
+        endforeach;
+    }
+
+    public function typeExpense() {
+
+        $tipoFijos = $this->typeExpenseRepository->allData();
+
+        foreach($tipoFijos AS $tipoFijo):
+            $incomes = $this->expensesRepository->oneWhereList('type_expense_id',$tipoFijo->id,'amount');
+            $this->typeExpenseRepository->updateBalance($tipoFijo->id,$incomes,'balance');
+        endforeach;
+    }
+
+    public function typeIncome() {
+
+        $tipoFijos = $this->TypeIncomeRepository->allData();
+
+        foreach($tipoFijos AS $tipoFijo):
+            $incomes = $this->incomeRepository->oneWhereList('type_income_id',$tipoFijo->id,'balance');
+            $this->TypeIncomeRepository->updateBalance($tipoFijo->id,$incomes,'balance');
         endforeach;
     }
 

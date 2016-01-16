@@ -35,7 +35,7 @@ Route::group(['prefix' => 'iglesia'], function () {
 	Route::get('reportes/fondos/{date}', ['as' => 'post-report', 'uses' => 'ReportController@store']);
 
 
-		$routes = ['members','checks','record','typeFix','variableTypes','incomes',
+		$routes = ['members','checks','record','typeIncome','incomes',
 			'departaments','expenses','test','typeExpenses'];
 		/*
         * Rutas de Bancos

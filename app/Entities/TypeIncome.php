@@ -3,7 +3,7 @@
 namespace SistemasAmigables\Entities;
 
 
-class TypeFixedIncome extends Entity
+class TypeIncome extends Entity
 {
     protected $timestamp;
 

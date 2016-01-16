@@ -25,4 +25,14 @@ class TypeExpense extends Entity
     {
         return $this->hasMany(Departament::getClass(),'id','departament_id');
     }
+
+    public function expenses()
+    {
+        return $this->belongsTo(Expense::getClass(),'expenses_id','id');
+    }
+
+    public function sumExpenses()
+    {
+        return $this->belongsTo(Expense::getClass(),'expenses_id','id');
+    }
 }

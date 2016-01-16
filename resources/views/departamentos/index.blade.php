@@ -26,7 +26,7 @@ Lista Departamentos
             <td>{{$key+1}}</td>
             <td>{{$departament->name}}</td>
             <td>{{$departament->budget}}</td>
-            <td></td>
+            <td>{{number_format($departament->income,2)}}</td>
             <td>{{number_format($departament->expense,2)}}</td>
         </tr>
         @endforeach
@@ -39,9 +39,9 @@ Lista Departamentos
             <td></td>
             <td>Total</td>
             <td>Presupuesto: {{number_format($totalPresupuesto,2)}}</td>
-            <td>Ingresos: </td>
+            <td>Ingresos: {{number_format($totalIncomes,2)}}</td>
             <td>Gastos: {{number_format($totalExpenses,2)}}</td>
-            <td class="color-red">Disponible para gasto: {{number_format(($totalPresupuesto+$totalExpenses),2)}}</td>
+            <td class="color-red">Disponible para gasto: {{number_format($totalIncomes-($totalPresupuesto+$totalExpenses),2)}}</td>
         </tr>
         </tbody>
     </table>

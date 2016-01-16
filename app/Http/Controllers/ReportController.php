@@ -16,7 +16,7 @@ use SistemasAmigables\Entities\TypeExpense;
 use SistemasAmigables\Entities\TypeFixedIncome;
 use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\MemberRepository;
-use SistemasAmigables\Repositories\TypeFixedRepository;
+use SistemasAmigables\Repositories\TypeIncomeRepository;
 use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
 
 class ReportController extends  Controller
@@ -26,9 +26,9 @@ class ReportController extends  Controller
      */
     private $fpdf;
     /**
-     * @var TypeFixedRepository
+     * @var TypeIncomeRepository
      */
-    private $typeFixedRepository;
+    private $TypeIncomeRepository;
     /**
      * @var TypeTemporaryIncomeRepository
      */
@@ -49,7 +49,7 @@ class ReportController extends  Controller
     /**
      * ReportController constructor.
      * @param Fpdf $fpdf
-     * @param TypeFixedRepository $typeFixedRepository
+     * @param TypeIncomeRepository $TypeIncomeRepository
      * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
      * @param TypeExpense $typeExpense
      * @param IncomeRepository $incomeRepository
@@ -57,8 +57,8 @@ class ReportController extends  Controller
      */
     public function __construct(
         Fpdf $fpdf,
-        TypeFixedRepository $typeFixedRepository,
-        TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository,
+        TypeIncomeRepository $TypeIncomeRepository,
+
         TypeExpense $typeExpense,
         IncomeRepository $incomeRepository,
         MemberRepository $memberRepository
@@ -67,8 +67,8 @@ class ReportController extends  Controller
     {
 
         $this->fpdf = $fpdf;
-        $this->typeFixedRepository = $typeFixedRepository;
-        $this->typeTemporaryIncomeRepository = $typeTemporaryIncomeRepository;
+        $this->TypeIncomeRepository = $TypeIncomeRepository;
+
         $this->typeExpense = $typeExpense;
         $this->incomeRepository = $incomeRepository;
         $this->memberRepository = $memberRepository;
@@ -83,7 +83,7 @@ class ReportController extends  Controller
     {
         //$date = Input::get('date');
 
-        $fixs = $this->typeFixedRepository->allData();
+        $fixs = $this->TypeIncomeRepository->allData();
         $temporals = $this->typeTemporaryIncomeRepository->allData();
         $miembros = $this->memberRepository->allData();
         $income = $this->incomeRepository->getModel();
@@ -249,20 +249,20 @@ class ReportController extends  Controller
     {
         $pdf  = Fpdf::SetX(10);
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('DIEZMOS'),0,0,'L');
-        $diezmo = $this->typeFixedRepository->name('name','Diezmos');
+        $diezmo = $this->TypeIncomeRepository->name('name','Diezmos');
         $diezmoTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$diezmo[0]->id);
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($diezmoTotal,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('20% MUNDIAL'),0,0,'L');
-        $ofrenda = $this->typeFixedRepository->name('name','Ofrenda');
+        $ofrenda = $this->TypeIncomeRepository->name('name','Ofrenda');
         $ofrendaTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$ofrenda[0]->id);
-        $fondo = $this->typeFixedRepository->name('name','Fondo Inv.');
+        $fondo = $this->TypeIncomeRepository->name('name','Fondo Inv.');
         $fondoTotal =$this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$fondo[0]->id);
         $asoc = ($ofrendaTotal+$fondoTotal)/5;
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($asoc,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('20% DESARROLLO'),0,0,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($asoc,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('RECOLECCION'),0,0,'L');
-        $diezmo = $this->typeFixedRepository->name('name','Recoleccion');
+        $diezmo = $this->TypeIncomeRepository->name('name','Recoleccion');
         if(!$diezmo->isEmpty()):
             $recoleccion = $this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$diezmo[0]->id);
         else:
@@ -270,7 +270,7 @@ class ReportController extends  Controller
         endif;
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($recoleccion,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('RADIO'),0,0,'L');
-        $radio = $this->typeFixedRepository->name('name','Radio y T.V.');
+        $radio = $this->TypeIncomeRepository->name('name','Radio y T.V.');
         if(!$radio->isEmpty()):
         $radioTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$radio[0]->id);
         else:
@@ -278,7 +278,7 @@ class ReportController extends  Controller
         endif;
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($radioTotal,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('REVISTA'),0,0,'L');
-        $revista = $this->typeFixedRepository->name('name','Prioridades');
+        $revista = $this->TypeIncomeRepository->name('name','Prioridades');
             if(!$revista->isEmpty()):
         $revistaTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'typeFixedIncome_id',$revista[0]->id);
             else:

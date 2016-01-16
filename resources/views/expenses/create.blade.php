@@ -8,7 +8,16 @@
 @stop
 
 @section('content')
-    <h2>Numero de Cheque: {{$checks->number}} Por: {{$checks->balance}}</h2>
+    <div>@include('partials/errors')</div>
+    <div>@include('partials/message')</div>
+    <div class="panel-body text-center">
+    <h2>Numero de Cheque: {{$checks->number}} Por: {{$checks->balance}} </h2>
+    @if(($checks->balance-$total)>0)
+        <h2 class="color-green">Diferencia: {{$checks->balance-$total}}</h2>
+    @elseif(($checks->balance-$total)<0)
+        <h2 class="color-red">Diferencia: {{$checks->balance-$total}}</h2>
+    @endif
+    </div>
    <form action="{{route('gasto-store')}}" method="post">
     <div class="row">
         <div class="col-sm-6 col-md-6">
@@ -19,23 +28,12 @@
             </div>
         </div>
         {{csrf_field()}}
-        <div class="col-sm-6 col-md-6">
-            <label for="date">Departamento</label>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                <select name="departament_id" class="form-control">
-                    <option value="">Elija una Opción</option>
-                    @foreach($departaments AS $departament)
-                        <option value="{{$departament->id}}">{{$departament->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
+
         <div class="col-sm-6 col-md-6">
             <label for="date">Tipo de Gasto</label>
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                <select name="typeExpenses" class="form-control">
+                <select name="type_expense_id" class="form-control">
                     <option value="">Elija una Opción</option>
                     @foreach($typeExpenses AS $typeExpense)
                         <option value="{{$typeExpense->id}}">{{$typeExpense->name}}</option>
@@ -43,31 +41,8 @@
                 </select>
             </div>
         </div>
-        <div class="col-sm-6 col-md-6">
-            <label for="date">Tipo de Fijos</label>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                <select name="typefix" class="form-control">
-                    <option value="">Elija una Opción</option>
-                    @foreach($typeFixs AS $typeFix)
-                        <option value="{{$typeFix->id}}">{{$typeFix->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-6">
-            <label for="date">Tipo  Variables</label>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                <select name="typeVar" class="form-control">
-                    <option value="">Elija una Opción</option>
-                    @foreach($typeVars AS $typeVar)
-                        <option value="{{$typeVar->id}}">{{$typeVar->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-6">
+
+            <div class="col-sm-6 col-md-6">
             <label for="date">Numero de Factura </label>
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
@@ -112,19 +87,25 @@
                 <tr>
                     <th>N°</th>
                     <th>Departamento</th>
+                    <th>Gasto</th>
+                    <th>Detalle</th>
                     <th>Fecha</th>
                     <th>N°Factura</th>
                     <th>Monto</th>
+                    <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody><?php ?>
                 @foreach($expenses AS $key=>$expense)
                     <tr>
                         <td>{{$key+1}}</td>
-                        <td>{{$expense->departaments->name}}</td>
+                        <td>{{$expense->typeExpenses->departaments[0]->name}}</td>
+                        <td>{{$expense->typeExpenses->name}}</td>
+                        <td>{{$expense->detail}}</td>
                         <td>{{$expense->invoiceDate}}</td>
                         <td>{{$expense->invoiceNumber}}</td>
                         <td>{{$expense->amount}}</td>
+                        <td class="text-center"><a href="{{route('delete-gasto',$expense->id)}}"><i class="fa fa-remove"></i></a></td>
                     </tr>
                 @endforeach
                     <tr>
