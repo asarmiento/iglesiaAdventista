@@ -32,8 +32,7 @@ class MemberController extends Controller {
      */
     public function __construct(
         MemberRepository $memberRepository,
-        TypeIncomeRepository $TypeIncomeRepository,
-        TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+        TypeIncomeRepository $TypeIncomeRepository
     )
     {
 
