@@ -6,8 +6,8 @@
  * Time: 09:38 PM
  */
 
-Route::get('tipos-fijos',['as'=>'typeFix-lista','uses'=>'TypeFixedIncomeController@index']);
-Route::get('tipos-fijos/crear',['as'=>'crear-typeFix','uses'=>'TypeFixedIncomeController@create']);
-Route::post('tipos-fijos/crear',['as'=>'crear-typeFixs','uses'=>'TypeFixedIncomeController@store']);
-Route::post('tipos-fijos/update/{id}',['as'=>'update-typeFixs','uses'=>'TypeFixedIncomeController@update']);
-Route::get('tipos-fijos/{id}',['as'=>'typeFix-edit','uses'=>'TypeFixedIncomeController@edit']);
+Route::get('tipos-de-ingresos',['as'=>'typeFix-lista','uses'=>'TypeIncomeController@index']);
+Route::get('tipos-de-ingresos/crear',['as'=>'crear-typeFix','uses'=>'TypeIncomeController@create']);
+Route::post('tipos-de-ingresos/crear',['as'=>'crear-typeFixs','uses'=>'TypeIncomeController@store']);
+Route::post('tipos-de-ingresos/update/{id}',['as'=>'update-typeFixs','uses'=>'TypeIncomeController@update']);
+Route::get('tipos-de-ingresos/{id}',['as'=>'typeFix-edit','uses'=>'TypeIncomeController@edit']);

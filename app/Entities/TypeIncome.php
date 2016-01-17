@@ -25,12 +25,12 @@ class TypeIncome extends Entity
 
     public function fixExponses()
     {
-        return $this->belongsToMany(Expense::getClass(),'expense_income','id','type_fixed_income_id')->sum('expense_income.amount');
+        return $this->belongsToMany(Expense::getClass(),'expense_income','id','type_income_id')->sum('expense_income.amount');
     }
 
     public function fixIncomes()
     {
-        return $this->belongsTo(Income::getClass(),'id','typeFixedIncome_id')->sum('balance');
+        return $this->belongsTo(Income::getClass(),'id','type_income_id')->sum('balance');
     }
     public function departaments()
     {
@@ -38,7 +38,7 @@ class TypeIncome extends Entity
     }
     public function incomes()
     {
-        return $this->belongsTo(Income::getClass(),'id','typeFixedIncome_id');
+        return $this->belongsTo(Income::getClass(),'id','type_income_id');
     }
 
     public function expenses()
