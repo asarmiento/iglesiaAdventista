@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Validator;
 use SistemasAmigables\Entities\Church;
-use SistemasAmigables\Entities\TypeFixedIncome;
+use SistemasAmigables\Entities\TypeIncome;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
@@ -54,13 +54,14 @@ class TypeIncomeController extends Controller {
      * @return Response
      */
     public function index() {
-        $tiposfijos = $this->TypeIncomeRepository->getModel()
-            ->selectRaw('type_fixed_incomes.*,
-            ( SELECT SUM(balance) FROM incomes WHERE incomes.typeFixedIncome_id=type_fixed_incomes.id) as income,
-             ( SELECT SUM(amount) FROM expense_income WHERE expense_income.type_fixed_income_id=type_fixed_incomes.id) as expense'
+        $date = date('Y').'-01-01';
+
+        $tipoincomes = $this->TypeIncomeRepository->getModel()
+            ->selectRaw("type_incomes.*,
+            ( SELECT SUM(balance) FROM incomes WHERE incomes.type_income_id=type_incomes.id AND date < $date ) as lastYear"
             )->with('incomes')->get();
 
-        return View('tipos_fijos.index', compact('tiposfijos'));
+        return View('tipo_incomes.index', compact('tipoincomes'));
     }
 
     /**
@@ -74,7 +75,7 @@ class TypeIncomeController extends Controller {
         $tiposfijo = array();
         $iglesia = Church::lists('id');
         $departaments = $this->departamentRepository->allData();
-        return View('tipos_fijos.form',  compact('action','form_data','tiposfijo','iglesia','departaments'));
+        return View('tipo_incomes.form',  compact('action','form_data','tiposfijo','iglesia','departaments'));
     }
 
     /**
@@ -107,9 +108,9 @@ class TypeIncomeController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $tiposfijo = Tiposfijo::findOrFail($id);
+        $tiposfijo = TypeIncome::findOrFail($id);
 
-        return View::make('tipos_fijos.show', compact('tiposfijo'));
+        return View::make('tipo_incomes.show', compact('tiposfijo'));
     }
 
     /**
@@ -124,7 +125,7 @@ class TypeIncomeController extends Controller {
         $action = 'Actualizar';
         $iglesia = Church::lists('id');
         $departaments = $this->departamentRepository->allData();
-        return View('tipos_fijos.form', compact('form_data','tiposfijo','action','iglesia','departaments'));
+        return View('tipo_incomes.form', compact('form_data','tiposfijo','action','iglesia','departaments'));
     }
 
     /**
@@ -135,9 +136,8 @@ class TypeIncomeController extends Controller {
      */
     public function update($id) {
 
-        $typeFix = TypeFixedIncome::findOrFail($id);
+        $typeFix = TypeIncome::findOrFail($id);
 
-      //  $validator = Validator::make($data = Input::all(), TypeFixedIncome::$rules);
         $data= Input::all();
         if ($typeFix->isValid($data)) {
             $typeFix->fill($data);
@@ -159,9 +159,9 @@ class TypeIncomeController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        Tiposfijo::destroy($id);
+        TypeIncome::destroy($id);
 
-        return Redirect::route('tipos_fijos.index');
+        return Redirect::route('tipo_incomes.index');
     }
 
 }
