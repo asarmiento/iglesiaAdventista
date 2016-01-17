@@ -32,8 +32,8 @@ Lista Miembros
                     <td>{{$member->phone}}</td>
                     <td>{{$member->celular}}</td>
                     <td>{{$member->email}}</td>
-                    <td><a class="btn btn-warning" href="{{URL::action('MemberController@edit',$member->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                    <td><a  href="{{URL::action('MemberController@view',$member->_token)}}"><span class="fa fa-street-view"></span></a></td>
+                    <td class="text-center"><a href="{{URL::action('MemberController@edit',$member->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                    <td class="text-center"><a  href="{{URL::action('MemberController@view',$member->_token)}}"><span class="fa fa-street-view"></span></a></td>
                 </tr>
             @endforeach
             </tbody>
