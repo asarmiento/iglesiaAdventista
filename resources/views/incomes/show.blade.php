@@ -26,12 +26,9 @@
                         <th>#</th>
                         <th>Miembros</th>
                         <th>Recibo N°</th>
-                        @foreach($fixeds AS $fixed)
-                            <th>{{$fixed->name}}</th>
-                        @endforeach
-                        @foreach($temporaries AS $temporary)
-                            @if($income->where('typesTemporaryIncome_id',$temporary->id)->where('date',$control->saturday)->sum('balance') >0 )
-                                <th>{{$temporary->name}}</th>
+                        @foreach($typeIncomes AS $typeIncome)
+                            @if($income->where('type_income_id',$typeIncome->id)->where('date',$control->saturday)->sum('balance') >0 )
+                                <th>{{$typeIncome->name}}</th>
                             @endif
                         @endforeach
                     </tr>
@@ -41,15 +38,12 @@
                         @if($income->where('member_id',$member->id)->where('date',$control->saturday)->sum('balance') >0 )
                             <tr style="margin: 2px"><?php $i++; ?>
                                 <td>{{$i}}</td>
-                                <td style="margin: 4px">{{$member->name}}</td>
+                                <td style="margin: 4px">{{$member->completo()}}</td>
 
                                 <td style="margin: 4px">{{$member->incomes->numberOf}}</td>
-                                @foreach($fixeds AS $fixed)
-                                    <td style="margin: 4px">{{number_format($member->incomes->treeWhere('typeFixedIncome_id',$fixed->id,'member_id',$member->id,'date',$control->saturday))}}</td>
-                                @endforeach
-                                @foreach($temporaries AS $temporary)
-                                    @if($income->where('typesTemporaryIncome_id',$temporary->id)->where('date',$control->saturday)->sum('balance') >0 )
-                                        <td style="margin: 4px">{{number_format($member->incomes->treeWhere('typesTemporaryIncome_id',$temporary->id,'member_id',$member->id,'date',$control->saturday))}}</td>
+                                @foreach($typeIncomes AS $typeIncome)
+                                    @if($income->where('type_income_id',$typeIncome->id)->where('date',$control->saturday)->sum('balance') >0 )
+                                        <td style="margin: 4px">{{number_format($member->incomes->treeWhere('type_income_id',$typeIncome->id,'member_id',$member->id,'date',$control->saturday))}}</td>
                                     @endif
                                 @endforeach
 
@@ -58,12 +52,9 @@
                     @endforeach
                         <tr>
                             <td colspan="3" class="text-right"><strong>Total _ _ _ _ _</strong></td>
-                            @foreach($fixeds AS $fixed)
-                                <td style="margin: 4px"><strong>{{number_format($income->twoWhere('typeFixedIncome_id',$fixed->id,'date',$control->saturday))}}</strong></td>
-                            @endforeach
-                            @foreach($temporaries AS $temporary)
-                                @if($income->where('typesTemporaryIncome_id',$temporary->id)->where('date',$control->saturday)->sum('balance') >0 )
-                                    <td style="margin: 4px"><strong>{{number_format($income->twoWhere('typesTemporaryIncome_id',$temporary->id,'date',$control->saturday))}}</strong></td>
+                            @foreach($typeIncomes AS $typeIncome)
+                                @if($income->where('type_income_id',$typeIncome->id)->where('date',$control->saturday)->sum('balance') >0 )
+                                    <td style="margin: 4px"><strong>{{number_format($income->twoWhere('type_income_id',$typeIncome->id,'date',$control->saturday))}}</strong></td>
                                 @endif
                             @endforeach
                         </tr>

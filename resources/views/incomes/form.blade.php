@@ -39,11 +39,8 @@ Formulario  Ingresos
                         <th>#</th>
                         <th>Miembro</th>
                         <th>Numero Sobre</th>
-                        @foreach($fixeds AS $fixed)
-                        <th>{{$fixed->name}}</th>
-                        @endforeach
-                        @foreach($temporaries AS $temporary)
-                        <th>{{$temporary->name}}</th>
+                        @foreach($typeIncomes AS $typeIncome)
+                        <th>{{$typeIncome->name}}</th>
                         @endforeach
                     </tr>
                 </thead>
@@ -59,11 +56,8 @@ Formulario  Ingresos
                                 @endforeach
                             </select></td>
                         <td style="margin: 4px"><input type="text" placeholder="Numero Sobre" name="numberAbout-{{$i}}" class="form-control" style="height:30px; margin: 4px" size="10"></td>
-                        @foreach($fixeds AS $fixed)
-                        <td style="margin: 4px"><input type="text" placeholder="0.00" name="fixeds-{{$i}}-{{$fixed->id}}" class="form-control number" style="height:30px; margin: 4px" size="10"></td>
-                        @endforeach
-                        @foreach($temporaries AS $temporary)
-                        <td style="margin: 4px"><input type="text" placeholder="0.00" name="temporary-{{$i}}-{{$temporary->id}}" class="form-control number" style="height:30px; margin: 4px" size="5"></td>
+                        @foreach($typeIncomes AS $typeIncome)
+                        <td style="margin: 4px"><input type="text" placeholder="0.00" name="fixeds-{{$i}}-{{$typeIncome->id}}" class="form-control number" style="height:30px; margin: 4px" size="10"></td>
                         @endforeach
                         <td></td>
                     </tr>
