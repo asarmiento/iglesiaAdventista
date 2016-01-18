@@ -22,7 +22,7 @@ Formulario {{$action}} Tipos Variables
         <select class="form-control select2" name="departament_id">
             <option value="">Selecciones un Departamento</option>
             @foreach($departaments As $departament)
-                <option value="{{$departament->id}}">{{$departament->name}}</option>
+                <option value="{{$departament->id}}">{{convertTitle($departament->name)}}</option>
             @endforeach
         </select>
     </div>
