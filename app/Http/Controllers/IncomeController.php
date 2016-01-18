@@ -33,19 +33,24 @@ class IncomeController extends Controller {
      * @var IncomeRepository
      */
     private $incomeRepository;
+    /**
+     * @var TypeIncomeRepository
+     */
+    private $typeIncomeRepository;
 
     /**
      * @param RecordRepository $recordRepository
      * @param MemberRepository $memberRepository
      * @param TypeIncomeRepository $TypeIncomeRepository
-     * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+     * @param TypeIncomeRepository $typeIncomeRepository
      * @param IncomeRepository $incomeRepository
+     * @internal param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
      */
     public function __construct(
         RecordRepository $recordRepository,
         MemberRepository $memberRepository,
         TypeIncomeRepository $TypeIncomeRepository,
-
+        TypeIncomeRepository $typeIncomeRepository,
         IncomeRepository $incomeRepository
     )
     {
@@ -55,6 +60,7 @@ class IncomeController extends Controller {
         $this->TypeIncomeRepository = $TypeIncomeRepository;
 
         $this->incomeRepository = $incomeRepository;
+        $this->typeIncomeRepository = $typeIncomeRepository;
     }
     /**
      * Display a listing of incomes
@@ -74,11 +80,10 @@ class IncomeController extends Controller {
      */
     public function create($token) {
 
-        $fixeds=  TypeFixedIncome::all();
-        $temporaries=  TypesTemporaryIncome::all();
+        $typeIncomes=  $this->typeIncomeRepository->allData();
         $incomes=  $this->recordRepository->token($token);
         $members = $this->memberRepository->getModel()->all();
-        return View('incomes.form', compact('incomes','fixeds','temporaries','members'));
+        return View('incomes.form', compact('incomes','typeIncomes','members'));
 
     }
 
@@ -95,7 +100,7 @@ class IncomeController extends Controller {
     | @return mixed
     |----------------------------------------------------------------------
     */
-    public function store(Request $request) {
+    public function store() {
         try {
             DB::beginTransaction();
             $datas = $this->dataAbout();
@@ -146,8 +151,7 @@ class IncomeController extends Controller {
 
         $i=1;
         $record = $this->recordRepository->token(Input::get('tokenControlNumber'));
-        $fixeds = $this->TypeIncomeRepository->getModel()->get();
-        $temps = $this->typeTemporaryIncomeRepository->getModel()->get();
+        $fixeds = $this->TypeIncomeRepository->allData();
 
         unset($data['tokenControlNumber']);
         unset($data['_token']);
@@ -180,29 +184,7 @@ class IncomeController extends Controller {
                             'balance'    => $balance,
                             'token'    => $token,
                             'date'    => $data['date'],
-                            'typeFixedIncome_id' => $fixed->id,
-                            'typesTemporaryIncome_id' => null
-                        )
-                    );
-                }
-            }
-
-            foreach($temps AS $temp)
-            {
-
-                if(($data['temporary-'.$i.'-'.$temp->id]) > 0)
-                {
-                    $balance = $data['temporary-'.$i.'-'.$temp->id];
-                    $this->typeTemporaryIncomeRepository->updateBalance($temp->id,$balance,'balance');
-                    array_push($transaction, array(
-                            'record_id' => $record->id,
-                            'numberOf' => $numberOf,
-                            'member_id' => $member->id,
-                            'balance'    => $balance,
-                            'token'    => $token,
-                            'date'    => $data['date'],
-                            'typeFixedIncome_id' => null,
-                            'typesTemporaryIncome_id' => $temp->id
+                            'type_income_id' => $fixed->id
                         )
                     );
                 }
@@ -220,12 +202,11 @@ class IncomeController extends Controller {
     public function showInforme($token) {
         $control = $this->recordRepository->token($token);
         $incomes = $this->incomeRepository->getModel()->where('record_id',$control->id)->get();
-        $fixeds=  TypeFixedIncome::all();
-        $temporaries=  TypesTemporaryIncome::all();
+        $typeIncomes=  $this->typeIncomeRepository->allData();
         $income = $this->incomeRepository->getModel();
         $members = $this->memberRepository->getModel()->all();
         $i =0;
-        return View('incomes.show', compact('incomes','fixeds','temporaries','members','income','control','i'));
+        return View('incomes.show', compact('incomes','typeIncomes','members','income','control','i'));
     }
 
     /**
