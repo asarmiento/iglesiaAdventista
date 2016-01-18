@@ -33,7 +33,7 @@
             <label for="date">Tipo de Gasto</label>
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                <select name="type_expense_id" class="form-control">
+                <select name="type_expense_id" class="form-control select2">
                     <option value="">Elija una Opción</option>
                     @foreach($typeExpenses AS $typeExpense)
                         <option value="{{$typeExpense->id}}">{{$typeExpense->name}}</option>

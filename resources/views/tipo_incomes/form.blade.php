@@ -20,7 +20,7 @@ Formulario {{$action}} Tipos de Ingresos
     </div>
     <div  class="large-4 columns">
         <label>Departamento</label>
-        <select class="form-control" name="departament_id">
+        <select class="form-control select2" name="departament_id">
             <option>Selecciones un Departamento</option>
             @foreach($departaments As $departament)
             <option value="{{$departament->id}}">{{$departament->name}}</option>
