@@ -8,7 +8,7 @@ class Income extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['numberOf','url','image','date','balance','record_id','member_id','typeFixedIncome_id','typesTemporaryIncome_id','token'];
+    protected $fillable= ['numberOf','url','image','date','balance','record_id','member_id','type_income_id','token'];
 
     public function getRules()
     {
