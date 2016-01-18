@@ -8,26 +8,44 @@ Lista Departamentos
 @stop
 
 @section('content')
+    <div class="text-center">
+        <h2>Lista Departamentos de la Iglesia</h2>
+    </div>
 <div class="btn btn-info"><a href="{{route('create-depart')}}"  class="button radius">Nuevo</a></div>
 <div class="panel-body">
-<table id="table_depart" class="table-condensed">
+
+<table id="table_depart" class="table table-bordered">
     <thead>
         <tr> 
             <th>Nº</th>
             <th>Departamento</th>
             <th>Presupuesto</th>
+            <th>Gasado del Mes</th>
             <th>Saldo Mes</th>
-            <th>Gastado</th>
+
+            <th>Ing Año Ant.</th>
+            <th>Gto Año Ant.</th>
+            <th>Ing Año Act.</th>
+            <th>Gto Año Act.</th>
+            <th>Acum. Ing.</th>
+            <th>Acum. Gto</th>
         </tr>
     </thead> 
     <tbody>
         @foreach($departaments AS $key=>$departament)
-        <tr>
+        <tr class="text-center">
             <td>{{$key+1}}</td>
             <td>{{$departament->name}}</td>
-            <td>{{$departament->budget}}</td>
-            <td>{{number_format($departament->income,2)}}</td>
-            <td>{{number_format($departament->expense,2)}}</td>
+            <td>{{number_format($departament->budget,2)}}</td>
+            <td>{{number_format($departament->month,2)}}</td>
+            <td>{{number_format($departament->budget-$departament->month,2)}}</td>
+
+            <td>{{number_format($departament->lastYearIncome,2)}}</td>
+            <td>{{number_format($departament->lastYearExpense,2)}}</td>
+            <td>{{number_format($departament->yearIncome,2)}}</td>
+            <td>{{number_format($departament->yearExpense,2)}}</td>
+            <td>{{number_format($departament->allIncome,2)}}</td>
+            <td>{{number_format($departament->allExpense,2)}}</td>
         </tr>
         @endforeach
 

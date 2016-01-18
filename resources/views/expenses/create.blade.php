@@ -41,8 +41,7 @@
                 </select>
             </div>
         </div>
-
-            <div class="col-sm-6 col-md-6">
+        <div class="col-sm-6 col-md-6">
             <label for="date">Numero de Factura </label>
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
