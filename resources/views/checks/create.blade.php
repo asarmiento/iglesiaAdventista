@@ -40,7 +40,7 @@
                     <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
                     <select name="account_id" class="form-control select2" >
                         @foreach($accounts AS $account)
-                            <option value="{{$account->id}}">{{$account->name}}</option>
+                            <option value="{{$account->id}}">{{convertTitle($account->name)}}</option>
                         @endforeach
                     </select>
                 </div>

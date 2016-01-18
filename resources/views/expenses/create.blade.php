@@ -36,7 +36,7 @@
                 <select name="type_expense_id" class="form-control select2">
                     <option value="">Elija una Opción</option>
                     @foreach($typeExpenses AS $typeExpense)
-                        <option value="{{$typeExpense->id}}">{{$typeExpense->name}}</option>
+                        <option value="{{$typeExpense->id}}">{{convertTitle($typeExpense->name)}}</option>
                     @endforeach
                 </select>
             </div>

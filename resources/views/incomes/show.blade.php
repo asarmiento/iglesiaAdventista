@@ -28,7 +28,7 @@
                         <th>Recibo N°</th>
                         @foreach($typeIncomes AS $typeIncome)
                             @if($income->where('type_income_id',$typeIncome->id)->where('date',$control->saturday)->sum('balance') >0 )
-                                <th>{{$typeIncome->name}}</th>
+                                <th>{{convertTitle($typeIncome->name)}}</th>
                             @endif
                         @endforeach
                     </tr>
@@ -38,7 +38,7 @@
                         @if($income->where('member_id',$member->id)->where('date',$control->saturday)->sum('balance') >0 )
                             <tr style="margin: 2px"><?php $i++; ?>
                                 <td>{{$i}}</td>
-                                <td style="margin: 4px">{{$member->completo()}}</td>
+                                <td style="margin: 4px">{{convertTitle($member->completo())}}</td>
 
                                 <td style="margin: 4px">{{$member->incomes->numberOf}}</td>
                                 @foreach($typeIncomes AS $typeIncome)
