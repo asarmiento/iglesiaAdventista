@@ -1,5 +1,6 @@
 <?php namespace SistemasAmigables\Http\Controllers;
 
+use Carbon\Carbon;
 use SistemasAmigables\Entities\Church;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
@@ -42,18 +43,24 @@ class DepartamentsController extends Controller {
      * @return Response
      */
     public function index() {
-        $departaments = $this->departamentRepository->getModel()->selectRaw('departaments.*,
-             ( SELECT SUM(balance) FROM type_expenses
-             WHERE type_expenses.departament_id = departaments.id) as expense,
-            ( SELECT SUM(balance) FROM type_incomes
-             WHERE type_incomes.departament_id = departaments.id) as income'
-        )->with('typeExpenses')->get();
+
+
+        $departaments = $this->departamentRepository->saldosIndex($this->dateSearch());
         $totalExpenses  = $this->expensesRepository->getModel()->sum('amount');
         $totalIncomes  = $this->incomeRepository->getModel()->sum('balance');
         $totalPresupuesto = $this->departamentRepository->getModel()->sum('budget');
         return View('departamentos.index', compact('departaments','totalExpenses','totalPresupuesto','totalIncomes'));
     }
 
+    public function dateSearch()
+    {
+        $now = Carbon::now();
+        $dateOut= $now->format('Y-m-d');
+        $day = $now->format('d');
+        $dateIn= $now->subDay(($day-1))->format('Y-m-d');
+        $date= ['dateOut'=>$dateOut,'dateIn'=>$dateIn];
+        return $date;
+    }
     /**
      * Show the form for creating a new departamento
      *
