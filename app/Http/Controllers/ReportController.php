@@ -140,7 +140,7 @@ class ReportController extends  Controller
         $pdf .= $this->firmas();
         $pdf = Fpdf::SetXY(110,$y);
         $pdf .= $this->footer($date);
-        Fpdf::Output('Informe-Semana: '.$date);
+        Fpdf::Output('Informe-Semana: '.$date.'.pdf');
         exit;
     }
     private function Search($campo,$data,$campo1,$data1)
