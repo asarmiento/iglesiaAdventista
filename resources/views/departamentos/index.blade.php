@@ -25,8 +25,10 @@ Lista Departamentos
 
             <th>Ing Año Ant.</th>
             <th>Gto Año Ant.</th>
+
             <th>Ing Año Act.</th>
             <th>Gto Año Act.</th>
+
             <th>Acum. Ing.</th>
             <th>Acum. Gto</th>
         </tr>
@@ -40,10 +42,11 @@ Lista Departamentos
             <td>{{number_format($departament->month,2)}}</td>
             <td>{{number_format($departament->budget-$departament->month,2)}}</td>
 
-            <td>{{number_format($departament->lastYearIncome,2)}}</td>
-            <td>{{number_format($departament->lastYearExpense,2)}}</td>
-            <td>{{number_format($departament->yearIncome,2)}}</td>
-            <td>{{number_format($departament->yearExpense,2)}}</td>
+            <td>{{number_format($departament->income,2)}}</td>
+            <td>{{number_format($departament->expense,2)}}</td>
+
+            <td></td>
+            <td></td>
             <td>{{number_format($departament->allIncome,2)}}</td>
             <td>{{number_format($departament->allExpense,2)}}</td>
         </tr>
