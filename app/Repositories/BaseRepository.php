@@ -47,7 +47,10 @@ abstract class BaseRepository {
     {
         return $this->newQuery()->get();
     }
-
+    public function allSum($data)
+    {
+        return $this->newQuery()->sum($data);
+    }
     public function oneWhere($data,$id)
     {
         return $this->newQuery()->where($data,$id)->get();
@@ -56,6 +59,11 @@ abstract class BaseRepository {
     public function oneWhereList($data,$id,$sum)
     {
         return $this->newQuery()->where($data,$id)->sum($sum);
+    }
+
+    public function twoWhereList($data,$id,$data1,$id1,$sum)
+    {
+        return $this->newQuery()->where($data,$id)->where($data1,$id1)->sum($sum);
     }
 
     public function updateBalance($id,$amount,$data)

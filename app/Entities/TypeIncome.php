@@ -30,7 +30,7 @@ class TypeIncome extends Entity
 
     public function fixIncomes()
     {
-        return $this->belongsTo(Income::getClass(),'id','type_income_id')->sum('balance');
+        return $this->belongsTo(Income::getClass(),'id','type_income_id');
     }
     public function departaments()
     {

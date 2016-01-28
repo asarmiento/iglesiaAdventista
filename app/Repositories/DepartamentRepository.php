@@ -32,10 +32,10 @@ class DepartamentRepository extends BaseRepository
 
              ( SELECT SUM(expenses.amount) FROM type_expenses
              INNER JOIN expenses ON expenses.type_expense_id=type_expenses.id
-             WHERE type_expenses.departament_id = departaments.id AND expenses.invoiceDate < '.$date['dateIn'].') as lastYearExpense,
+             WHERE type_expenses.departament_id = departaments.id AND expenses.invoiceDate < '.$date['dateIn'].') as expense,
              ( SELECT SUM(incomes.balance) FROM type_incomes
             INNER JOIN incomes ON incomes.type_income_id=type_incomes.id
-             WHERE type_incomes.departament_id = departaments.id AND incomes.date < '.$date['dateIn'].') as lastYearIncome,
+             WHERE type_incomes.departament_id = departaments.id AND incomes.date < '.$date['dateIn'].') as income,
 
              ( SELECT SUM(expenses.amount) FROM type_expenses
              INNER JOIN expenses ON expenses.type_expense_id=type_expenses.id
