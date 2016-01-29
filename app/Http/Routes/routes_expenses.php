@@ -14,3 +14,4 @@ Route::get('gastos/edit/{token}',['as'=>'editar-gasto','uses'=>'ExpenseControlle
 Route::get('gastos/ver/{token}',['as'=>'ver-gasto','uses'=>'ExpenseController@show']);
 Route::get('gastos/delete/{id}',['as'=>'delete-gasto','uses'=>'ExpenseController@deleteExpense']);
 Route::post('gastos/create',['as'=>'gasto-store','uses'=>'ExpenseController@store']);
+Route::post('gastos/traspaso-de-fondos/create',['as'=>'gasto-store','uses'=>'ExpenseController@trapaso']);

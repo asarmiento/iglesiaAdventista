@@ -17,14 +17,10 @@
         @if($miembro->incomes)
         @foreach($fixes AS $fix)
         <div class="col-md-3 col-lg3">
-            <label>{{$fix->name}} Del Año: {{number_format($miembro->incomes->twoWhere('typeFixedIncome_id',$fix->id,'member_id',$miembro->id))}}</label>
+            <label>{{$fix->name}} Del Año: {{number_format($miembro->incomes->twoWhere('type_income_id',$fix->id,'member_id',$miembro->id))}}</label>
         </div>
         @endforeach
-        @foreach($temporals AS $temporal)
-            <div class="col-md-3 col-lg3">
-                <label>{{$temporal->name}} Del Año: {{number_format($miembro->incomes->twoWhere('typesTemporaryIncome_id',$temporal->id,'member_id',$miembro->id))}}</label>
-            </div>
-        @endforeach
+
         <div>
             <label>Total Del Año: {{number_format($miembro->incomes->oneWhere('member_id',$miembro->id)) }} </label>
         </div>
