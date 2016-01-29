@@ -28,7 +28,7 @@ class ReportController extends  Controller
     /**
      * @var TypeIncomeRepository
      */
-    private $TypeIncomeRepository;
+    private $typeIncomeRepository;
     /**
      * @var TypeTemporaryIncomeRepository
      */
@@ -57,7 +57,7 @@ class ReportController extends  Controller
      */
     public function __construct(
         Fpdf $fpdf,
-        TypeIncomeRepository $TypeIncomeRepository,
+        TypeIncomeRepository $typeIncomeRepository,
 
         TypeExpense $typeExpense,
         IncomeRepository $incomeRepository,
@@ -67,7 +67,7 @@ class ReportController extends  Controller
     {
 
         $this->fpdf = $fpdf;
-        $this->TypeIncomeRepository = $TypeIncomeRepository;
+        $this->typeIncomeRepository = $typeIncomeRepository;
 
         $this->typeExpense = $typeExpense;
         $this->incomeRepository = $incomeRepository;
@@ -283,6 +283,100 @@ class ReportController extends  Controller
         $fondo = $asoc*3;
 
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($fondo,2),0,1,'L');
+        return $pdf;
+    }
+
+
+    /**************************************Reporte de informe semanal*******************************************/
+
+
+    public function informe()
+    {
+       $this->headerInforme();
+        $dateIni = '2016-01-01';
+        $dateOut = '2016-01-31';
+        $this->ingresos($dateIni,$dateOut);
+        Fpdf::Output('Informe-Mensual-Ingresos-Gastos.pdf','I');
+        exit;
+    }
+
+    public function ingresos($dateIni,$dateOut)
+    {
+        $pdf   = Fpdf::Ln();
+        $pdf   = Fpdf::SetFont('Arial','B',16);
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Ingresos'),0,1,'C');
+
+        $pdf   = Fpdf::Ln();
+        $pdf   = Fpdf::SetFont('Arial','B',14);
+        $pdf   .= Fpdf::SetX(20);
+        $pdf  .= Fpdf::Cell(40,7,utf8_decode('Tipo de Ingreso'),0,0,'L');
+        $pdf  .= Fpdf::Cell(35,7,utf8_decode('Mes Actual'),0,0,'C');
+        $pdf  .= Fpdf::Cell(40,7,utf8_decode('Acumulado'),0,0,'C');
+        $pdf  .= Fpdf::Cell(40,7,utf8_decode('% Mes'),0,0,'C');
+        $pdf  .= Fpdf::Cell(35,7,utf8_decode('% Acum.'),0,1,'C');
+        $typeIncomes = $this->typeIncomeRepository->allData();
+        foreach($typeIncomes As $typeIncome):
+            $pdf   = Fpdf::SetFont('Arial','',12);
+            $income =$this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)
+                ->where('type_income_id','>=',$dateIni)->where('type_income_id','<=',$dateOut)->sum('balance');
+            $totalIncome = $this->incomeRepository->getModel()->where('type_income_id','>=',$dateIni)
+                ->where('type_income_id','<=',$dateOut)->sum('balance');
+            $acum = $this->incomeRepository->oneWhereList('type_income_id',$typeIncome->id,'balance');
+            $totalAcum = $this->incomeRepository->allSum('balance');
+            $pdf   .= Fpdf::SetX(20);
+            $pdf  .= Fpdf::Cell(40,7,utf8_decode($typeIncome->name),0,0,'L');
+            $pdf  .= Fpdf::Cell(35,7,number_format($income,2),0,0,'C');
+            $pdf  .= Fpdf::Cell(40,7,number_format($acum,2),0,0,'C');
+            if($income>0):
+                $pdf  .= Fpdf::Cell(40,7,number_format(($income/$totalIncome)*100,2).'%',0,0,'C');
+            else:
+                $pdf  .= Fpdf::Cell(40,7,number_format(0,2).'%',0,0,'C');
+            endif;
+            if($acum>0):
+                $pdf  .= Fpdf::Cell(35,7,number_format(($acum/$totalAcum)*100,2).'%',0,1,'C');
+            else:
+                $pdf  .= Fpdf::Cell(35,7,number_format(0,2).'%',0,1,'C');
+            endif;
+
+        endforeach;
+        $totalIncome = $this->incomeRepository->getModel()->where('type_income_id','>=',$dateIni)
+            ->where('type_income_id','<=',$dateOut)->sum('balance');
+        $totalAcum = $this->incomeRepository->allSum('balance');
+        $pdf   = Fpdf::SetFont('Arial','B',14);
+        $pdf   .= Fpdf::SetX(20);
+        $pdf  .= Fpdf::Cell(40,7,utf8_decode('Total'),0,0,'L');
+        $pdf  .= Fpdf::Cell(35,7,number_format($totalIncome),0,0,'C');
+        $pdf  .= Fpdf::Cell(40,7,number_format($totalAcum),0,0,'C');
+        $pdf  .= Fpdf::Cell(40,7,utf8_decode('100%'),0,0,'C');
+        $pdf  .= Fpdf::Cell(35,7,utf8_decode('100%'),0,1,'C');
+
+        return $pdf;
+    }
+
+    /*
+   |---------------------------------------------------------------------
+   |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+   |@Date Create: 2015-11-08
+   |@Date Update: 2015-00-00
+   |---------------------------------------------------------------------
+   |@Description: Generamos el encabezado del estado resultado
+   |----------------------------------------------------------------------
+   | @return mixed
+   |----------------------------------------------------------------------
+   */
+    public function headerInforme()
+    {
+        $pdf  = Fpdf::AddPage('P','letter');
+        $pdf .= Fpdf::SetFont('Arial','B',16);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Asociación Central Sur de Costa Rica de los Adventista del Séptimo Día'),0,1,'C');
+        $pdf .= Fpdf::SetFont('Arial','',12);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Apartado 10113-1000 San José, Costa Rica'),0,1,'C');
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Teléfonos: 2224-8311 Fax:2225-0665'),0,1,'C');
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('acscrtesoreria07@gmail.com acscr_tesoreria@hotmail.com'),0,1,'C');
+        $pdf .= Fpdf::SetFont('Arial','B',16);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Iglesia de Quepos'),0,1,'C');
+        $pdf .= Fpdf::SetFont('Arial','B',12);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Informe Mensual de Ingresos y Gastos'),0,1,'C');
         return $pdf;
     }
 }

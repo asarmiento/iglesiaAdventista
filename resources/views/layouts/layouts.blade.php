@@ -40,7 +40,13 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a href="">Iglesias</a></li>
                                 <li><a href="{{route('members-lista')}}">Miembros</a></li>
-                                <li><a href="{{url()}}/iglesia/informes">Informe Semanal</a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingresos<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{route('index-record')}}">Informe Semanal</a></li>
+                                        <li><a href="{{route('info-income')}}">Reporte Mensual</a></li>
+                                    </ul>
+                                </li>
                                 <li><a href="{{route('index-gasto')}}">Gastos</a></li>
                                 <li><a href="{{route('checks-lista')}}">Cheques</a></li>
                                 <li class="dropdown">
