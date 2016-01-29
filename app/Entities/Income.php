@@ -34,7 +34,10 @@ class Income extends Entity
     {
         return $this->belongsTo(Member::getClass(),'member_id','id');
     }
-
+    public function typeExpenses()
+    {
+        return $this->belongsTo(TypeExpense::getClass(),'type_income_id','id');
+    }
     public function twoWhere($data,$id,$data1,$id1)
     {
         return $this->where($data,$id)->where($data1,$id1)->sum('balance');
