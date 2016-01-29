@@ -357,7 +357,7 @@ class ReportController extends  Controller
             $pdf  .= Fpdf::Cell(35,5,number_format($expense),1,1,'C');
             $totalAcum +=$expense;
         endforeach;
-        $pdf   .= Fpdf::SetX(50);
+        $pdf   .= Fpdf::SetX(55);
         $pdf  .= Fpdf::Cell(70,5,utf8_decode('Total: '),1,0,'L');
         $pdf  .= Fpdf::Cell(35,5,number_format($totalmes),1,0,'C');
         $pdf  .= Fpdf::Cell(35,5,number_format($totalAcum),1,1,'C');
