@@ -339,6 +339,8 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::Cell(35,7,utf8_decode('Mes'),1,0,'C');
         $pdf  .= Fpdf::Cell(35,7,utf8_decode('Acumulado'),1,1,'C');
         $typeExpenses = $this->typeExpenseRepository->allData();
+        $totalmes=0;
+        $totalAcum=0;
         foreach($typeExpenses AS $typeExpense):
             $pdf   = Fpdf::SetFont('Arial','',11);
             $pdf  .= Fpdf::Cell(50,5,utf8_decode(ucfirst(strtolower($typeExpense->departaments[0]->name))),1,0,'L');
@@ -347,14 +349,18 @@ class ReportController extends  Controller
                 ->join('type_expenses','type_expenses.id','=','expenses.type_expense_id')
                 ->where('type_expense_id',$typeExpense->id)
                 ->where('invoiceDate','>=',$dateIni)->where('invoiceDate','<=',$dateOut)->sum('expenses.amount');
+            $totalmes +=$expense;
             $pdf  .= Fpdf::Cell(35,5,number_format($expense),1,0,'C');
             $expense =$this->expensesRepository->getModel()
                 ->join('type_expenses','type_expenses.id','=','expenses.type_expense_id')
                 ->where('type_expense_id',$typeExpense->id)->sum('expenses.amount');
             $pdf  .= Fpdf::Cell(35,5,number_format($expense),1,1,'C');
+            $totalAcum +=$expense;
         endforeach;
-
-
+        $pdf   .= Fpdf::SetX(50);
+        $pdf  .= Fpdf::Cell(70,5,utf8_decode('Total: '),1,0,'L');
+        $pdf  .= Fpdf::Cell(35,5,number_format($totalmes),1,0,'C');
+        $pdf  .= Fpdf::Cell(35,5,number_format($totalAcum),1,1,'C');
         Fpdf::Output('Informe-Mensual-Ingresos-Gastos.pdf','I');
         exit;
     }

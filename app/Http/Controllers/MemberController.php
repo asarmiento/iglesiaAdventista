@@ -117,8 +117,8 @@ class MemberController extends Controller {
     public function view($token) {
         $miembro = $this->memberRepository->token($token);
         $fixes = $this->TypeIncomeRepository->allData();
-        $temporals = $this->typeTemporaryIncomeRepository->allData();
-        return View('members.show', compact('miembro','fixes','temporals'));
+
+        return View('members.show', compact('miembro','fixes'));
     }
 
     /**

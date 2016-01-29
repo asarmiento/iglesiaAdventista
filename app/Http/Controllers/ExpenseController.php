@@ -178,4 +178,9 @@ class ExpenseController extends Controller {
 		return Redirect::route('create-gasto',$expense->check_id);
 	}
 
+	public function trapaso()
+	{
+		return view('expenses.traspaso');
+	}
+
 }

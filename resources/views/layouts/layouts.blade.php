@@ -56,6 +56,7 @@
                                         <li><a href="{{route('typeFix-lista')}}">Tipos de Ingresos</a></li>
                                         <li><a href="{{route('typeExp-lista')}}">Tipos de Gastos</a></li>
                                         <li><a href="{{route('fondos-report')}}">Reporte Fondos</a></li>
+                                        <li><a href="{{route('fondos-report')}}">Traspaso de Fondos</a></li>
                                         <li><a href="{{url()}}/iglesia/type_users">Tipos de Usuarios</a></li>
                                     </ul>
                                 </li>
