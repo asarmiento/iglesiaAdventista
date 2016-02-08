@@ -66,7 +66,7 @@
                         </tbody>
                     </table>
                 </div>
-                <a data-toggle="modal" data-target="#modalCreateTypeUser" class="btn btn-md btn-success">Crear</a>
+                <a href="{{route('typeUser-create')}}"  class="btn btn-md btn-success">Crear</a>
             </div>
         </div>
     </div>

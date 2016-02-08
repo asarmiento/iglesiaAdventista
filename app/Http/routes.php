@@ -20,9 +20,13 @@ Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 // Authentication routes.
 Route::get('auth/login', 'Auth\AuthController@getLogin');
-Route::post('auth/login', ['as' => 'auth/login', 'uses' => 'Auth\AuthController@postLogin']);
+Route::post('auth/login', ['as' =>'auth/login', 'uses' => 'Auth\AuthController@postLogin']);
 Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController@getLogout']);
 
+
+// Registration routes...
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 Route::resource('expenses','ExpenseController');
 
@@ -36,7 +40,7 @@ Route::group(['prefix' => 'iglesia'], function () {
 
 
 		$routes = ['members','checks','record','typeIncome','incomes',
-			'departaments','expenses','test','typeExpenses'];
+			'departaments','expenses','test','typeExpenses','banks'];
 		/*
         * Rutas de Bancos
         */
@@ -45,7 +49,7 @@ Route::group(['prefix' => 'iglesia'], function () {
 		endforeach;
 });
 
-
+require __DIR__.'/Routes/routes_typeUser.php';
 Route::resource('type_users','TypeUsersController');
 
 Route::resource('users','UsersController');

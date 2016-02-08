@@ -143,13 +143,15 @@ $(function(){
 		e.preventDefault();
 		var resource = $(this).data("resource");
 		var message = null;
-		data.id = $("#id_typeUser").val();;
+		data.id = $("#id_typeUser").val();
 		data.name = $("#name_typeUser").val();
 		data.state = $("#slcState_typeUser").val();
+		alert(data);
 		$("#btnLaddaEdit").show();		
 		var l = Ladda.create(document.getElementById('btnLaddaEdit'));
 		l.start();
 		$("#msgEdit").html('');
+
 		ajaxForm(resource, "put", data)
 		.done(function(result){
 			l.stop();

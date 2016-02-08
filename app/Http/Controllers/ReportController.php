@@ -102,7 +102,7 @@ class ReportController extends  Controller
     {
         //$date = Input::get('date');
 
-        $fixs = $this->TypeIncomeRepository->allData();
+        $fixs = $this->typeIncomeRepository->allData();
 
         $miembros = $this->memberRepository->allData();
         $income = $this->incomeRepository->getModel();
@@ -256,20 +256,20 @@ class ReportController extends  Controller
     {
         $pdf  = Fpdf::SetX(10);
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('DIEZMOS'),0,0,'L');
-        $diezmo = $this->TypeIncomeRepository->name('name','Diezmos');
+        $diezmo = $this->typeIncomeRepository->name('name','Diezmos');
         $diezmoTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'type_income_id',$diezmo[0]->id);
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($diezmoTotal,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('20% MUNDIAL'),0,0,'L');
-        $ofrenda = $this->TypeIncomeRepository->name('name','Ofrenda');
+        $ofrenda = $this->typeIncomeRepository->name('name','Ofrenda');
         $ofrendaTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'type_income_id',$ofrenda[0]->id);
-        $fondo = $this->TypeIncomeRepository->name('name','Fondo Inv.');
+        $fondo = $this->typeIncomeRepository->name('name','Fondo Inv.');
         $fondoTotal =$this->incomeRepository->getModel()->twoWhere('date',$date,'type_income_id',$fondo[0]->id);
         $asoc = ($ofrendaTotal+$fondoTotal)/5;
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($asoc,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('20% DESARROLLO'),0,0,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($asoc,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('RECOLECCION'),0,0,'L');
-        $diezmo = $this->TypeIncomeRepository->name('name','Recoleccion');
+        $diezmo = $this->typeIncomeRepository->name('name','Recoleccion');
         if(!$diezmo->isEmpty()):
             $recoleccion = $this->incomeRepository->getModel()->twoWhere('date',$date,'type_income_id',$diezmo[0]->id);
         else:
@@ -277,7 +277,7 @@ class ReportController extends  Controller
         endif;
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($recoleccion,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('RADIO'),0,0,'L');
-        $radio = $this->TypeIncomeRepository->name('name','Radio y T.V.');
+        $radio = $this->typeIncomeRepository->name('name','Radio y T.V.');
         if(!$radio->isEmpty()):
         $radioTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'type_income_id',$radio[0]->id);
         else:
@@ -285,7 +285,7 @@ class ReportController extends  Controller
         endif;
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($radioTotal,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('REVISTA'),0,0,'L');
-        $revista = $this->TypeIncomeRepository->name('name','Prioridades');
+        $revista = $this->typeIncomeRepository->name('name','Prioridades');
             if(!$revista->isEmpty()):
         $revistaTotal = $this->incomeRepository->getModel()->twoWhere('date',$date,'type_income_id',$revista[0]->id);
             else:
@@ -294,12 +294,18 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($revistaTotal,2),0,1,'L');
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('OTROS'),0,1,'L');
         $pdf  .= Fpdf::Cell(40,5,utf8_decode('TOTAL ASOCIACION'),0,0,'L');
-        $total = $diezmoTotal+$asoc+$recoleccion+$revistaTotal+$radioTotal;
+        $total = $diezmoTotal+$asoc+$asoc+$recoleccion+$revistaTotal+$radioTotal;
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($total,2),0,1,'L');
 
         $pdf  .= Fpdf::ln();
         $pdf  .= Fpdf::Cell(60,5,utf8_decode('FONDOS LOCALES 60% PRESUPUESTO'),0,0,'L');
-        $fondo = $asoc*3;
+        $local = $this->typeIncomeRepository->getModel()->where('association','NO')->lists('id');
+        if(!$revista->isEmpty()):
+            $totalLocal = $this->incomeRepository->getModel()->where('date',$date)->whereIn('type_income_id',$local)->sum('balance');
+        else:
+            $totalLocal =0;
+        endif;
+        $fondo = $asoc*3+$totalLocal;
 
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($fondo,2),0,1,'L');
         return $pdf;

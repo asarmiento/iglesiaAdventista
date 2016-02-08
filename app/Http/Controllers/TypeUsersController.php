@@ -1,5 +1,7 @@
 <?php namespace SistemasAmigables\Http\Controllers;
 
+use SistemasAmigables\Entities\TypeUser;
+
 class TypeUsersController extends Controller {
 
     /**
@@ -8,8 +10,8 @@ class TypeUsersController extends Controller {
      * @return Response
      */
     public function index() {
-        $typeusers = TiposUser::withTrashed()->get();
-        return View::make('type_users.index', compact('typeusers'));
+        $typeusers = TypeUser::get();
+        return View('type_users.index', compact('typeusers'));
     }
 
     /**
@@ -18,7 +20,8 @@ class TypeUsersController extends Controller {
      * @return Response
      */
     public function create() {
-        
+
+        return view('type_users.create');
     }
 
     /**
@@ -27,8 +30,10 @@ class TypeUsersController extends Controller {
      * @return Response
      */
     public function store() {
-        $json = Input::get('data');
-        $data = json_decode($json);
+
+        $data = $this->convertionObjeto();
+        echo json_encode($data);
+        die;
         $Tipouser = new TiposUser;
         if ($Tipouser->isValid((array) $data)):
             $Tipouser->name = Str::upper($data->name);

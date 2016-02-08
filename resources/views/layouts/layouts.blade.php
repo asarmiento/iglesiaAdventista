@@ -40,6 +40,7 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a href="">Iglesias</a></li>
                                 <li><a href="{{route('members-lista')}}">Miembros</a></li>
+                                <li><a href="{{route('bank-ver')}}">Bancos</a></li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingresos<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
@@ -76,7 +77,7 @@
     </main>
     <footer>
         <div class="container">
-            <p class="text-center">Elaborado por: Sistemas Amigables de Costa Rica SAOR S.A. &AMP; Otros Colaboradores &copy; Copyright </p>
+            <p class="text-center">Elaborado por: Sistemas Amigables de Costa Rica SAOR S.A. &copy; Copyright </p>
         </div>
     </footer>
     <script src="{{ asset('js/lib/jquery.js') }}"></script>
