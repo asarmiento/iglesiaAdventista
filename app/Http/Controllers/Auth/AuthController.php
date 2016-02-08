@@ -1,5 +1,9 @@
 <?php namespace SistemasAmigables\Http\Controllers\Auth;
 
+
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Request;
+use SistemasAmigables\Entities\User;
 use SistemasAmigables\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
@@ -19,7 +23,7 @@ class AuthController extends Controller {
 	*/
 
 	use AuthenticatesAndRegistersUsers;
-
+	protected $redirectTo = '/';
 	/**
 	 * Create a new authentication controller instance.
 	 *
@@ -35,4 +39,27 @@ class AuthController extends Controller {
 		$this->middleware('guest', ['except' => 'getLogout']);
 	}
 
+
+
+	protected function getCredentials(Request $request)
+	{
+
+		return $request->only($this->loginUsername(), 'password');
+	}
+
+
+	/**
+	 * Create a new user instance after a valid registration.
+	 *
+	 * @param  array  $data
+	 * @return User
+	 */
+	protected function create(array $data) {
+		return User::create([
+			'name' => $data['name'],
+			'email' => $data['email'],
+			'typeUser_id' => $data['typeUser_id'],
+			'password' => bcrypt($data['password']),
+		]);
+	}
 }

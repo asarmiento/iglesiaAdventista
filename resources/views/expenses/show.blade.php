@@ -16,7 +16,7 @@
                 <h4>Apartado 10113-1000 San José, Costa Rica</h4>
                 <h4>Teléfonos: 2224-8311 Fax:2225-0665</h4>
                 <h4>acscrtesoreria07@gmail.com acscr_tesoreria@hotmail.com</h4>
-                <h2>Informe de Gastos de la Iglesia Adventista</h2>
+                <h2>Informe de Cheque de la Iglesia Adventista de Quepos</h2>
             </div>
             <div class="col-md-12 col-lg-12">
                 <h3>Emitido a: {{$cheques->name}}</h3>
@@ -37,6 +37,7 @@
                             <th>N° Factura</th>
                             <th>Fecha</th>
                             <th>Detalle</th>
+                            <th>Tipo de Gasto</th>
                             <th>Departamento</th>
                             <th>Monto</th>
                         </tr>
@@ -47,7 +48,8 @@
                             <td>{{$gasto->invoiceNumber}}</td>
                             <td>{{$gasto->invoiceDate}}</td>
                             <td>{{$gasto->detail}}</td>
-                            <td>{{$gasto->departaments->name}}</td>
+                            <td>{{$gasto->typeExpenses->name}}</td>
+                            <td>{{$gasto->typeExpenses->departaments[0]->name}}</td>
                             <td>{{number_format($gasto->amount,2)}}</td>
                         </tr>
                     @endforeach

@@ -122,9 +122,11 @@ class ExpenseController extends Controller {
 	 */
 	public function show($token)
 	{
+
 		$cheques = $this->checkRepository->getModel()->find($token);
 		$gastos = $this->expensesRepository->oneWhere('check_id',$token);
 		$monto = $this->expensesRepository->oneWhereList('check_id',$token,'amount');
+
 		return View('expenses.show', compact('cheques','gastos','monto'));
 	}
 
