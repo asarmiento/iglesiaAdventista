@@ -318,8 +318,8 @@ class ReportController extends  Controller
     public function informe()
     {
 
-        $dateIni = '2016-01-01';
-        $dateOut = '2016-01-31';
+        $dateIni = '2016-02-01';
+        $dateOut = '2016-02-28';
         $pdf  = Fpdf::AddPage('P','letter');
         $this->headerInforme();
         $this->ingresos($dateIni,$dateOut);
@@ -363,7 +363,7 @@ class ReportController extends  Controller
             $pdf  .= Fpdf::Cell(35,5,number_format($expense),1,1,'C');
             $totalAcum +=$expense;
         endforeach;
-        $pdf   .= Fpdf::SetX(55);
+        $pdf   .= Fpdf::SetX(60);
         $pdf  .= Fpdf::Cell(70,5,utf8_decode('Total: '),1,0,'L');
         $pdf  .= Fpdf::Cell(35,5,number_format($totalmes),1,0,'C');
         $pdf  .= Fpdf::Cell(35,5,number_format($totalAcum),1,1,'C');
@@ -420,11 +420,11 @@ class ReportController extends  Controller
             $income =$this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->where('part','NO')->sum('incomes.balance');
+                ->where('departament_id',$departament->id)->where('part','NO')->whereBetween('date',['2016-01-01','2016-02-28'])->sum('incomes.balance');
             $incomePart =$this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->where('part','SI')->sum('incomes.balance');
+                ->where('departament_id',$departament->id)->where('part','SI')->whereBetween('date',['2016-01-01','2016-02-28'])->sum('incomes.balance');
             $totalIngA += $income+$incomePart;
             $partAsocAcum +=($incomePart/5)*2;
             $partIgl =    ($incomePart/5)*3;
@@ -465,7 +465,7 @@ class ReportController extends  Controller
             $expense =$this->expensesRepository->getModel()
                 ->join('type_expenses','type_expenses.id','=','expenses.type_expense_id')
                 ->join('departaments','type_expenses.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->sum('expenses.amount');
+                ->where('departament_id',$departament->id)->whereBetween('date',['2016-01-01','2016-02-28'])->sum('expenses.amount');
             if($departament->name == 'Asociacion Central'):
                 $sinAsoc = 0;
                 $totalGtoA += 0;
@@ -502,7 +502,7 @@ class ReportController extends  Controller
                 $pdf  .= Fpdf::Cell(35,7,number_format($totalI-$total),1,1,'C');
             endif;
         endforeach;
-        $record = $this->recordRepository->getModel()->count();
+      /*  $record = $this->recordRepository->getModel()->count();
         $year = ($record/4.3333333);
         $total = ($totalGtoA)/$year;
         $totaling = $totalIngProm/$year;
@@ -519,7 +519,7 @@ class ReportController extends  Controller
         else:
             $pdf  .= Fpdf::SetTextColor(14,15,15);
             $pdf  .= Fpdf::Cell(35,7,number_format($totaling-$total),1,1,'C');
-        endif;
+        endif;*/
         return $pdf;
     }
     /*

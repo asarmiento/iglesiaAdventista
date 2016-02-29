@@ -12,8 +12,9 @@ namespace SistemasAmigables\Entities;
 class Account extends Entity
 {
 
+    protected $fillable = ['code','name','initial_balance','debit_balance','credit_balance','balance'];
     public function getRules()
     {
-        // TODO: Implement getRules() method.
+        return ['code'=>'required','name'=>'required']; // TODO: Implement getRules() method.
     }
 }

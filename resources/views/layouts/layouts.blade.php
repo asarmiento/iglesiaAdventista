@@ -40,7 +40,14 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a href="">Iglesias</a></li>
                                 <li><a href="{{route('members-lista')}}">Miembros</a></li>
-                                <li><a href="{{route('bank-ver')}}">Bancos</a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bancos<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{route('bank-ver')}}">Bancos</a></li>
+                                        <li><a href="{{route('deposito-ver')}}">Depositos</a></li>
+                                        <li><a href="{{route('checks-lista')}}">Cheques</a></li>
+                                    </ul>
+                                </li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingresos<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
@@ -49,7 +56,6 @@
                                     </ul>
                                 </li>
                                 <li><a href="{{route('index-gasto')}}">Gastos</a></li>
-                                <li><a href="{{route('checks-lista')}}">Cheques</a></li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Configuración <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
