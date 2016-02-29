@@ -35,7 +35,7 @@ Lista Tipos de ingresos
                     @else
                         <td>{{$tipoincome->departaments[0]->name}}</td>
                     @endif
-            <td>{{$tipoincome->name}}</td>
+                    <td>{{$tipoincome->name}}</td>
                     <td>{{number_format($tipoincome->lastYear,2)}}</td>
                     <td>{{number_format($tipoincome->expense,2)}}</td>
                     <td>{{number_format($tipoincome->balance,2)}}</td>

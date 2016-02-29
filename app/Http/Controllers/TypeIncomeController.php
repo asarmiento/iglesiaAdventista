@@ -58,8 +58,9 @@ class TypeIncomeController extends Controller {
 
         $tipoincomes = $this->TypeIncomeRepository->getModel()
             ->selectRaw("type_incomes.*,
-            ( SELECT SUM(balance) FROM incomes WHERE incomes.type_income_id=type_incomes.id AND date < $date ) as lastYear"
-            )->with('incomes')->get();
+            ( SELECT SUM(incomes.balance) FROM incomes
+            WHERE incomes.date < $date ) as lastYear"
+            )->get();
 
         return View('tipo_incomes.index', compact('tipoincomes'));
     }
