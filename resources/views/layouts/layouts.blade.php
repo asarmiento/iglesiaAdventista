@@ -44,7 +44,8 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bancos<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="{{route('bank-ver')}}">Bancos</a></li>
-                                        <li><a href="{{route('deposito-ver')}}">Depositos</a></li>
+                                        <li><a href="{{route('deposito-ver')}}">Depositos Iglesia</a></li>
+                                        <li><a href="{{route('deposito-campo-ver')}}">Depositos Mision/Asoc.</a></li>
                                         <li><a href="{{route('checks-lista')}}">Cheques</a></li>
                                     </ul>
                                 </li>

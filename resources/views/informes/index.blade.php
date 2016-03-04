@@ -23,6 +23,8 @@ Lista Informes Semanales
             <th width="150">Monto</th>
             <th width="50">Ver / Ingresar</th>
             <th width="50">Pdf</th>
+            <th width="50">Dep. Iglesia</th>
+            <th width="50">Dep. Mision/Asoc</th>
         </tr>
     </thead> 
     <tbody> 
@@ -40,6 +42,18 @@ Lista Informes Semanales
             <td><a target="_blank" href="{{route('informe-semanal',$informe->_token )}}"><i class="fa fa-check"></i></a></td>
             @endif
             <td><a target="_blank"  href="{{route('post-report',$informe->saturday )}}"><i class="fa fa-file-pdf-o"></i></a></td>
+
+            @if(($informe->deposit == 'YES'))
+                <td><a href="#"><i class="fa fa-check"></i></a></td>
+            @else
+                <td><a target="_blank" href="{{route('create-deposit')}}"><i class="fa fa-empire"></i></a></td>
+            @endif
+
+            @if(($informe->campo == 'true'))
+                <td><a href="#"><i class="fa fa-check"></i></a></td>
+            @else
+                <td><a target="_blank" href="{{route('create-deposit-campo')}}"><i class="fa fa-empire"></i></a></td>
+            @endif
         </tr>
         @endforeach
     </tbody>
