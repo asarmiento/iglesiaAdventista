@@ -21,6 +21,7 @@ Lista Informes Semanales
             <th width="150">Lineas</th>
             <th width="150">Sábado</th>
             <th width="150">Monto</th>
+            <th width="150">Monto Mision/Asoc.</th>
             <th width="50">Ver / Ingresar</th>
             <th width="50">Pdf</th>
             <th width="50">Dep. Iglesia</th>
@@ -36,6 +37,7 @@ Lista Informes Semanales
             <td>{{$informe->rows}}</td>
             <td>{{$informe->saturday}}</td>
             <td>{{number_format($informe->balance,2)}}</td>
+            <td>{{number_format($informe->mision,2)}}</td>
             @if(($informe->incomes->isEmpty()))
             <td><a href="{{route('create-income',$informe->_token)}}"><i class="fa fa-book"></i></a></td>
             @else
