@@ -31,4 +31,6 @@ class TypeIncomeRepository extends BaseRepository
     {
         return $this->newQuery()->where($data,$name)->get();
     }
+
+
 }

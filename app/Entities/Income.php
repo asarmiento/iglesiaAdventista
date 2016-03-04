@@ -34,6 +34,10 @@ class Income extends Entity
     {
         return $this->belongsTo(Member::getClass(),'member_id','id');
     }
+    public function typeIncomes()
+    {
+        return $this->belongsTo(TypeIncome::getClass(),'type_income_id','id');
+    }
     public function typeExpenses()
     {
         return $this->belongsTo(TypeExpense::getClass(),'type_income_id','id');

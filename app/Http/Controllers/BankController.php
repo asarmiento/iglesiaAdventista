@@ -14,6 +14,7 @@ use SistemasAmigables\Repositories\AccountRepository;
 use SistemasAmigables\Repositories\BankRepository;
 use SistemasAmigables\Repositories\CampoRepository;
 use SistemasAmigables\Repositories\CheckRepository;
+use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\RecordRepository;
 
 class BankController extends Controller
@@ -38,13 +39,18 @@ class BankController extends Controller
      * @var CampoRepository
      */
     private $campoRepository;
+    /**
+     * @var IncomeRepository
+     */
+    private $incomeRepository;
 
     public function __construct(
         BankRepository $bankRepository,
         AccountRepository $accountRepository,
         RecordRepository $recordRepository,
         CheckRepository $checkRepository,
-        CampoRepository $campoRepository
+        CampoRepository $campoRepository,
+        IncomeRepository $incomeRepository
     )
     {
 
@@ -53,6 +59,7 @@ class BankController extends Controller
         $this->recordRepository = $recordRepository;
         $this->checkRepository = $checkRepository;
         $this->campoRepository = $campoRepository;
+        $this->incomeRepository = $incomeRepository;
     }
 
     public function index()
@@ -147,6 +154,10 @@ class BankController extends Controller
     public function depositCampoCreate()
     {
         $records = $this->recordRepository->getModel()->where('campo','false')->orderBy('saturday','DESC')->get();
+        foreach($records AS $record):
+            $bank =$this->incomeRepository->amountCampo($record->id);
+            $record->balance =  $bank;
+        endforeach;
         $checks = $this->checkRepository->getModel()->where('type','campo')->get();
         foreach($checks AS $check):
             $bank =$this->campoRepository->getModel()->where('check_id',$check->id)->sum('amount');
