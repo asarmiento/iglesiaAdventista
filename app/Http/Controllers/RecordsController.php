@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use SistemasAmigables\Entities\Record;
+use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\RecordRepository;
 
 class RecordsController extends Controller {
@@ -11,14 +12,22 @@ class RecordsController extends Controller {
      * @var RecordRepository
      */
     private $recordRepository;
+    /**
+     * @var IncomeRepository
+     */
+    private $incomeRepository;
 
     /**
      * @param RecordRepository $recordRepository
      */
-    public function __construct(RecordRepository $recordRepository)
+    public function __construct(
+        RecordRepository $recordRepository,
+        IncomeRepository $incomeRepository
+    )
     {
 
         $this->recordRepository = $recordRepository;
+        $this->incomeRepository = $incomeRepository;
     }
 
     /*
@@ -35,6 +44,10 @@ class RecordsController extends Controller {
     */
     public function index() {
         $informes = $this->recordRepository->getModel()->orderBy('id','DESC')->get();
+        foreach($informes AS $informe):
+            $campo = $this->incomeRepository->amountCampo($informe->id);
+            $informe->mision = $campo;
+        endforeach;
         return View('informes.index', compact('informes'));
     }
 

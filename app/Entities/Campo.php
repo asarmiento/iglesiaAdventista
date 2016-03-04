@@ -11,7 +11,7 @@ namespace SistemasAmigables\Entities;
 
 class Campo extends Entity
 {
-    protected  $fillable  = ['check_id','record_id','date','amount'];
+    protected  $fillable  = ['check_id','record_id','date','number','amount'];
 
     public function getRules()
     {
