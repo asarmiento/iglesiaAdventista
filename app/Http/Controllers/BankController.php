@@ -146,7 +146,7 @@ class BankController extends Controller
     }
     public function depositCampoCreate()
     {
-        $records = $this->recordRepository->getModel()->where('deposit','no')->orderBy('saturday','DESC')->get();
+        $records = $this->recordRepository->getModel()->where('campo','false')->orderBy('saturday','DESC')->get();
         $checks = $this->checkRepository->getModel()->where('type','campo')->get();
         return view('banks.depositCampoCreate',compact('records','checks'));
     }
