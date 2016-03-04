@@ -12,6 +12,7 @@ namespace SistemasAmigables\Http\Controllers;
 use Illuminate\Support\Facades\Input;
 use SistemasAmigables\Repositories\AccountRepository;
 use SistemasAmigables\Repositories\BankRepository;
+use SistemasAmigables\Repositories\CampoRepository;
 use SistemasAmigables\Repositories\CheckRepository;
 use SistemasAmigables\Repositories\RecordRepository;
 
@@ -33,12 +34,17 @@ class BankController extends Controller
      * @var CheckRepository
      */
     private $checkRepository;
+    /**
+     * @var CampoRepository
+     */
+    private $campoRepository;
 
     public function __construct(
         BankRepository $bankRepository,
         AccountRepository $accountRepository,
         RecordRepository $recordRepository,
-        CheckRepository $checkRepository
+        CheckRepository $checkRepository,
+        CampoRepository $campoRepository
     )
     {
 
@@ -46,6 +52,7 @@ class BankController extends Controller
         $this->accountRepository = $accountRepository;
         $this->recordRepository = $recordRepository;
         $this->checkRepository = $checkRepository;
+        $this->campoRepository = $campoRepository;
     }
 
     public function index()
@@ -132,34 +139,35 @@ class BankController extends Controller
 
         endif;
     }
-
+    public function depositCampo()
+    {
+        $deposits = $this->campoRepository->getModel()->with('records')->with('checks')->get();
+         return view('banks.depositCampo',compact('deposits'));
+    }
     public function depositCampoCreate()
     {
         $records = $this->recordRepository->getModel()->where('deposit','no')->orderBy('saturday','DESC')->get();
-        $checks = $this->checkRepository->allData();
+        $checks = $this->checkRepository->getModel()->where('type','campo')->get();
         return view('banks.depositCampoCreate',compact('records','checks'));
     }
 
     public function depositCampoStore()
     {
         $datos = Input::all();
-        echo json_encode($datos);
-        die;
+
         $record = $this->recordRepository->token($datos['record_id']);
         $datos['record_id']= $record->id;
-        $account = $this->bankRepository->getModel();
-        $accounts = $this->accountRepository->getModel()->find($datos['account_id']);
+        $account = $this->campoRepository->getModel();
+        $accounts = $this->recordRepository->getModel()->find($datos['record_id']);
         if($account->isValid($datos)):
             $account->fill($datos);
             $account->save();
+            $this->recordRepository->getModel()->where('id',$datos['record_id'])->update(['campo'=>'true']);
 
-            $this->accountRepository->getModel()->where('id',$datos['account_id'])->update(['debit_balance'=>($accounts->debit_balance+$datos['balance']),
-                'balance'=>(($accounts->debit_balance+$datos['balance']+$accounts->initial_balance)-$accounts->credit_balance)]);
 
-            $this->recordUpdate($datos);
-            return redirect()->route('deposito-ver');
+            return redirect()->route('deposito-campo-ver');
         endif;
 
-        return redirect()->route('create-deposit')->withErrors($account)->withInput();
+        return redirect()->route('create-deposit-campo')->withErrors($account)->withInput();
     }
 }

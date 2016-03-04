@@ -44,13 +44,13 @@ Lista Informes Semanales
             <td><a target="_blank"  href="{{route('post-report',$informe->saturday )}}"><i class="fa fa-file-pdf-o"></i></a></td>
 
             @if(($informe->deposit == 'YES'))
-                <td><a href="#"><i class="fa fa-check"></i></a></td>
+                <td><a><i class="fa fa-check"></i></a></td>
             @else
                 <td><a target="_blank" href="{{route('create-deposit')}}"><i class="fa fa-empire"></i></a></td>
             @endif
 
             @if(($informe->campo == 'true'))
-                <td><a href="#"><i class="fa fa-check"></i></a></td>
+                <td><a><i class="fa fa-check"></i></a></td>
             @else
                 <td><a target="_blank" href="{{route('create-deposit-campo')}}"><i class="fa fa-empire"></i></a></td>
             @endif

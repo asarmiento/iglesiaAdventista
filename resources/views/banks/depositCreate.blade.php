@@ -19,7 +19,7 @@
             <label for="date">Banco </label>
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-bank"></i></span>
-                <select name="account_id" class="form-control" >
+                <select name="account_id" class="form-control select2" >
                     <option value="">Seleccione una Cuenta Bancaria</option>
                     @foreach($accounts AS $account)
                         <option value="{{$account->id}}">{{$account->code}} {{$account->name}}</option>
@@ -40,7 +40,7 @@
             <label for="date">Informe Semanal</label>
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                <select name="record_id" class="form-control" >
+                <select name="record_id" class="form-control select2" >
                     <option value="">Seleccione un Informe</option>
                     @foreach($records AS $record)
                     <option value="{{$record->_token}}">{{$record->controlNumber}} {{$record->saturday}}  <b>{{number_format($record->balance,2)}} </b></option>
