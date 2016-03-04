@@ -13,6 +13,17 @@
     <form action="{{route('checks-save')}}" method="post">
         <div class="row">
             <div class="col-sm-6 col-md-6">
+                <label for="date">Cuenta Bancaria: </label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                    <select name="account_id" class="form-control select2" >
+                        @foreach($accounts AS $account)
+                            <option value="{{$account->id}}">{{convertTitle($account->name)}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+                <div class="col-sm-6 col-md-6">
                 <label for="date">fecha </label>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -35,22 +46,22 @@
                 </div>
             </div>
             <div class="col-sm-6 col-md-6">
-                <label for="date">Cuenta Bancaria: </label>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                    <select name="account_id" class="form-control select2" >
-                        @foreach($accounts AS $account)
-                            <option value="{{$account->id}}">{{convertTitle($account->name)}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-6">
                 <label for="date">Monto</label>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
                     <input name="church_id" class="form-control" type="hidden" value="1" >
                     <input name="balance" class="form-control" type="text" >
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <label for="date">Tipo de Cheque</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                    <select name="type" class="form-control select2" >
+                        <option value="iglesia">Gastos Iglesia</option>
+                        <option value="campo">Informe Semanal</option>
+
+                    </select>
                 </div>
             </div>
         </div>

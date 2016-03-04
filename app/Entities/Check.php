@@ -7,7 +7,7 @@ class Check extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['number','name','date','detail','balance','church_id','account_id'];
+    protected $fillable= ['number','name','date','type','detail','balance','church_id','account_id'];
 
     public function getRules()
     {

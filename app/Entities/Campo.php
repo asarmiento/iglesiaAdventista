@@ -11,9 +11,20 @@ namespace SistemasAmigables\Entities;
 
 class Campo extends Entity
 {
+    protected  $fillable  = ['check_id','record_id','date','amount'];
 
     public function getRules()
     {
-       return []; // TODO: Implement getRules() method.
+       return ['check_id'=>'required','record_id'=>'required','date'=>'required','amount'=>'required']; // TODO: Implement getRules() method.
+    }
+
+    public function records()
+    {
+        return $this->belongsTo(Record::getClass(),'record_id');
+    }
+
+    public function checks()
+    {
+        return $this->belongsTo(Check::getClass(),'check_id');
     }
 }

@@ -25,7 +25,7 @@
                 <label for="date">Cheques </label>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-bank"></i></span>
-                    <select name="account_id" class="form-control" >
+                    <select name="check_id" class="form-control select2" >
                         <option value="">Seleccione un Cheque</option>
                         @foreach($checks AS $check)
                             <option value="{{$check->id}}">{{$check->number}} {{$check->name}} {{$check->balance}}</option>
@@ -46,7 +46,7 @@
                 <label for="date">Informe Semanal</label>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                    <select name="record_id" class="form-control" >
+                    <select name="record_id" class="form-control select2" >
                         <option value="">Seleccione un Informe</option>
                         @foreach($records AS $record)
                             <option value="{{$record->_token}}">{{$record->controlNumber}} {{$record->saturday}}  <b>{{number_format($record->balance,2)}} </b></option>
@@ -65,7 +65,7 @@
                 <label for="date">Monto</label>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                    <input name="balance" class="form-control" type="text" >
+                    <input name="amount" class="form-control" type="text" >
                 </div>
             </div>
         </div>
