@@ -177,7 +177,7 @@ class BankController extends Controller
         if($account->isValid($datos)):
             $account->fill($datos);
             $account->save();
-            $this->recordRepository->getModel()->where('id',$datos['record_id'])->update(['campo'=>'true']);
+            $this->recordRepository->getModel()->where('id',$account->record_id)->update(['campo'=>'true']);
 
 
             return redirect()->route('deposito-campo-ver');
