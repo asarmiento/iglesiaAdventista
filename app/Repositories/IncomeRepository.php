@@ -39,6 +39,21 @@ class IncomeRepository extends BaseRepository
        return new Income(); // TODO: Implement getModel() method.
     }
 
+    public function amountCampo($id)
+    {
+        $ofrenda = $this->newQuery()->wherehas('typeIncomes',function($q){
+            $q->where('part','si');
+        })->where('record_id',$id)->sum('balance');
 
+        $ofrendas = ($ofrenda/5)*2;
+
+        $diezmos = $this->newQuery()->wherehas('typeIncomes',function($q){
+            $q->where('part','no')->where('association','si');
+        })->where('record_id',$id)->sum('balance');
+
+        $total = $ofrendas+$diezmos;
+
+        return $total;
+    }
 
 }
