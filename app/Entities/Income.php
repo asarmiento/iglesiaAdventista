@@ -51,7 +51,10 @@ class Income extends Entity
     {
         return $this->where($data,$id)->where($data2,$id2)->where($data1,$id1)->sum('balance');
     }
-
+    public function fourWhere($data,$id,$data1,$id1,$data2,$id2,$data3,$id3)
+    {
+        return $this->where($data,$id)->where($data2,$id2)->where($data1,$id1)->where($data3,$id3)->sum('balance');
+    }
     public function oneWhere($data,$id)
     {
         return $this->where($data,$id)->sum('balance');

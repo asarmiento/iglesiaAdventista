@@ -65,7 +65,10 @@ abstract class BaseRepository {
     {
         return $this->newQuery()->where($data,$id)->where($data1,$id1)->sum($sum);
     }
-
+    public function treeWhereList($data,$id,$data1,$id1,$data2,$id2,$sum)
+    {
+        return $this->newQuery()->where($data,$id)->where($data2,$id2)->where($data1,$id1)->sum($sum);
+    }
     public function updateBalance($id,$amount,$data)
     {
         $balance= $this->oneWhere('id',$id);
