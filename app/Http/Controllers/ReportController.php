@@ -128,24 +128,25 @@ class ReportController extends  Controller
         $fin = 0;
         /* INICIO DE CUERPO */
         foreach($incomes AS $income):
-            $miembros = $this->memberRepository->getModel()->find($income->member_id);
+            $miembros = $this->memberRepository->getModel()->where('type','miembro')->where('id',$income->member_id)->get();
+            if(!$miembros->isEmpty()):
             $e++;
             $pdf    .= Fpdf::SetX(5);
             $pdf  .= Fpdf::Cell(5,7,utf8_decode($e),1,0,'C');
-            $pdf  .= Fpdf::Cell(40,7,substr(utf8_decode($miembros->completo()),0,30),1,0,'L');
-            $pdf  .= Fpdf::Cell(13,7,$miembros->incomes->numberOf,1,0,'C');
-                $total = $this->incomeRepository->getModel()->where('date',$date)->where('numberOf',$income->numberOf)->where('member_id',$miembros->id)->sum('balance');
+            $pdf  .= Fpdf::Cell(40,7,substr(utf8_decode($miembros[0]->completo()),0,30),1,0,'L');
+            $pdf  .= Fpdf::Cell(13,7,$miembros[0]->incomes->numberOf,1,0,'C');
+                $total = $this->incomeRepository->getModel()->where('date',$date)->where('numberOf',$income->numberOf)->where('member_id',$miembros[0]->id)->sum('balance');
                 $fin += $total;
                 $pdf  .= Fpdf::Cell(13,7,number_format($total,2),1,0,'C');
             foreach($fixs AS $fix):
                 $amount=  $this->incomeRepository->twoWhereList('type_income_id',$fix->id,'date',$date,'balance');
                 if($amount > 0):
-                    $pdf  .= Fpdf::Cell(13,7,number_format($miembros->incomes->fourWhere('type_income_id',$fix->id,'member_id',$miembros->id,'date',$date,'numberOf',$income->numberOf),2),1,0,'C');
+                    $pdf  .= Fpdf::Cell(13,7,number_format($miembros[0]->incomes->fourWhere('type_income_id',$fix->id,'member_id',$miembros[0]->id,'date',$date,'numberOf',$income->numberOf),2),1,0,'C');
                 endif;
             endforeach;
 
             $pdf  .= Fpdf::ln();
-
+        endif;
 
         endforeach;
         /*fIN DE CUERPO*/
