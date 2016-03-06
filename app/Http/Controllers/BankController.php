@@ -179,7 +179,6 @@ class BankController extends Controller
             $account->fill($datos);
             $account->save();
            $accounts = $this->campoRepository->getModel()->where('record_id',$record->id)->sum('amount');
-
            if($accounts == $this->incomeRepository->amountCampo($record->id) ):
                 $this->recordRepository->getModel()->where('id',$datos['record_id'])->update(['campo'=>'true']);
             endif;
