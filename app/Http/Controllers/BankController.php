@@ -155,8 +155,9 @@ class BankController extends Controller
     {
         $records = $this->recordRepository->getModel()->where('campo','false')->orderBy('saturday','DESC')->get();
         foreach($records AS $record):
+            $campo = $this->campoRepository->getModel()->where('record_id',$record->id)->sum('amount');
             $bank =$this->incomeRepository->amountCampo($record->id);
-            $record->balance =  $bank;
+            $record->balance =  $bank-$campo;
         endforeach;
         $checks = $this->checkRepository->getModel()->where('type','campo')->get();
         foreach($checks AS $check):
@@ -173,12 +174,13 @@ class BankController extends Controller
         $record = $this->recordRepository->token($datos['record_id']);
         $datos['record_id']= $record->id;
         $account = $this->campoRepository->getModel();
-        $accounts = $this->recordRepository->getModel()->find($datos['record_id']);
-        if($account->isValid($datos)):
+       if($account->isValid($datos)):
             $account->fill($datos);
             $account->save();
-            $this->recordRepository->getModel()->where('id',$account->record_id)->update(['campo'=>'true']);
-
+           $accounts = $this->campoRepository->getModel()->where('record_id',$record->id)->sum('amount');
+           if($accounts == $this->incomeRepository->amountCampo($record->id) ):
+                $this->recordRepository->getModel()->where('id',$datos['record_id'])->update(['campo'=>'true']);
+            endif;
 
             return redirect()->route('deposito-campo-ver');
         endif;
