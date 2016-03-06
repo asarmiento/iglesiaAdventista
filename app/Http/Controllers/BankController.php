@@ -162,6 +162,7 @@ class BankController extends Controller
         $checks = $this->checkRepository->getModel()->where('type','campo')->get();
         foreach($checks AS $check):
             $bank =$this->campoRepository->getModel()->where('check_id',$check->id)->sum('amount');
+            
             $check->balance = $check->balance - $bank;
         endforeach;
         return view('banks.depositCampoCreate',compact('records','checks'));
