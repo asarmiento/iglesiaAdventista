@@ -16,7 +16,7 @@
 @section('content')
     <div class="btn btn-info"><a href="{{route('create-deposit')}}"  class="button radius">Nueva Deposito</a></div>
     <div class="panel-body">
-        <table  id="table_deposit" class="table-bordered">
+        <table  id="table_deposit-igle" class="table-bordered">
             <thead>
             <tr>
                 <th>Nº</th>

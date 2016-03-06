@@ -174,6 +174,8 @@ dataTable('#table_informe', 'Informe');
 dataTable('#table_variable', 'Tipos Variables');
 dataTable('#table_member', 'Miembros');
 dataTable('#table_depart', 'Departamentos');
+dataTable('#table_deposit-igle', 'Depositos de Iglesia');
+dataTable('#table_depart', 'Depositos de Asociación');
 
     /* Titpo Usuarios  */
     $(document).off('click', '#saveTypeUser');
