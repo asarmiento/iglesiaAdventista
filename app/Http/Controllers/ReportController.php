@@ -84,7 +84,6 @@ class ReportController extends  Controller
 
         $this->fpdf = $fpdf;
         $this->typeIncomeRepository = $typeIncomeRepository;
-
         $this->incomeRepository = $incomeRepository;
         $this->memberRepository = $memberRepository;
         $this->typeExpenseRepository = $typeExpenseRepository;
@@ -172,6 +171,7 @@ class ReportController extends  Controller
         Fpdf::Output('Informe-Semana: '.$date.'.pdf','I');
         exit;
     }
+
     private function Search($campo,$data,$campo1,$data1)
     {
         return $this->incomeRepository->getModel()
