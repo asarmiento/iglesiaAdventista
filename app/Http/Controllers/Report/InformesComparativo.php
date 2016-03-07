@@ -128,6 +128,44 @@ class InformesComparativo extends Controller
         $pdf .= Fpdf::Cell(30,7,number_format($totalIn),1,1,'C');
         $pdf .= Fpdf::ln();
 
+
+        $pdf .= Fpdf::Cell(0,7,'Cheques Reportados con Diferencias',1,1,'C');
+
+        $pdf .= Fpdf::SetFont('Arial','B',16);
+        $pdf .= Fpdf::Cell(30,7,'Fecha',1,0,'C');
+        $pdf .= Fpdf::Cell(35,7,'Monto',1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,utf8_decode('N° Deposito'),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Deposito',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Monto',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Diferencia',1,1,'C');
+
+        $checks = $this->checkRepository->getModel()->where('type','campo')->orderBy('date','ASC')->get();
+        $chequesDif =0;
+        foreach($checks AS $check):
+            $pdf .= Fpdf::SetFont('Arial','',12);
+            $suma = $this->campoRepository->getModel()->where('check_id',$check->id)->sum('amount');
+
+            if($suma > 0):
+
+            else:
+                $pdf .= Fpdf::Cell(30,7,$check->date,1,0,'C');
+                $pdf .= Fpdf::Cell(35,7,$check->number,1,0,'C');
+                $pdf .= Fpdf::Cell(40,7,number_format($suma,2),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,'',1,1,'C');
+                $chequesDif += $suma;
+            endif;
+        endforeach;
+        $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(35,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Total: ',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($chequesDif),1,1,'C');
+        $pdf .= Fpdf::ln();
+
+        /***/
         $pdf .= Fpdf::Cell(0,7,'Cheques no Reportados con depositos',1,1,'C');
 
         $pdf .= Fpdf::SetFont('Arial','B',16);
@@ -167,7 +205,7 @@ class InformesComparativo extends Controller
         $pdf .= Fpdf::Cell(40,7,'',1,0,'C');
         $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
         $pdf .= Fpdf::Cell(30,7,'Total: ',1,0,'C');
-        $pdf .= Fpdf::Cell(30,7,number_format(($total+$totalIn)-$cheques),1,1,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format(($total+$totalIn)-($cheques+$chequesDif)),1,1,'C');
         $pdf .= Fpdf::ln();
 
         $pdf  .= Fpdf::ln();
