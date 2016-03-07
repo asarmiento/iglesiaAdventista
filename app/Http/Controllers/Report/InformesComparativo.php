@@ -138,7 +138,7 @@ class InformesComparativo extends Controller
         $pdf .= Fpdf::Cell(30,7,'Monto',1,0,'C');
         $pdf .= Fpdf::Cell(30,7,'Diferencia',1,1,'C');
 
-        $checks = $this->checkRepository->getModel()->orderBy('date','ASC')->get();
+        $checks = $this->checkRepository->getModel()->where('type','campo')->orderBy('date','ASC')->get();
         $cheques =0;
         foreach($checks AS $check):
             $pdf .= Fpdf::SetFont('Arial','',12);
