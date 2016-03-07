@@ -147,7 +147,6 @@ class InformesComparativo extends Controller
 
             if($suma > 0):
 
-            else:
                 $pdf .= Fpdf::Cell(30,7,$check->date,1,0,'C');
                 $pdf .= Fpdf::Cell(35,7,$check->number,1,0,'C');
                 $pdf .= Fpdf::Cell(40,7,number_format($check->balance-$suma,2),1,0,'C');
