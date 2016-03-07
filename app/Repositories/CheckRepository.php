@@ -21,4 +21,10 @@ class CheckRepository extends BaseRepository
     {
         return new Check();// TODO: Implement getModel() method.
     }
+
+
+    public function totalOut($data,$sum)
+    {
+        return $this->newQuery()->where($data,$sum)->sum('balance');
+    }
 }

@@ -30,7 +30,7 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 Route::resource('expenses','ExpenseController');
 
-
+Route::get('test/saldo', 'TestController@index');
 Route::group(['prefix' => 'iglesia'], function () {
 
 	Route::resource('iglesias','ChurchController');

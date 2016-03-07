@@ -21,4 +21,6 @@ class Bank extends Entity
     {
         return $this->belongsTo(Record::getClass(),'record_id','id');
     }
+
+
 }
