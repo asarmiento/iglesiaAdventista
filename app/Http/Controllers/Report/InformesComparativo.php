@@ -7,6 +7,7 @@ use Anouar\Fpdf\Facades\Fpdf;
 use Illuminate\Support\Facades\Input;
 use SistemasAmigables\Http\Controllers\Controller;
 use SistemasAmigables\Repositories\CampoRepository;
+use SistemasAmigables\Repositories\CheckRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\RecordRepository;
 
@@ -32,17 +33,23 @@ class InformesComparativo extends Controller
      * @var IncomeRepository
      */
     private $incomeRepository;
+    /**
+     * @var CheckRepository
+     */
+    private $checkRepository;
 
     public function __construct(
         RecordRepository $recordRepository,
         CampoRepository $campoRepository,
-        IncomeRepository $incomeRepository
+        IncomeRepository $incomeRepository,
+        CheckRepository $checkRepository
     )
     {
 
         $this->recordRepository = $recordRepository;
         $this->campoRepository = $campoRepository;
         $this->incomeRepository = $incomeRepository;
+        $this->checkRepository = $checkRepository;
     }
 
 
@@ -64,6 +71,7 @@ class InformesComparativo extends Controller
         $pdf .= Fpdf::Cell(30,7,'Deposito',1,0,'C');
         $pdf .= Fpdf::Cell(30,7,'Monto',1,0,'C');
         $pdf .= Fpdf::Cell(30,7,'Diferencia',1,1,'C');
+        $total = 0;
         foreach($records AS $record):
             $pdf .= Fpdf::SetFont('Arial','',12);
             $campo = $this->campoRepository->getModel()->where('record_id',$record->id)->get();
@@ -77,8 +85,74 @@ class InformesComparativo extends Controller
                 $pdf .= Fpdf::Cell(30,7,$campo[0]->date,1,0,'C');
                 $pdf .= Fpdf::Cell(30,7,number_format($campo[0]->amount,2),1,0,'C');
                 $pdf .= Fpdf::Cell(30,7,number_format($income-$campo[0]->amount),1,1,'C');
+                $total += $income-$campo[0]->amount;
             endif;
         endforeach;
+        $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(35,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Total: ',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($total),1,1,'C');
+        $pdf .= Fpdf::ln();
+        $pdf .= Fpdf::Cell(0,7,'Informes no Reportados con depositos',1,1,'C');
+        foreach($records AS $record):
+            $pdf .= Fpdf::SetFont('Arial','',12);
+            $campo = $this->campoRepository->getModel()->where('record_id',$record->id)->get();
+            $income = $this->incomeRepository->amountCampo($record->id);
+            if($campo->isEmpty()):
+                $pdf .= Fpdf::Cell(30,7,$record->saturday,1,0,'C');
+                $pdf .= Fpdf::Cell(35,7,number_format($income,2),1,0,'C');
+                $pdf .= Fpdf::Cell(40,7,'',1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,'',1,1,'C');
+                $total += $income;
+            endif;
+        endforeach;
+
+
+        $pdf .= Fpdf::Cell(0,7,'Cheques no Reportados con depositos',1,1,'C');
+
+        $pdf .= Fpdf::SetFont('Arial','B',16);
+        $pdf .= Fpdf::Cell(30,7,'Fecha',1,0,'C');
+        $pdf .= Fpdf::Cell(35,7,'Monto',1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,utf8_decode('N° Deposito'),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Deposito',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Monto',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Diferencia',1,1,'C');
+
+        $checks = $this->checkRepository->getModel()->orderBy('date','ASC')->get();
+        $cheques =0;
+        foreach($checks AS $check):
+            $pdf .= Fpdf::SetFont('Arial','',12);
+            $campo = $this->campoRepository->getModel()->where('check_id',$check->id)->get();
+
+            if($campo->isEmpty()):
+                $pdf .= Fpdf::Cell(30,7,$check->date,1,0,'C');
+                $pdf .= Fpdf::Cell(40,7,$check->number,1,0,'C');
+                $pdf .= Fpdf::Cell(35,7,number_format($check->balance,2),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,'',1,1,'C');
+                $cheques += $check->balance;
+            endif;
+        endforeach;
+        $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(35,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Total: ',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($cheques),1,1,'C');
+        $pdf .= Fpdf::ln();
+
+        $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(35,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Total: ',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($total-$cheques),1,1,'C');
+        $pdf .= Fpdf::ln();
 
         $pdf  .= Fpdf::ln();
         $y = Fpdf::GetY();
