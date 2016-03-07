@@ -96,6 +96,14 @@ class InformesComparativo extends Controller
         $pdf .= Fpdf::Cell(30,7,number_format($total),1,1,'C');
         $pdf .= Fpdf::ln();
         $pdf .= Fpdf::Cell(0,7,'Informes no Reportados con depositos',1,1,'C');
+        $pdf .= Fpdf::SetFont('Arial','B',16);
+        $pdf .= Fpdf::Cell(30,7,'Fecha',1,0,'C');
+        $pdf .= Fpdf::Cell(35,7,'Monto',1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,utf8_decode('N° Deposito'),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Deposito',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Monto',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Diferencia',1,1,'C');
+        $totalIn = 0;
         foreach($records AS $record):
             $pdf .= Fpdf::SetFont('Arial','',12);
             $campo = $this->campoRepository->getModel()->where('record_id',$record->id)->get();
@@ -107,10 +115,18 @@ class InformesComparativo extends Controller
                 $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
                 $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
                 $pdf .= Fpdf::Cell(30,7,'',1,1,'C');
-                $total += $income;
+                $totalIn += $income;
             endif;
         endforeach;
 
+
+        $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(35,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,'Total: ',1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($totalIn),1,1,'C');
+        $pdf .= Fpdf::ln();
 
         $pdf .= Fpdf::Cell(0,7,'Cheques no Reportados con depositos',1,1,'C');
 
@@ -130,8 +146,8 @@ class InformesComparativo extends Controller
 
             if($campo->isEmpty()):
                 $pdf .= Fpdf::Cell(30,7,$check->date,1,0,'C');
-                $pdf .= Fpdf::Cell(40,7,$check->number,1,0,'C');
-                $pdf .= Fpdf::Cell(35,7,number_format($check->balance,2),1,0,'C');
+                $pdf .= Fpdf::Cell(35,7,$check->number,1,0,'C');
+                $pdf .= Fpdf::Cell(40,7,number_format($check->balance,2),1,0,'C');
                 $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
                 $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
                 $pdf .= Fpdf::Cell(30,7,'',1,1,'C');
@@ -151,7 +167,7 @@ class InformesComparativo extends Controller
         $pdf .= Fpdf::Cell(40,7,'',1,0,'C');
         $pdf .= Fpdf::Cell(30,7,'',1,0,'C');
         $pdf .= Fpdf::Cell(30,7,'Total: ',1,0,'C');
-        $pdf .= Fpdf::Cell(30,7,number_format($total-$cheques),1,1,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format(($total+$totalIn)-$cheques),1,1,'C');
         $pdf .= Fpdf::ln();
 
         $pdf  .= Fpdf::ln();
