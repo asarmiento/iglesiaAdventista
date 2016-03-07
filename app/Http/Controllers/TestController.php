@@ -6,7 +6,7 @@
  * Time: 04:17 PM
  */
 
-namespace SistemasAmigables\Entities;
+namespace SistemasAmigables\Http\Controllers;
 
 
 use SistemasAmigables\Http\Controllers\Controller;
