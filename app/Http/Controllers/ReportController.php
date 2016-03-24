@@ -105,7 +105,20 @@ class ReportController extends  Controller
 
         $miembros = $this->memberRepository->allData();
         $incomes = $this->incomeRepository->getModel()->where('date',$date)->groupBy('numberOf')->orderBy('id','ASC')->get();
-        $this->header($date);
+        $i=0;
+        foreach($fixs AS $fix):
+            $amount=  $this->incomeRepository->twoWhereList('type_income_id',$fix->id,'date',$date,'balance');
+
+            if($amount > 0):
+                $i++;
+            endif;
+        endforeach;
+        if($i <= 9):
+            $orientacion = 'P';
+            else:
+                $orientacion = 'L';
+                endif;
+        $this->header($date,$orientacion);
 
         $pdf    = Fpdf::SetFont('Arial','B',7);
         $pdf    = Fpdf::SetX(5);
@@ -165,9 +178,9 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::ln();
         $pdf  .= Fpdf::ln();
         $y = Fpdf::GetY();
-        $pdf .= $this->firmas();
+        $pdf .= $this->firmas($orientacion);
         $pdf = Fpdf::SetXY(110,$y);
-        $pdf .= $this->footer($date);
+        $pdf .= $this->footer($date,$orientacion,$y);
         Fpdf::Output('Informe-Semana: '.$date.'.pdf','I');
         exit;
     }
@@ -188,9 +201,9 @@ class ReportController extends  Controller
     | @return mixed
     |----------------------------------------------------------------------
     */
-    public function header($data)
+    public function header($data,$orientacion)
     {
-        $pdf  = Fpdf::AddPage('P','letter');
+        $pdf  = Fpdf::AddPage($orientacion,'letter');
         $pdf .= Fpdf::SetFont('Arial','B',16);
         $pdf .= Fpdf::Cell(0,7,utf8_decode('Asociación Central Sur de Costa Rica de los Adventista del Séptimo Día'),0,1,'C');
         $pdf .= Fpdf::SetFont('Arial','',12);
@@ -225,9 +238,12 @@ class ReportController extends  Controller
     | @return mixed
     |----------------------------------------------------------------------
     */
-    public function firmas()
+    public function firmas($orientacion)
     {
         $y = Fpdf::GetY();
+        if($orientacion == 'L' && $y > 150):
+            $y = $y+170;
+        endif;
         $pdf = Fpdf::SetXY(110,$y);
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('______________________________'),0,1,'L');
         $pdf = Fpdf::SetX(110);
@@ -262,12 +278,18 @@ class ReportController extends  Controller
     | @return mixed
     |----------------------------------------------------------------------
     */
-    public function footer($date)
+    public function footer($date,$orientacion,$y)
     {
+
+        $pdf = Fpdf::SetFont('Arial','',8);
+        if($orientacion == 'L' && $y > 150):
+            $y = $y-160;
+            $pdf  = Fpdf::SetY($y);
+        endif;
         $typeIncomes = $this->typeIncomeRepository->name('association','si');
         $i = 0;
         foreach($typeIncomes AS $typeIncome):
-            $pdf  = Fpdf::SetX(10);
+            $pdf  .= Fpdf::SetX(10);
             if($typeIncome->part == 'SI'): $i++;
                 $type = $this->typeIncomeRepository->getModel()->where('part','si')->lists('id');
                 $ofrenda = $this->incomeRepository->getModel()->where('date',$date)->whereIn('type_income_id',$type)->sum('balance');

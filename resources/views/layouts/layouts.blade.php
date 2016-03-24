@@ -46,7 +46,13 @@
                                         <li><a href="{{route('campo-ver')}}">Reporte de Pagos</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="{{route('members-lista')}}">Miembros</a></li>
+                                <li class="dropdown">
+                                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Miembros<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{route('members-lista')}}">Lista de Miembros</a></li>
+                                        <li><a href="{{route('lista-diezmo')}}">Diezmos y Ofrendas Miembros</a></li>
+                                   </ul>
+                                </li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bancos<span class="caret"></span></a>
                                     <ul class="dropdown-menu">

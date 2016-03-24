@@ -2,11 +2,13 @@
 
 
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use SistemasAmigables\Entities\Church;
 use SistemasAmigables\Entities\Member;
+use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\MemberRepository;
 use SistemasAmigables\Repositories\TypeIncomeRepository;
 use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
@@ -24,21 +26,28 @@ class MemberController extends Controller {
      * @var TypeTemporaryIncomeRepository
      */
     private $typeTemporaryIncomeRepository;
+    /**
+     * @var IncomeRepository
+     */
+    private $incomeRepository;
 
     /**
      * @param MemberRepository $memberRepository
      * @param TypeIncomeRepository $TypeIncomeRepository
-     * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+     * @param IncomeRepository $incomeRepository
+     * @internal param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
      */
     public function __construct(
         MemberRepository $memberRepository,
-        TypeIncomeRepository $TypeIncomeRepository
+        TypeIncomeRepository $TypeIncomeRepository,
+        IncomeRepository $incomeRepository
     )
     {
 
         $this->memberRepository = $memberRepository;
         $this->TypeIncomeRepository = $TypeIncomeRepository;
 
+        $this->incomeRepository = $incomeRepository;
     }
     /**
      * Display a listing of members
@@ -121,6 +130,37 @@ class MemberController extends Controller {
         return View('members.show', compact('miembro','fixes'));
     }
 
+    /*
+    |---------------------------------------------------------------------
+    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+    |@Date Create: 2016-03-22
+    |@Date Update: 2016-00-00
+    |---------------------------------------------------------------------
+    |@Description: Creamos una vista donde mostraremos todo el historial
+    | de un miembro de iglesia atravez del tiempo.
+    |
+    |@Pasos:
+    |
+    |
+    |
+    |
+    |
+    |
+    |----------------------------------------------------------------------
+    | @return mixed
+    |----------------------------------------------------------------------
+    */
+    public function viewInd() {
+        return View('members.showInd');
+    }
+
+
+    public function pdfInd() {
+        $year = Input::get('year');
+
+        echo json_encode($year);
+        die;
+    }
     /**
      * Show the form for editing the specified miembro.
      *

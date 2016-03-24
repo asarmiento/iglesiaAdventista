@@ -22,6 +22,7 @@ Lista Miembros
                 <th width="150">Email</th>
                 <th width="50">Editar</th>
                 <th width="50">Ver</th>
+                <th width="50">Info. D & O</th>
             </tr>
             </thead>
             <tbody>
@@ -34,6 +35,7 @@ Lista Miembros
                     <td>{{$member->email}}</td>
                     <td class="text-center"><a href="{{URL::action('MemberController@edit',$member->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
                     <td class="text-center"><a  href="{{URL::action('MemberController@view',$member->_token)}}"><span class="fa fa-street-view"></span></a></td>
+                    <td class="text-center"><a  href="{{URL::action('MemberController@viewInd',$member->_token)}}"><span class="fa fa-street-view"></span></a></td>
                 </tr>
             @endforeach
             </tbody>

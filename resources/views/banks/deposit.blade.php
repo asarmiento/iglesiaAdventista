@@ -16,14 +16,15 @@
 @section('content')
     <div class="btn btn-info"><a href="{{route('create-deposit')}}"  class="button radius">Nueva Deposito</a></div>
     <div class="panel-body">
-        <table  id="table_deposit-igle" class="table-bordered">
+        <table  id="deposit_igle" class="table-bordered">
             <thead>
             <tr>
                 <th>Nº</th>
                 <th width="200">Tipo Deposito</th>
                 <th width="200">Numero Deposito</th>
                 <th width="150">Fecha</th>
-                <th width="200">Monto</th>
+                <th width="200">Monto Informe</th>
+                <th width="200">Monto Deposito</th>
                 <th width="50">Ver</th>
                 <th width="50">Estado de Cuenta</th>
             </tr>
@@ -34,6 +35,7 @@
                     <td>{{$key+1}}</td>
                     @if($deposit->record_id)
                     <td>Informe: {{$deposit->records->controlNumber}}</td>
+                    <td>Informe: {{$deposit->records->balanceyhhhhhhhhhhhhhhh}}</td>
                     @elseif($deposit->check_id)
                     <td>Cheque: {{$deposit->checks}}</td>
                     @endif
@@ -47,10 +49,5 @@
             </tbody>
         </table>
     </div>
-    <script type="text/javascript">
 
-        $(document).ready(function(){
-            $("#table_gastos").DataTable();
-        });
-    </script>
 @stop

@@ -174,7 +174,7 @@ dataTable('#table_informe', 'Informe');
 dataTable('#table_variable', 'Tipos Variables');
 dataTable('#table_member', 'Miembros');
 dataTable('#table_depart', 'Departamentos');
-dataTable('#table_deposit-igle', 'Depositos de Iglesia');
+dataTable('#deposit_igle', 'Depositos-Iglesia');
 dataTable('#table_deposit', 'Depositos de Asociación');
 
     /* Titpo Usuarios  */
@@ -184,7 +184,6 @@ dataTable('#table_deposit', 'Depositos de Asociación');
         url = $(this).data('url');
         url =  url + '/create';
         data.nameTypeUser  = $('#nameTypeUser').val();
-alert(data);
 
         ajaxForm(url,'post',data)
             .done( function (data) {

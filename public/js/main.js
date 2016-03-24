@@ -436,4 +436,8 @@ $(function(){
 	dataTable('#table_variable', 'Tipos Variables');
 	dataTable('#table_member', 'Miembros');
 	dataTable('#table_depart', 'Departamentos');
+
+	dataTable('#deposit_igle', 'Depositos-Iglesia');
+	dataTable('#table_deposit', 'Depositos de Asociación');
+	dataTable('#table_account', 'Depositos de Asociación');
 });
