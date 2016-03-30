@@ -103,7 +103,7 @@ class InformeDieOfe extends Controller
         $i=0;
         foreach($miembros AS $miembro):
             $i++;
-            $pdf = Fpdf::SetFont('Arial','B',8);
+            $pdf = Fpdf::SetFont('Arial','i',8);
             $pdf .= Fpdf::Cell(5,7,$i,1,0,'L');
             $pdf .= Fpdf::Cell(55,7,substr(utf8_decode($miembro->name.' '.$miembro->last),0,35),1,0,'L');
             $total = 0;
@@ -125,6 +125,7 @@ class InformeDieOfe extends Controller
 
             $pdf .= Fpdf::Ln();
         endforeach;
+        $pdf = Fpdf::SetFont('Arial','B',6);
         $pdf .= Fpdf::Cell(60,7,'Total:',1,0,'R');
         $ofrendas = $this->typeIncomeRepository->getModel()->where('offering','si')->get();
         $total=0;
