@@ -63,31 +63,61 @@ class InformeDieOfe extends Controller
         Fpdf::Output('Informe-Semana.pdf','I');
         exit;
     }
+
+    /*
+    |---------------------------------------------------------------------
+    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+    |@Date Create: 2016-00-00
+    |@Date Update: 2016-00-00
+    |---------------------------------------------------------------------
+    |@Description:
+    |
+    |
+    |@Pasos:
+    |
+    |
+    |
+    |
+    |
+    |
+    |----------------------------------------------------------------------
+    | @return mixed
+    |----------------------------------------------------------------------
+    */
     public function ofrendas($year)
     {
         $pdf = Fpdf::SetFont('Arial','B',10);
         $pdf .= Fpdf::Cell(55,7,utf8_decode('Miembros'),1,0,'C');
         $ofrendas = $this->typeIncomeRepository->getModel()->where('offering','si')->get();
         foreach($ofrendas AS $ofrenda):
+            $ofrend = $this->incomeRepository->getModel()
+                ->where('type_income_id',$ofrenda->id)->whereBetween('date',[$year.'-01-01',$year.'-12-31'])->sum('balance');
+            if($ofrend > 0):
             $pdf .= Fpdf::Cell(15,7,substr(utf8_decode($ofrenda->name),0,6),1,0,'C');
+            endif;
         endforeach;
         $pdf .= Fpdf::Cell(20,7,utf8_decode('Total'),1,0,'C');
         $miembros = $this->memberRepository->getModel()->orderBy('name','ASC')->get();
         $pdf .= Fpdf::Ln();
-
+        $i=0;
         foreach($miembros AS $miembro):
-
+            $i++;
             $pdf = Fpdf::SetFont('Arial','B',8);
+            $pdf .= Fpdf::Cell(5,7,$i,1,0,'L');
             $pdf .= Fpdf::Cell(55,7,substr(utf8_decode($miembro->name.' '.$miembro->last),0,35),1,0,'L');
             $total = 0;
             foreach($ofrendas AS $ofrenda):
                 $ofrend = $this->incomeRepository->getModel()->where('member_id',$miembro->id)
                     ->where('type_income_id',$ofrenda->id)->whereBetween('date',[$year.'-01-01',$year.'-12-31'])->sum('balance');
                 $total += $ofrend;
-                if($ofrend > 0):
-                    $pdf .= Fpdf::Cell(15,7,number_format($ofrend),1,0,'C');
-                else:
-                    $pdf .= Fpdf::Cell(15,7,number_format(0),1,0,'C');
+                $sumOfrenda = $this->incomeRepository->getModel()
+                    ->where('type_income_id',$ofrenda->id)->whereBetween('date',[$year.'-01-01',$year.'-12-31'])->sum('balance');
+                if($sumOfrenda > 0):
+                    if($ofrend > 0):
+                        $pdf .= Fpdf::Cell(15,7,number_format($ofrend),1,0,'C');
+                    else:
+                        $pdf .= Fpdf::Cell(15,7,number_format(0),1,0,'C');
+                    endif;
                 endif;
             endforeach;
             $pdf .= Fpdf::Cell(20,7,number_format($total),1,0,'C');
