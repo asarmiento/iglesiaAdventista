@@ -125,6 +125,21 @@ class InformeDieOfe extends Controller
 
             $pdf .= Fpdf::Ln();
         endforeach;
+        $pdf .= Fpdf::Cell(60,7,'Total:',1,0,'R');
+        $ofrendas = $this->typeIncomeRepository->getModel()->where('offering','si')->get();
+        $total=0;
+        foreach($ofrendas AS $ofrenda):
+            $ofrend = $this->incomeRepository->getModel()
+                ->where('type_income_id',$ofrenda->id)->whereBetween('date',[$year.'-01-01',$year.'-12-31'])->sum('balance');
+            if($ofrend > 0):
+                $pdf .= Fpdf::Cell(15,7,number_format($ofrend,2),1,0,'C');
+            endif;
+            $total += $ofrend;
+        endforeach;
+
+        $pdf .= Fpdf::Cell(20,7,number_format($total),1,0,'C');
+
+        $pdf .= Fpdf::Ln();
     }
     public function diezmoOfrenda($year)
     {
