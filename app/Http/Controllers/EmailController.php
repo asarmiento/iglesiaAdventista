@@ -15,7 +15,7 @@ class EmailController extends Controller
      */
     public function index()
     {
-        $data =array('email' => 'asarmiento@sistemasamigables.com');
+        $data =array('email' => 'asarmiento@sistemasamigables.com','password'=>'F4cc0unt');
         $message='Prueba de Correo';
         Mail::send('emails.welcome', $data, function ($message) {
 
