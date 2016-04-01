@@ -138,6 +138,7 @@ return [
 		Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
 		Anouar\Fpdf\FpdfServiceProvider::class,
+		Themsaid\MailPreview\MailPreviewServiceProvider::class,
 		/*
 		 * Application Service Providers...
 		 */

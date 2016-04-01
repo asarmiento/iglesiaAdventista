@@ -16,9 +16,10 @@ return [
 
 
 
+
 	'mailgun' => [
-		'domain' => env('MAILGUN_DOMAIN'),
-		'secret' => env('MAILGUN_PASS'),
+		'domain' => env('MAIL_USERNAME'),
+		'secret' => env('MAIL_PASSWORD'),
 	],
 
 	'mandrill' => [
@@ -26,9 +27,9 @@ return [
 	],
 
 	'ses' => [
-		'key' => '',
-		'secret' => '',
-		'region' => 'us-east-1',
+		'key' => 'your-ses-key',
+		'secret' => 'your-ses-secret',
+		'region' => 'ses-region',  // e.g. us-east-1
 	],
 
 	'stripe' => [

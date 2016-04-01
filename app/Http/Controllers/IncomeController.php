@@ -253,4 +253,8 @@ class IncomeController extends Controller {
         return Redirect::route('incomes.index');
     }
 
+    public function send($token){
+
+    }
+
 }
