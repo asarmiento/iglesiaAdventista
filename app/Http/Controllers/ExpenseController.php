@@ -182,6 +182,7 @@ class ExpenseController extends Controller {
 
 	public function trapaso()
 	{
+
 		return view('expenses.traspaso');
 	}
 

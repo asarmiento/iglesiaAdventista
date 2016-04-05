@@ -32,6 +32,9 @@
                 <select name="tipo" class="form-control">
                     <option value="1">Diezmos y Ofrendas</option>
                     <option value="2">Ofrendas Detallada</option>
+                    @foreach($typeIncome AS $type)
+                        <option value="{{$type->id}}">{{$type->name}}</option>
+                    @endforeach
                 </select>
                 {{csrf_field()}}
             </div>

@@ -21,7 +21,7 @@ class MemberController extends Controller {
     /**
      * @var TypeIncomeRepository
      */
-    private $TypeIncomeRepository;
+    private $typeIncomeRepository;
     /**
      * @var TypeTemporaryIncomeRepository
      */
@@ -39,13 +39,13 @@ class MemberController extends Controller {
      */
     public function __construct(
         MemberRepository $memberRepository,
-        TypeIncomeRepository $TypeIncomeRepository,
+        TypeIncomeRepository $typeIncomeRepository,
         IncomeRepository $incomeRepository
     )
     {
 
         $this->memberRepository = $memberRepository;
-        $this->TypeIncomeRepository = $TypeIncomeRepository;
+        $this->typeIncomeRepository = $typeIncomeRepository;
 
         $this->incomeRepository = $incomeRepository;
     }
@@ -151,7 +151,8 @@ class MemberController extends Controller {
     |----------------------------------------------------------------------
     */
     public function viewInd() {
-        return View('members.showInd');
+        $typeIncome = $this->typeIncomeRepository->getModel()->where('offering','no')->get();
+        return View('members.showInd',compact('typeIncome'));
     }
 
 
