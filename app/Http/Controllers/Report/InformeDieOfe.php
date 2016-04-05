@@ -99,7 +99,7 @@ class InformeDieOfe extends Controller
         $ofrendas = $this->typeIncomeRepository->getModel()->where('id',$tipo)->get();
         foreach($ofrendas AS $ofrenda):
             $ofrend = $this->incomeRepository->getModel()
-                ->where('type_income_id',$ofrenda->id)->whereBetween('date',[$year.'-01-01',$year.'-12-31'])->sum('balance');
+                ->where('type_income_id',$ofrenda->id)->whereBetween('date',[($year-1).'-12-26',$year.'-12-25'])->sum('balance');
             if($ofrend > 0):
                 $pdf .= Fpdf::Cell(20,7,substr(utf8_decode($ofrenda->name),0,6),1,0,'C');
             endif;
@@ -116,10 +116,10 @@ class InformeDieOfe extends Controller
             $total = 0;
             foreach($ofrendas AS $ofrenda):
                 $ofrend = $this->incomeRepository->getModel()->where('member_id',$miembro->id)
-                    ->where('type_income_id',$ofrenda->id)->whereBetween('date',[$year.'-01-01',$year.'-12-31'])->sum('balance');
+                    ->where('type_income_id',$ofrenda->id)->whereBetween('date',[($year-1).'-12-26',$year.'-12-25'])->sum('balance');
                 $total += $ofrend;
                 $sumOfrenda = $this->incomeRepository->getModel()
-                    ->where('type_income_id',$ofrenda->id)->whereBetween('date',[$year.'-01-01',$year.'-12-31'])->sum('balance');
+                    ->where('type_income_id',$ofrenda->id)->whereBetween('date',[($year-1).'-12-26',$year.'-12-25'])->sum('balance');
                 if($sumOfrenda > 0):
                     if($ofrend > 0):
                         $pdf .= Fpdf::Cell(20,7,number_format($ofrend),1,0,'C');
@@ -138,7 +138,7 @@ class InformeDieOfe extends Controller
         $total=0;
         foreach($ofrendas AS $ofrenda):
             $ofrend = $this->incomeRepository->getModel()
-                ->where('type_income_id',$ofrenda->id)->whereBetween('date',[$year.'-01-01',$year.'-12-31'])->sum('balance');
+                ->where('type_income_id',$ofrenda->id)->whereBetween('date',[($year-1).'-12-26',$year.'-12-25'])->sum('balance');
             if($ofrend > 0):
                 $pdf .= Fpdf::Cell(20,7,number_format($ofrend,2),1,0,'C');
             endif;
