@@ -68,7 +68,12 @@
                                         <li><a target="_blank" href="{{route('info-income')}}">Reporte Mensual</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="{{route('index-gasto')}}">Gastos</a></li>
+                                <li><a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gastos<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{route('index-gasto')}}">Lista de Gastos</a></li>
+                                        <li><a href="{{route('lista-gastos')}}">Reporte de Gastos</a></li>
+                                    </ul>
+                                </li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Configuración <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">

@@ -130,6 +130,31 @@ class ExpenseController extends Controller {
 		return View('expenses.show', compact('cheques','gastos','monto'));
 	}
 
+	/*
+	|---------------------------------------------------------------------
+	|@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+	|@Date Create: 2016-04-06
+	|@Date Update: 2016-00-00
+	|---------------------------------------------------------------------
+	|@Description:
+	|
+	|
+	|@Pasos:
+	|
+	|
+	|
+	|
+	|
+	|
+	|----------------------------------------------------------------------
+	| @return mixed
+	|----------------------------------------------------------------------
+	*/
+	public function viewInd() {
+		$typeExpenses = $this->typeExpenseRepository->getModel()->get();
+		$departaments = $this->departamentRepository->allData();
+		return View('expenses.showInd',compact('typeExpenses','departaments'));
+	}
 	/**
 	 * Show the form for editing the specified gasto.
 	 *

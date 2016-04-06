@@ -16,6 +16,7 @@
 @section('content')
 
     <div class="panel-body">
+        <h1>Informe de Movimientos de los Ingresos</h1>
         <div class="btn btn-info"><a href="{{route('members-lista')}}"  class="button radius">Regresar</a></div>
         <form action="{{route('lista-diezmo-pdf')}}" target="_blank" method="post">
         <div class="form-group">
