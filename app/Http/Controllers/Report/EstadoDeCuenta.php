@@ -75,7 +75,7 @@ class EstadoDeCuenta extends Controller
         $dateIn = $date->subMonth(1);
 
          $banks = $this->bankRepository->getModel()->where('account_id',$id)
-            ->whereBetween('date',[$dateIn->format('Y-m-d'),$dateIn->endOfMonth()->format('Y-m-d')])->get();
+            ->where('date','<=',$dateIn->endOfMonth()->format('Y-m-d'))->get();
         $inicial=0;
         foreach($banks AS $bank):
             if($bank->type=='entradas'):
@@ -90,7 +90,7 @@ class EstadoDeCuenta extends Controller
 
         $dateIn = $date->subMonth(1);
         $checks = $this->checkRepository->getModel()->where('account_id',$id)
-            ->whereBetween('date',[$dateIn->format('Y-m-d'),$dateIn->endOfMonth()->format('Y-m-d')])->orderBy('date','ASC')->get();
+            ->where('date','<=',$dateIn->endOfMonth()->format('Y-m-d'))->orderBy('date','ASC')->get();
         foreach($checks AS $check):
             $inicial -=  $check->balance;
         endforeach;
