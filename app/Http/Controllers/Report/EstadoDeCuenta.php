@@ -10,6 +10,7 @@ namespace SistemasAmigables\Http\Controllers\Report;
 
 
 use Anouar\Fpdf\Facades\Fpdf;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
 use SistemasAmigables\Http\Controllers\Controller;
 use SistemasAmigables\Repositories\AccountRepository;
@@ -69,10 +70,28 @@ class EstadoDeCuenta extends Controller
         $pdf .= Fpdf::Cell(30,7,utf8_decode('Debito'),1,0,'C');
         $pdf .= Fpdf::Cell(30,7,utf8_decode('Credito'),1,0,'C');
         $pdf .= Fpdf::Cell(30,7,utf8_decode('Balance'),1,1,'C');
+        $date = new Carbon(Input::get('dateIn'));
+        $dateIn = $date->subMonth(1);
+         $banksE = $this->bankRepository->getModel()->where('account_id',$id)->where('type','entradas')
+            ->whereBetween('date',[$dateIn->format('Y-m-d'),$dateIn->endOfMonth()->format('Y-m-d')])->sum('balance');
+        $banksS = $this->bankRepository->getModel()->where('account_id',$id)->where('type','salidas')
+            ->whereBetween('date',[$dateIn->format('Y-m-d'),$dateIn->endOfMonth()->format('Y-m-d')])->sum('balance');
+        $inicial = $banksE-$banksS;
 
+        $pdf .= Fpdf::Cell(100,7,utf8_decode('Saldo Inicial: '),1,0,'L');
+        if($inicial >= 0):
+        $pdf .= Fpdf::Cell(30,7,utf8_decode($inicial),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,utf8_decode(0),1,0,'C');
+        else:
+            $pdf .= Fpdf::Cell(30,7,utf8_decode(0),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode($inicial),1,0,'C');
+
+        endif;
+        $pdf .= Fpdf::Cell(30,7,number_format($inicial,2),1,1,'C');
         $banks = $this->bankRepository->getModel()->where('account_id',$id)->whereBetween('date',[Input::get('dateIn'),Input::get('dateOut')])->orderBy('date','ASC')->get();
         $balanceBank = 0;
         foreach($banks AS $bank):
+
             $pdf .= Fpdf::Cell(25,7,utf8_decode($bank->date),1,0,'L');
             $pdf .= Fpdf::Cell(25,7,utf8_decode($bank->number),1,0,'L');
             if($bank->records):
