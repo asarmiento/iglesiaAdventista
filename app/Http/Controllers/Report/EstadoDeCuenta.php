@@ -153,6 +153,26 @@ class EstadoDeCuenta extends Controller
         exit;
     }
 
+    /*
+    |---------------------------------------------------------------------
+    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+    |@Date Create: 2016-04-08
+    |@Date Update: 2016-00-00
+    |---------------------------------------------------------------------
+    |@Description:
+    |
+    |
+    |@Pasos:
+    |
+    |
+    |
+    |
+    |
+    |
+    |----------------------------------------------------------------------
+    | @return mixed
+    |----------------------------------------------------------------------
+    */
     public function depositos($year){
         $this->header();
         $pdf = Fpdf::Cell(0,7,utf8_decode('Informes de Sabados y Sus Depositos'),0,1,'C');
@@ -165,32 +185,30 @@ class EstadoDeCuenta extends Controller
         foreach($banks AS $bank):
             $pdf .=Fpdf::PageNo();
             $pdf .= Fpdf::Cell(25,7,utf8_decode('fecha'),1,0,'C');
-            $pdf .= Fpdf::Cell(40,7,utf8_decode('N° Deposito'),1,0,'C');
-            $pdf .= Fpdf::Cell(40,7,utf8_decode('Cantidad '),1,1,'C');
-
-            $pdf .= Fpdf::Cell(25,7,utf8_decode($bank->date),1,0,'C');
-            $pdf .= Fpdf::Cell(40,7,utf8_decode($bank->number),1,0,'C');
-            $pdf .= Fpdf::Cell(40,7,number_format($bank->balance,2),1,1,'C');
-
-
-            $deposito=0;
-            $pdf .= Fpdf::Ln();
-            $pdf .= Fpdf::SetX(15);
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('N° Deposito'),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('Cantidad '),1,0,'C');
             $pdf .= Fpdf::Cell(25,7,utf8_decode('Sabado'),1,0,'C');
             $pdf .= Fpdf::Cell(40,7,utf8_decode('N° Control Interno'),1,0,'C');
-            $pdf .= Fpdf::Cell(30,7,utf8_decode('N° Miembros'),1,0,'C');
-            $pdf .= Fpdf::Cell(40,7,utf8_decode('Cantidad '),1,1,'C');
+            $pdf .= Fpdf::Cell(25,7,utf8_decode('N° Miembros'),1,0,'C');
+            $pdf .= Fpdf::Cell(25,7,utf8_decode('Cantidad '),1,1,'C');
+            $pdf .= Fpdf::Cell(25,7,utf8_decode($bank->date),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode($bank->number),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,number_format($bank->balance,2),1,0,'C');
+
+            if($bank->records):
+            $deposito=0;
+
         foreach($bank->records AS $record):
-            $pdf .= Fpdf::SetX(15);
             $pdf .= Fpdf::Cell(25,7,utf8_decode($record->saturday),1,0,'L');
             $pdf .= Fpdf::Cell(40,7,utf8_decode($record->controlNumber),1,0,'C');
-            $pdf .= Fpdf::Cell(30,7,utf8_decode($record->rows),1,0,'C');
-            $pdf .= Fpdf::Cell(40,7,number_format($record->balance,2),1,1,'C');
+            $pdf .= Fpdf::Cell(25,7,utf8_decode($record->rows),1,0,'C');
+            $pdf .= Fpdf::Cell(25,7,number_format($record->balance,2),1,1,'C');
             $deposito += $record->balance;
         endforeach;
             $pdf .= Fpdf::Ln();
             $pdf .= Fpdf::Cell(80,7,utf8_decode('Balance: '),1,0,'R');
             $pdf .= Fpdf::Cell(40,7,number_format($bank->balance - $deposito,2),1,1,'C');
+         endif;
             $pdf .= Fpdf::Ln();
             $y = Fpdf::GetY();
             $pdf .= Fpdf::Line(20,$y,200,$y);
