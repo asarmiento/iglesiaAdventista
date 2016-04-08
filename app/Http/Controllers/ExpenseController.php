@@ -85,7 +85,7 @@ class ExpenseController extends Controller {
 		$checks = $this->checkRepository->getModel()->find($id);
 		$departaments = $this->departamentRepository->allData();
 		$expenses= $this->expensesRepository->oneWhere('check_id',$id);
-		$total= $this->expensesRepository->oneWhereList('check_id',$id,'amount');
+		$total= $this->expensesRepository->oneWhereSum('check_id',$id,'amount');
 		$typeExpenses= $this->typeExpenseRepository->allData();
 		$typeFixs = $this->TypeIncomeRepository->allData();
 		return View('expenses.create',compact('checks','departaments',
@@ -125,7 +125,7 @@ class ExpenseController extends Controller {
 
 		$cheques = $this->checkRepository->getModel()->find($token);
 		$gastos = $this->expensesRepository->oneWhere('check_id',$token);
-		$monto = $this->expensesRepository->oneWhereList('check_id',$token,'amount');
+		$monto = $this->expensesRepository->oneWhereSum('check_id',$token,'amount');
 
 		return View('expenses.show', compact('cheques','gastos','monto'));
 	}

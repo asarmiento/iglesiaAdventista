@@ -34,7 +34,7 @@ Lista Cuentas Bancarias
             <td>{{number_format($bank->credit_balance,2)}}</td>
             <td>{{number_format($bank->balance,2)}}</td>
             <td></td>
-            <td><a href=""><i class="fa fa-eye"></i></a></td>
+            <td><a target="_blank" href="{{route('estado-de-cuenta-ver',$bank->id)}}"><i class="fa fa-eye"></i></a></td>
         </tr>
         @endforeach
     </tbody>

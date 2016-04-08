@@ -21,4 +21,7 @@ Route::post('bancos/depositos-campo-loca/create', ['as' => 'store-deposit-campo'
 
 
 Route::get('campo-loca/ver', ['as' => 'campo-ver', 'uses' => 'Report\InformesComparativo@index']);
+Route::get('estado-de-cuenta/{id}', ['as' => 'estado-de-cuenta-ver', 'uses' => 'BankController@estasoCuenta']);
+Route::post('estado-de-cuenta', ['as' => 'estado-de-cuenta', 'uses' => 'Report\EstadoDeCuenta@index']);
+Route::get('deposito-informes/{year}', ['as' => 'dep-Ingresos', 'uses' => 'Report\EstadoDeCuenta@depositos']);
 Route::post('campo-loca/report', ['as' => 'report-campo', 'uses' => 'Report\InformesComparativo@report']);

@@ -6,7 +6,7 @@
  * Time: 01:54 PM
  */
 
-Route::get('test', 'TestController@show');
+Route::get('test', 'TestController@index');
 Route::get('test/token', 'TestController@token');
 Route::get('test/traslado', 'TestController@trasladoExpense');
 Route::get('test/typeExpense', 'TestController@typeExpense');

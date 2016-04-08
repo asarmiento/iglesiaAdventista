@@ -11,6 +11,10 @@ Lista Informes Semanales
     <div class="panel panel-body">
 <div class="btn btn-info"><a href="{{route('create-record')}}"  class="button radius">Nuevo Informe</a></div>
         <div class="panel-body">
+            <div>
+                <a href="{{route('dep-Ingresos',2015)}}">Depositos Contra Informes 2015</a>
+                <a href="{{route('dep-Ingresos',2016)}}">Depositos Contra Informes 2016</a>
+            </div>
 <table id="table_informe" class="table table-bordered">
 
     <thead>

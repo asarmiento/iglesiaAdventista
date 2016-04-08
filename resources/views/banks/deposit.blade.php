@@ -35,7 +35,7 @@
                     <td>{{$key+1}}</td>
                     @if($deposit->record_id)
                     <td>Informe: {{$deposit->records->controlNumber}}</td>
-                    <td>Informe: {{$deposit->records->balanceyhhhhhhhhhhhhhhh}}</td>
+                    <td>Informe: {{$deposit->records->balance}}</td>
                     @elseif($deposit->check_id)
                     <td>Cheque: {{$deposit->checks}}</td>
                     @endif

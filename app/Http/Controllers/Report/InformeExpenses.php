@@ -65,13 +65,11 @@ class InformeExpenses extends Controller
 
         $pdf = Fpdf::Ln();
 
-        if(Input::get('tipo')):
+        if(Input::get('tipo') == '1-1'):
             $this->header('L');
-
             $this->gastosAll($year);
-        elseif(Input::get('departament')):
+        elseif(Input::get('departament') == '1-2'):
             $this->header('L');
-
             $this->departament($year);
         else:
             $this->header();

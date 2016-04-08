@@ -97,6 +97,11 @@ class BankController extends Controller
         return view('banks.deposit',compact('deposits'));
     }
 
+    public function estasoCuenta($id)
+    {
+        $account = $id;
+        return view('banks.estadoCuenta',compact('account'));
+    }
 
     public function depositCreate()
     {

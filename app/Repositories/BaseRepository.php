@@ -56,7 +56,7 @@ abstract class BaseRepository {
         return $this->newQuery()->where($data,$id)->get();
     }
 
-    public function oneWhereList($data,$id,$sum)
+    public function oneWhereSum($data,$id,$sum)
     {
         return $this->newQuery()->where($data,$id)->sum($sum);
     }

@@ -802,7 +802,7 @@ class ReportController extends  Controller
                     ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                     ->where('association','SI')->where('date','>=',$dateIni)
                     ->where('date','<=',$dateOut)->sum('incomes.balance');
-                $acum = $this->incomeRepository->oneWhereList('type_income_id',$typeIncome->id,'balance');
+                $acum = $this->incomeRepository->oneWhereSum('type_income_id',$typeIncome->id,'balance');
                 $totalAcum = $this->incomeRepository->getModel()
                     ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                     ->where('association','SI')->sum('incomes.balance');
@@ -875,7 +875,7 @@ class ReportController extends  Controller
 
             $totalIncome = $this->incomeRepository->getModel()->where('date','>=',$dateIni)
                 ->where('date','<=',$dateOut)->sum('balance');
-            $acum = $this->incomeRepository->oneWhereList('type_income_id',$typeIncome->id,'balance');
+            $acum = $this->incomeRepository->oneWhereSum('type_income_id',$typeIncome->id,'balance');
             $totalAcum = $this->incomeRepository->allSum('balance');
             $pdf   .= Fpdf::SetX(20);
             $pdf  .= Fpdf::Cell(40,7,utf8_decode($typeIncome->name),0,0,'L');

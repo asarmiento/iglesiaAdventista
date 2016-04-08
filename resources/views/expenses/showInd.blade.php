@@ -31,7 +31,7 @@
             <div class="col-md-7 col-lg-7">
                 <label>Tipo de informe</label>
                 <select name="tipo" class="form-control">
-                    <option value="1">Todos los Gastos</option>
+                    <option value="1-1">Todos los Gastos</option>
                     @foreach($typeExpenses AS $type)
                         <option value="{{$type->id}}">{{ucwords(strtolower($type->name))}}</option>
                     @endforeach
@@ -60,7 +60,7 @@
                 <div class="col-md-7 col-lg-7">
                     <label>Tipo de informe</label>
                     <select name="departament" class="form-control">
-                        <option value="1">Todos los Gastos</option>
+                        <option value="1-2">Todos los Departamentos</option>
                         @foreach($departaments AS $departament)
                             <option value="{{$departament->id}}">{{ucwords(strtolower($departament->name))}}</option>
                         @endforeach
