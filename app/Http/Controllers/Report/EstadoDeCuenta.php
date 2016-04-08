@@ -75,11 +75,19 @@ class EstadoDeCuenta extends Controller
         foreach($banks AS $bank):
             $pdf .= Fpdf::Cell(25,7,utf8_decode($bank->date),1,0,'L');
             $pdf .= Fpdf::Cell(25,7,utf8_decode($bank->number),1,0,'L');
+            if($bank->records):
             $pdf .= Fpdf::Cell(50,7,utf8_decode($bank->records->saturday),1,0,'L');
+                else:
+            $pdf .= Fpdf::Cell(50,7,utf8_decode(''),1,0,'L');
+                    endif;
+            if($bank->type=='entrada'):
             $pdf .= Fpdf::Cell(30,7,number_format($bank->balance,2),1,0,'C');
-            $pdf .= Fpdf::Cell(30,7,number_format(0),1,0,'C');
-
                 $balanceBank += $bank->balance;
+            else:
+            $pdf .= Fpdf::Cell(30,7,number_format($bank->balance),1,0,'C');
+                $balanceBank -= $bank->balance;
+            endif;
+
 
             $pdf .= Fpdf::Cell(30,7,number_format($balanceBank,2),1,1,'C');
         endforeach;
@@ -113,19 +121,32 @@ class EstadoDeCuenta extends Controller
         $pdf .= Fpdf::SetFont('Arial','B',14);
         $pdf .= Fpdf::Cell(0,7,utf8_decode('Año '.$year),0,1,'C');
         $pdf .= Fpdf::SetFont('Arial','',12);
-        $pdf .= Fpdf::Cell(25,7,utf8_decode('Sabado'),1,0,'C');
-        $pdf .= Fpdf::Cell(40,7,utf8_decode('N° Control Interno'),1,0,'C');
-        $pdf .= Fpdf::Cell(30,7,utf8_decode('N° Miembros'),1,0,'C');
-        $pdf .= Fpdf::Cell(40,7,utf8_decode('Cantidad '),1,1,'C');
 
+        $banks = $this->bankRepository->getModel()->whereBetween('date',[($year-1).'-12-27',($year).'-12-25'])->orderBy('date','ASC')->get();
+        foreach($banks AS $bank):
+            $pdf .= Fpdf::Cell(25,7,utf8_decode('fecha'),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,utf8_decode('N° Deposito'),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,utf8_decode('Cantidad '),1,1,'C');
 
-        $records = $this->recordRepository->getModel()->whereBetween('saturday',['2014-12-27','2015-12-25'])->orderBy('saturday','ASC')->get();
+            $pdf .= Fpdf::Cell(25,7,utf8_decode($bank->date),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,utf8_decode($bank->number),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,number_format($bank->balance,2),1,1,'C');
+        $records = $this->recordRepository->getModel()->where('id',$bank->record_id)->orderBy('saturday','ASC')->get();
 
-        foreach($records AS $records):
-            $pdf .= Fpdf::Cell(25,7,utf8_decode($records->saturday),1,0,'L');
-            $pdf .= Fpdf::Cell(40,7,utf8_decode($records->controlNumber),1,0,'C');
-            $pdf .= Fpdf::Cell(30,7,utf8_decode($records->rows),1,0,'C');
-            $pdf .= Fpdf::Cell(40,7,number_format($records->balance,2),1,1,'C');
+            $pdf .= Fpdf::SetX(15);
+            $pdf .= Fpdf::Cell(25,7,utf8_decode('Sabado'),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,utf8_decode('N° Control Interno'),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('N° Miembros'),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,utf8_decode('Cantidad '),1,1,'C');
+        foreach($records AS $record):
+            $pdf .= Fpdf::SetX(15);
+            $pdf .= Fpdf::Cell(25,7,utf8_decode($record->saturday),1,0,'L');
+            $pdf .= Fpdf::Cell(40,7,utf8_decode($record->controlNumber),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode($record->rows),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,number_format($record->balance,2),1,1,'C');
+            $pdf .= Fpdf::Ln();
+
+        endforeach;
         endforeach;
 
         Fpdf::Output('Estado-de-Cuenta.pdf','I');
