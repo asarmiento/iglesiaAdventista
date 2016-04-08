@@ -78,13 +78,15 @@ class EstadoDeCuenta extends Controller
             if($bank->records):
             $pdf .= Fpdf::Cell(50,7,utf8_decode($bank->records->saturday),1,0,'L');
             else:
-            $pdf .= Fpdf::Cell(50,7,utf8_decode('0.00'),1,0,'L');
+            $pdf .= Fpdf::Cell(50,7,utf8_decode(''),1,0,'L');
                     endif;
-            if($bank->type=='entrada'):
-            $pdf .= Fpdf::Cell(30,7,number_format($bank->balance,2),1,0,'C');
+            if($bank->type=='entradas'):
+                $pdf .= Fpdf::Cell(30,7,number_format($bank->balance,2),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,number_format(0,2),1,0,'C');
                 $balanceBank += $bank->balance;
-            else:
-            $pdf .= Fpdf::Cell(30,7,number_format($bank->balance),1,0,'C');
+            elseif($bank->type=='salidas'):
+                $pdf .= Fpdf::Cell(30,7,number_format(0,2),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,number_format($bank->balance,2),1,0,'C');
                 $balanceBank -= $bank->balance;
             endif;
 
