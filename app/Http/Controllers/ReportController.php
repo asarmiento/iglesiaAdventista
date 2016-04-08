@@ -10,8 +10,10 @@ namespace SistemasAmigables\Http\Controllers;
 
 
 use Anouar\Fpdf\Facades\Fpdf;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use SistemasAmigables\Entities\Campo;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
@@ -330,15 +332,16 @@ class ReportController extends  Controller
     public function informe()
     {
 
-        $dateIni = '2016-02-01';
-        $dateOut = '2016-02-28';
-        $pdf  = Fpdf::AddPage('P','letter');
+        $dateIni = Input::get('dateIn');
+        $dateOut = Input::get('dateOut');
+    /*   $pdf  = Fpdf::AddPage('P','letter');
         $this->headerInforme();
-        $this->ingresos($dateIni,$dateOut);
-        $pdf  = Fpdf::AddPage('P','letter');
+       $pdf  .= Fpdf::Cell(0,5,utf8_decode($dateIni.' al '.$dateOut),0,1,'C');
+       $this->ingresos($dateIni,$dateOut);
+       $pdf  = Fpdf::AddPage('P','letter');
         $this->headerInforme();
-        $this->association($dateIni,$dateOut);
-        $pdf  = Fpdf::AddPage('P','letter');
+        $this->association($dateIni,$dateOut);*/
+        $pdf  = Fpdf::AddPage('L','letter');
         $this->headerInforme();
         $this->departament($dateIni,$dateOut);
         $pdf  = Fpdf::AddPage('P','letter');
@@ -563,11 +566,18 @@ class ReportController extends  Controller
         $pdf   = Fpdf::Ln();
         $pdf   = Fpdf::SetFont('Arial','B',12);
         $pdf  .= Fpdf::SetX(10);
+        $pdf  .= Fpdf::Cell(5,7,utf8_decode('N°'),1,0,'L');
         $pdf  .= Fpdf::Cell(35,7,utf8_decode('Departamentos'),1,0,'L');
         $pdf  .= Fpdf::Cell(20,7,utf8_decode('presup.'),1,0,'C');
-        $pdf  .= Fpdf::Cell(60,7,utf8_decode('Mes Actual'),1,0,'C');
-        $pdf  .= Fpdf::Cell(70,7,utf8_decode('Acumulado'),1,1,'C');
-        $pdf  .= Fpdf::SetX(65);
+        $date = new Carbon($dateIni);
+        $pdf  .= Fpdf::Cell(60,7,utf8_decode('Mes '.$date->subMonth(1)->format('M')),1,0,'C');
+        $date = new Carbon($dateIni);
+        $pdf  .= Fpdf::Cell(60,7,utf8_decode('Mes '.$date->format('M')),1,0,'C');
+        $pdf  .= Fpdf::Cell(70,7,utf8_decode('Año '.$date->format('Y')),1,1,'C');
+        $pdf  .= Fpdf::SetX(70);
+        $pdf  .= Fpdf::Cell(20,7,utf8_decode('Ing.'),1,0,'C');
+        $pdf  .= Fpdf::Cell(20,7,utf8_decode('Gto'),1,0,'C');
+        $pdf  .= Fpdf::Cell(20,7,utf8_decode('Dif.'),1,0,'C');
         $pdf  .= Fpdf::Cell(20,7,utf8_decode('Ing.'),1,0,'C');
         $pdf  .= Fpdf::Cell(20,7,utf8_decode('Gto'),1,0,'C');
         $pdf  .= Fpdf::Cell(20,7,utf8_decode('Dif.'),1,0,'C');
@@ -575,7 +585,6 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::Cell(25,7,utf8_decode('Gto'),1,0,'C');
         $pdf  .= Fpdf::Cell(20,7,utf8_decode('Dif.'),1,1,'C');
 
-        $departaments = $this->departamentRepository->allData();
         $partAsoc = 0;
         $partAsocAcum = 0;
 
@@ -586,9 +595,13 @@ class ReportController extends  Controller
         $totalIngA =0;
         $totalGtoA =0;
         $totalProm =0;
-
+        $totalIngMAnt = 0;
+        $partAsocAnt =0;
+        $totalGtoMAnt=0;
+        $departaments = $this->departamentRepository->allData();
+    $i=0;
         foreach($departaments As $departament):
-
+$i++;
 
             $pdf   = Fpdf::SetFont('Arial','',9);
             $totalIncome = $this->incomeRepository->getModel()
@@ -608,137 +621,200 @@ class ReportController extends  Controller
                 ->where('part','NO')
                 ->where('departament_id',$departament->id)->sum('incomes.balance');
             $pdf   .= Fpdf::SetX(10);
-            $pdf  .= Fpdf::Cell(35,7,utf8_decode($departament->name),1,0,'L');
-            $pdf  .= Fpdf::Cell(20,7,number_format($departament->budget,2),1,0,'c');
+            $pdf  .= Fpdf::Cell(5,6,utf8_decode($i),1,0,'L');
+            $pdf  .= Fpdf::Cell(35,6,utf8_decode($departament->name),1,0,'L');
+            $pdf  .= Fpdf::Cell(20,6,number_format($departament->budget,2),1,0,'c');
             $totalPres +=$departament->budget;
-            /*--------------------------------------------- Igresos del mes----------------------------------*/
+            /*--------------------------------------------- Igresos del mes Anterior----------------------------------*/
+            $date = new Carbon($dateIni);
             $income =$this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
                 ->where('departament_id',$departament->id)->where('part','NO')
-                ->where('date','>=',$dateIni)->where('date','<=',$dateOut)->sum('incomes.balance');
+                ->whereBetween('date',[$date->subMonth(1)->format('Y-m-d'),$date->endOfMonth()->format('Y-m-d')])->sum('incomes.balance');
+            $date = new Carbon($dateIni);
+
             $incomePart =$this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
                 ->where('departament_id',$departament->id)->where('part','SI')
-                ->where('date','>=',$dateIni)->where('date','<=',$dateOut)->sum('incomes.balance');
-            $totalIngM += $income+$incomePart;
-            $partAsoc +=($incomePart/5)*2;
+                ->whereBetween('date',[$date->subMonth(1)->format('Y-m-d'),$date->endOfMonth()->format('Y-m-d')])->sum('incomes.balance');
+            $totalIngMAnt += $income+$incomePart;
+            $partAsocAnt +=($incomePart/5)*2;
             $partIgl =    ($incomePart/5)*3;
             if($departament->name == 'Fondos de Iglesia'):
-                $pdf  .= Fpdf::Cell(20,7,number_format($income+$partIgl,2),1,0,'C');
+                $pdf  .= Fpdf::Cell(20,6,number_format($income+$partIgl,2),1,0,'C');
             elseif($departament->name == 'Asociacion Central'):
-                $pdf  .= Fpdf::Cell(20,7,number_format($income+$partAsoc,2),1,0,'C');
+                $pdf  .= Fpdf::Cell(20,6,number_format($income+$partAsoc,2),1,0,'C');
             else:
-                $pdf  .= Fpdf::Cell(20,7,number_format($income,2),1,0,'C');
+                $pdf  .= Fpdf::Cell(20,6,number_format($income,2),1,0,'C');
             endif;
-            /*--------------------------------------------- Gastos del mes----------------------------------*/
-            $expense =$this->expensesRepository->getModel()
-                ->join('type_expenses','type_expenses.id','=','expenses.type_expense_id')
-                ->join('departaments','type_expenses.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)
-                ->where('invoiceDate','>=',$dateIni)->where('invoiceDate','<=',$dateOut)->sum('expenses.amount');
-            $pdf  .= Fpdf::Cell(20,7,number_format($expense,2),1,0,'C');
-            $totalGtoM += $expense;
-            /*--------------------------------------------- diferecnia del if($difMonth < 0):
-                    $pdf  .= Fpdf::SetTextColor(249,50,0);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,0,'C');
-                    $pdf  .= Fpdf::SetTextColor(14,15,15);
-                else:
-                    $pdf  .= Fpdf::SetTextColor(14,15,15);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,0,'C');
-                endif;mes----------------------------------*/
-            if($departament->name == 'Fondos de Iglesia'):
-                $difMonth=  ($income+$partIgl)-$expense;
-                if($difMonth < 0):
-                    $pdf  .= Fpdf::SetTextColor(249,50,0);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,0,'C');
-                    $pdf  .= Fpdf::SetTextColor(14,15,15);
-                else:
-                    $pdf  .= Fpdf::SetTextColor(14,15,15);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,0,'C');
-                endif;
-            elseif($departament->name == 'Asociacion Central'):
-                $difMonth=  ($income+$partAsoc)-$expense;
-                if($difMonth < 0):
-                    $pdf  .= Fpdf::SetTextColor(249,50,0);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,0,'C');
-                    $pdf  .= Fpdf::SetTextColor(14,15,15);
-                else:
-                    $pdf  .= Fpdf::SetTextColor(14,15,15);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,0,'C');
-                endif;
-            else:
-                $difMonth=  ($income)-$expense;
-                if($difMonth < 0):
-                    $pdf  .= Fpdf::SetTextColor(249,50,0);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,0,'C');
-                    $pdf  .= Fpdf::SetTextColor(14,15,15);
-                else:
-                    $pdf  .= Fpdf::SetTextColor(14,15,15);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,0,'C');
-                endif;
-            endif;
-            $pdf   = Fpdf::SetFont('Arial','',8);
-            /*--------------------------------------------- Igresos Acumulado----------------------------------*/
-            $income =$this->incomeRepository->getModel()
-                ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
-                ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->where('part','NO')->sum('incomes.balance');
-            $incomePart =$this->incomeRepository->getModel()
-                ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
-                ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->where('part','SI')->sum('incomes.balance');
-            $totalIngA += $income+$incomePart;
-            $partAsocAcum +=($incomePart/5)*2;
-            $partIgl =    ($incomePart/5)*3;
-            if($departament->name == 'Fondos de Iglesia'):
-                $pdf  .= Fpdf::Cell(25,7,number_format($income+$partIgl,2),1,0,'C');
-            elseif($departament->name == 'Asociacion Central'):
-                $pdf  .= Fpdf::Cell(25,7,number_format($income+$partAsocAcum,2),1,0,'C');
-            else:
-                $pdf  .= Fpdf::Cell(25,7,number_format($income,2),1,0,'C');
-            endif;
-            /*--------------------------------------------- Gastos Acumulado----------------------------------*/
-            $expense =$this->expensesRepository->getModel()
-                ->join('type_expenses','type_expenses.id','=','expenses.type_expense_id')
-                ->join('departaments','type_expenses.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->sum('expenses.amount');
-            $pdf  .= Fpdf::Cell(25,7,number_format($expense,2),1,0,'C');
+            /*--------------------------------------------- Gastos del mes Anterior----------------------------------*/
+            $date = new Carbon($dateIni);
+            $expense = $this->expensesRepository->getModel()
+                ->join('type_expenses','type_expenses.id','=','expenses.type_expense_id')->where('departament_id',$departament->id)
+                ->whereBetween('invoiceDate',[$date->subMonth(1)->format('Y-m-d'),$date->endOfMonth()->format('Y-m-d')])->sum('amount');
+            $pdf  .= Fpdf::Cell(20,6,number_format($expense,2),1,0,'C');
+            $totalGtoMAnt += $expense;
 
             if($departament->name == 'Fondos de Iglesia'):
                 $difMonth=  ($income+$partIgl)-$expense;
                 if($difMonth < 0):
                     $pdf  .= Fpdf::SetTextColor(249,50,0);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,1,'C');
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
                     $pdf  .= Fpdf::SetTextColor(14,15,15);
                 else:
                     $pdf  .= Fpdf::SetTextColor(14,15,15);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,1,'C');
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
+                endif;
+
+            elseif($departament->name == 'Asociacion Central'):
+                $difMonth=  ($income+$partAsoc)-$expense;
+                if($difMonth < 0):
+                    $pdf  .= Fpdf::SetTextColor(249,50,0);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                else:
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
                 endif;
             else:
                 $difMonth=  ($income)-$expense;
                 if($difMonth < 0):
                     $pdf  .= Fpdf::SetTextColor(249,50,0);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,1,'C');
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
                     $pdf  .= Fpdf::SetTextColor(14,15,15);
                 else:
                     $pdf  .= Fpdf::SetTextColor(14,15,15);
-                    $pdf  .= Fpdf::Cell(20,7,number_format($difMonth,2),1,1,'C');
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
+                endif;
+            endif;
+            /*--------------------------------------------- Igresos del mes Actual----------------------------------*/
+            $income =$this->incomeRepository->getModel()
+                ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
+                ->join('departaments','type_incomes.departament_id','=','departaments.id')
+                ->where('departament_id',$departament->id)->where('part','NO')
+                ->whereBetween('date',[$dateIni,$dateOut])->sum('incomes.balance');
+            $incomePart =$this->incomeRepository->getModel()
+                ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
+                ->join('departaments','type_incomes.departament_id','=','departaments.id')
+                ->where('departament_id',$departament->id)->where('part','SI')
+                ->whereBetween('date',[$dateIni,$dateOut])->sum('incomes.balance');
+            $totalIngM += $income+$incomePart;
+            $partAsoc +=($incomePart/5)*2;
+            $partIgl =    ($incomePart/5)*3;
+            if($departament->name == 'Fondos de Iglesia'):
+                $pdf  .= Fpdf::Cell(20,6,number_format($income+$partIgl,2),1,0,'C');
+            elseif($departament->name == 'Asociacion Central'):
+                $pdf  .= Fpdf::Cell(20,6,number_format($income+$partAsoc,2),1,0,'C');
+            else:
+                $pdf  .= Fpdf::Cell(20,6,number_format($income,2),1,0,'C');
+            endif;
+            /*--------------------------------------------- Gastos del mes Actual----------------------------------*/
+            $expense = $this->expensesRepository->getModel()
+                ->join('type_expenses','type_expenses.id','=','expenses.type_expense_id')->where('departament_id',$departament->id)
+                ->whereBetween('invoiceDate',[$dateIni,$dateOut])->sum('amount');
+            $pdf  .= Fpdf::Cell(20,6,number_format($expense,2),1,0,'C');
+            $totalGtoM += $expense;
+
+            if($departament->name == 'Fondos de Iglesia'):
+                $difMonth=  ($income+$partIgl)-$expense;
+                if($difMonth < 0):
+                    $pdf  .= Fpdf::SetTextColor(249,50,0);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                else:
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
+                endif;
+
+            elseif($departament->name == 'Asociacion Central'):
+                $difMonth=  ($income+$partAsoc)-$expense;
+                if($difMonth < 0):
+                    $pdf  .= Fpdf::SetTextColor(249,50,0);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                else:
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
+                endif;
+            else:
+                $difMonth=  ($income)-$expense;
+                if($difMonth < 0):
+                    $pdf  .= Fpdf::SetTextColor(249,50,0);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                else:
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,0,'C');
+                endif;
+            endif;
+            $pdf   = Fpdf::SetFont('Arial','',8);
+            /*--------------------------------------------- Igresos Acumulado----------------------------------*/
+            $date = new Carbon($dateIni);
+            $year = $date->format('Y');
+            $income =$this->incomeRepository->getModel()
+                ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
+                ->whereBetween('incomes.date',[$year.'-01-01',$year.'-12-31'])
+                ->where('departament_id',$departament->id)->where('part','NO')->sum('incomes.balance');
+            $incomePart =$this->incomeRepository->getModel()
+                ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
+                ->whereBetween('incomes.date',[$year.'-01-01',$year.'-12-31'])
+                ->where('departament_id',$departament->id)->where('part','SI')->sum('incomes.balance');
+
+            $totalIngA += $income+$incomePart;
+            $partAsocAcum +=($incomePart/5)*2;
+            $partIgl =    ($incomePart/5)*3;
+            if($departament->name == 'Fondos de Iglesia'):
+                $pdf  .= Fpdf::Cell(25,6,number_format($income+$partIgl,2),1,0,'C');
+            elseif($departament->name == 'Asociacion Central'):
+                $pdf  .= Fpdf::Cell(25,6,number_format($income+$partAsocAcum,2),1,0,'C');
+            else:
+                $pdf  .= Fpdf::Cell(25,6,number_format($income,2),1,0,'C');
+            endif;
+            /*--------------------------------------------- Gastos Acumulado----------------------------------*/
+            $expense =$this->expensesRepository->getModel()
+                ->join('type_expenses','type_expenses.id','=','expenses.type_expense_id')
+                ->whereBetween('invoiceDate',[$year.'-01-01',$year.'-12-31'])
+                ->where('departament_id',$departament->id)->sum('expenses.amount');
+            $pdf  .= Fpdf::Cell(25,6,number_format($expense,2),1,0,'C');
+
+            if($departament->name == 'Fondos de Iglesia'):
+                $difMonth=  ($income+$partIgl)-$expense;
+                if($difMonth < 0):
+                    $pdf  .= Fpdf::SetTextColor(249,50,0);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,1,'C');
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                else:
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,1,'C');
+                endif;
+            else:
+                $difMonth=  ($income)-$expense;
+                if($difMonth < 0):
+                    $pdf  .= Fpdf::SetTextColor(249,50,0);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,1,'C');
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                else:
+                    $pdf  .= Fpdf::SetTextColor(14,15,15);
+                    $pdf  .= Fpdf::Cell(20,6,number_format($difMonth,2),1,1,'C');
                 endif;
             endif;
 
 
         endforeach;
-        $pdf  .= Fpdf::SetX(10);
+       /* $pdf  .= Fpdf::SetX(10);
         $pdf  .= Fpdf::Cell(35,7,utf8_decode('TOTAL'),1,0,'R');
         $pdf  .= Fpdf::Cell(20,7,number_format($totalPres),1,0,'C');
+        $pdf  .= Fpdf::Cell(20,7,number_format($totalIngMAnt),1,0,'C');
+        $pdf  .= Fpdf::Cell(20,7,number_format($totalGtoMAnt),1,0,'C');
+        $pdf  .= Fpdf::Cell(20,7,number_format($totalIngMAnt-$totalGtoMAnt),1,0,'C');
         $pdf  .= Fpdf::Cell(20,7,number_format($totalIngM),1,0,'C');
         $pdf  .= Fpdf::Cell(20,7,number_format($totalGtoM),1,0,'C');
         $pdf  .= Fpdf::Cell(20,7,number_format($totalIngM-$totalGtoM),1,0,'C');
         $pdf  .= Fpdf::Cell(25,7,number_format($totalIngA),1,0,'C');
         $pdf  .= Fpdf::Cell(25,7,number_format($totalGtoA),1,0,'C');
-        $pdf  .= Fpdf::Cell(20,7,number_format($totalIngA-$totalGtoA),1,1,'C');
+        $pdf  .= Fpdf::Cell(20,7,number_format($totalIngA-$totalGtoA),1,1,'C');*/
 
 
 
@@ -766,21 +842,22 @@ class ReportController extends  Controller
     */
     public function association($dateIni,$dateOut)
     {
+        $date = new Carbon($dateIni);
         $pdf   = Fpdf::Ln();
         $pdf   = Fpdf::SetFont('Arial','B',16);
         $pdf  .= Fpdf::Cell(0,5,utf8_decode('Fondos de Asociación'),0,1,'C');
         $pdf   = Fpdf::Ln();
         $asociacion = $this->typeExpenseRepository->oneWhere('name','Fondos Asociación Diezmo, 20% 20%');
-        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Fondos depositados a la '),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode($date->format('F')),0,1,'C');
         $pdf   = Fpdf::Ln();
-        $asocAmountMonth= $this->expensesRepository->getModel()->where('type_expense_id',$asociacion[0]->id)
-            ->where('invoiceDate','>=',$dateIni)->where('invoiceDate','<=',$dateOut)->sum('amount');
+        $asocAmountMonth= $this->incomeRepository->Campo($dateIni,$dateOut);
         $pdf   .= Fpdf::SetX(20);
 
-        $pdf  .= Fpdf::Cell(80,5,utf8_decode('Monto Dep. Del Mes: '.number_format($asocAmountMonth,2)),0,0,'L');
+        $pdf  .= Fpdf::Cell(80,5,utf8_decode('Dep. Del Mes '.$date->format('M').': '.number_format($asocAmountMonth,2)),0,0,'L');
+        $date = new Carbon($dateIni);
+        $year = $date->format('Y') ;
 
-        $asocAmountMonth= $this->expensesRepository->getModel()->where('type_expense_id',$asociacion[0]->id)
-            ->sum('amount');
+        $asocAmountMonth= $this->incomeRepository->Campo($year.'-01-01',$dateOut);
         $pdf  .= Fpdf::Cell(80,5,utf8_decode(' Acumulado: '.number_format($asocAmountMonth,2)),0,1,'R');
 
         $pdf   = Fpdf::Ln();
@@ -795,19 +872,16 @@ class ReportController extends  Controller
         foreach($typeIncomes As $typeIncome):
             if($typeIncome->association == 'SI'):
                 $pdf   = Fpdf::SetFont('Arial','',12);
-                $income =$this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)
-                    ->where('date','>=',$dateIni)->where('date','<=',$dateOut)->sum('balance');
 
-                $totalIncome = $this->incomeRepository->getModel()
-                    ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
-                    ->where('association','SI')->where('date','>=',$dateIni)
-                    ->where('date','<=',$dateOut)->sum('incomes.balance');
-                $acum = $this->incomeRepository->oneWhereSum('type_income_id',$typeIncome->id,'balance');
-                $totalAcum = $this->incomeRepository->getModel()
-                    ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
-                    ->where('association','SI')->sum('incomes.balance');
+
+
+
                 $pdf   .= Fpdf::SetX(20);
                 $pdf  .= Fpdf::Cell(40,7,utf8_decode($typeIncome->name),0,0,'L');
+                $acum = $this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)->whereBetween('date',[$year.'-01-01',$dateOut])->sum('balance');
+
+                $income =$this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)
+                    ->whereBetween('date',[$dateIni,$dateOut])->sum('balance');
                 if($typeIncome->name =='Ofrenda'):
                     $pdf  .= Fpdf::Cell(35,7,number_format(($income/5)*2,2),0,0,'C');
                     $pdf  .= Fpdf::Cell(40,7,number_format(($acum/5)*2,2),0,0,'C');
@@ -818,11 +892,20 @@ class ReportController extends  Controller
                     $pdf  .= Fpdf::Cell(35,7,number_format($income,2),0,0,'C');
                     $pdf  .= Fpdf::Cell(40,7,number_format($acum,2),0,0,'C');
                 endif;
+                /**************************************************************************************************/
+                $totalIncome = $this->incomeRepository->getModel()
+                    ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
+                    ->where('association','SI')->where('date','>=',$dateIni)
+                    ->where('date','<=',$dateOut)->sum('incomes.balance');
                 if($income>0):
                     $pdf  .= Fpdf::Cell(40,7,number_format(($income/$totalIncome)*100,2).'%',0,0,'C');
                 else:
                     $pdf  .= Fpdf::Cell(40,7,number_format(0,2).'%',0,0,'C');
                 endif;
+                /**************************************************************************************************/
+                $totalAcum = $this->incomeRepository->getModel()
+                    ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
+                    ->where('association','SI')->whereBetween('date',[$year.'-01-01',$dateOut])->sum('incomes.balance');
                 if($acum>0):
                     $pdf  .= Fpdf::Cell(35,7,number_format(($acum/$totalAcum)*100,2).'%',0,1,'C');
                 else:
@@ -862,47 +945,54 @@ class ReportController extends  Controller
         $pdf   = Fpdf::Ln();
         $pdf   = Fpdf::SetFont('Arial','B',14);
         $pdf   .= Fpdf::SetX(20);
-        $pdf  .= Fpdf::Cell(40,7,utf8_decode('Tipo de Ingreso'),0,0,'L');
-        $pdf  .= Fpdf::Cell(35,7,utf8_decode('Mes Actual'),0,0,'C');
-        $pdf  .= Fpdf::Cell(40,7,utf8_decode('Acumulado'),0,0,'C');
-        $pdf  .= Fpdf::Cell(40,7,utf8_decode('% Mes'),0,0,'C');
-        $pdf  .= Fpdf::Cell(35,7,utf8_decode('% Acum.'),0,1,'C');
+        $dateT = new Carbon($dateIni);
+        $pdf  .= Fpdf::Cell(40,7,utf8_decode('Tipo de Ingreso'),1,0,'L');
+        $pdf  .= Fpdf::Cell(35,7,utf8_decode('Mes '.$dateT->subMonth(1)->format('M')),1,0,'C');
+        $dateT = new Carbon($dateIni);
+        $pdf  .= Fpdf::Cell(35,7,utf8_decode('Mes '.$dateT->format('M')),1,0,'C');
+        $pdf  .= Fpdf::Cell(40,7,utf8_decode('% Mes '.$dateT->format('M')),1,0,'C');
+        $pdf  .= Fpdf::Cell(35,7,utf8_decode('Decrec/Creci'),1,1,'C');
         $typeIncomes = $this->typeIncomeRepository->allData();
+        $totalInco=0;
+        $totalAcum=0;
+        $total =0;
         foreach($typeIncomes As $typeIncome):
             $pdf   = Fpdf::SetFont('Arial','',12);
-            $income =$this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)
-                ->where('date','>=',$dateIni)->where('date','<=',$dateOut)->sum('balance');
+            $dateAnterio = new Carbon($dateIni);
 
+            $pdf   .= Fpdf::SetX(20);
+            $pdf  .= Fpdf::Cell(40,7,utf8_decode($typeIncome->name),1,0,'L');
+            /***********************************************************************************************/
+            $incomeAnterior =$this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)
+                ->where('date','>=',$dateAnterio->subMonth(1)->format('Y-m-d'))->where('date','<=',$dateAnterio->endOfMonth()->format('Y-m-d'))->sum('balance');
+            $pdf  .= Fpdf::Cell(35,7,number_format($incomeAnterior,2),1,0,'C');
+            $totalInco += $incomeAnterior;
+            /***********************************************************************************************/
+            $income =$this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)
+                ->whereBetween('date',[$dateIni,$dateOut])->sum('balance');
+            $pdf  .= Fpdf::Cell(35,7,number_format($income,2),1,0,'C');
+            $totalAcum += $income;
+            /***********************************************************************************************/
             $totalIncome = $this->incomeRepository->getModel()->where('date','>=',$dateIni)
                 ->where('date','<=',$dateOut)->sum('balance');
-            $acum = $this->incomeRepository->oneWhereSum('type_income_id',$typeIncome->id,'balance');
-            $totalAcum = $this->incomeRepository->allSum('balance');
-            $pdf   .= Fpdf::SetX(20);
-            $pdf  .= Fpdf::Cell(40,7,utf8_decode($typeIncome->name),0,0,'L');
-            $pdf  .= Fpdf::Cell(35,7,number_format($income,2),0,0,'C');
-            $pdf  .= Fpdf::Cell(40,7,number_format($acum,2),0,0,'C');
             if($income>0):
-                $pdf  .= Fpdf::Cell(40,7,number_format(($income/$totalIncome)*100,2).'%',0,0,'C');
+                $pdf  .= Fpdf::Cell(40,7,number_format(($income/$totalIncome)*100,2).'%',1,0,'C');
             else:
-                $pdf  .= Fpdf::Cell(40,7,number_format(0,2).'%',0,0,'C');
+                $pdf  .= Fpdf::Cell(40,7,number_format(0,2).'%',1,0,'C');
             endif;
-            if($acum>0):
-                $pdf  .= Fpdf::Cell(35,7,number_format(($acum/$totalAcum)*100,2).'%',0,1,'C');
-            else:
-                $pdf  .= Fpdf::Cell(35,7,number_format(0,2).'%',0,1,'C');
-            endif;
+            /***********************************************************************************************/
+            $pdf  .= Fpdf::Cell(35,7,number_format(($income-$incomeAnterior),2),1,1,'C');
 
+            $total += $income-$incomeAnterior;
         endforeach;
-        $totalIncome = $this->incomeRepository->getModel()->where('date','>=',$dateIni)
-            ->where('date','<=',$dateOut)->sum('balance');
-        $totalAcum = $this->incomeRepository->allSum('balance');
+
         $pdf   = Fpdf::SetFont('Arial','B',14);
         $pdf   .= Fpdf::SetX(20);
-        $pdf  .= Fpdf::Cell(40,7,utf8_decode('Total'),0,0,'L');
-        $pdf  .= Fpdf::Cell(35,7,number_format($totalIncome),0,0,'C');
-        $pdf  .= Fpdf::Cell(40,7,number_format($totalAcum),0,0,'C');
-        $pdf  .= Fpdf::Cell(40,7,utf8_decode('100%'),0,0,'C');
-        $pdf  .= Fpdf::Cell(35,7,utf8_decode('100%'),0,1,'C');
+        $pdf  .= Fpdf::Cell(40,7,utf8_decode('Total'),1,0,'L');
+        $pdf  .= Fpdf::Cell(35,7,number_format($totalInco,2),1,0,'C');
+        $pdf  .= Fpdf::Cell(35,7,number_format($totalAcum,2),1,0,'C');
+        $pdf  .= Fpdf::Cell(40,7,utf8_decode('100%'),1,0,'C');
+        $pdf  .= Fpdf::Cell(35,7,number_format($total,2),1,1,'C');
 
         return $pdf;
     }

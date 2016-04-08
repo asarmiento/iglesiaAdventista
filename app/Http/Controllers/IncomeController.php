@@ -257,4 +257,9 @@ class IncomeController extends Controller {
 
     }
 
+    public function estadoCuenta()
+    {
+        return view('incomes.estadoCuenta');
+    }
+
 }

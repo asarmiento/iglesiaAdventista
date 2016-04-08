@@ -76,7 +76,7 @@ class EstadoDeCuenta extends Controller
 
          $banks = $this->bankRepository->getModel()->where('account_id',$id)
             ->where('date','<=',$dateIn->endOfMonth()->format('Y-m-d'))->get();
-        $inicial=0;
+        $inicial=$acount[0]->initial_balance;
         foreach($banks AS $bank):
             if($bank->type=='entradas'):
 
@@ -112,11 +112,12 @@ class EstadoDeCuenta extends Controller
 
             $pdf .= Fpdf::Cell(25,7,utf8_decode($bank->date),1,0,'L');
             $pdf .= Fpdf::Cell(25,7,utf8_decode($bank->number),1,0,'L');
-            if($bank->records):
+
+            if(!empty($bank->records)):
             $pdf .= Fpdf::Cell(50,7,utf8_decode($bank->records->saturday),1,0,'L');
             else:
             $pdf .= Fpdf::Cell(50,7,utf8_decode(''),1,0,'L');
-                    endif;
+            endif;
             if($bank->type=='entradas'):
                 $pdf .= Fpdf::Cell(30,7,number_format($bank->balance,2),1,0,'C');
                 $pdf .= Fpdf::Cell(30,7,number_format(0,2),1,0,'C');

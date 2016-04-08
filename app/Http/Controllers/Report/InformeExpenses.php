@@ -231,7 +231,7 @@ class InformeExpenses extends Controller
             $total = $this->expensesRepository->getModel()->whereIn('type_expense_id',$typesList)
                 ->whereBetween('invoiceDate',[$year.'-01-01',$year.'-12-31'])->sum('amount');
             $percent = ($totalDie/$total)*100;
-            $pdf .= Fpdf::Cell(15,7,number_format($percent,2).'%',1,0,'C');
+            $pdf .= Fpdf::Cell(15,7,number_format($percent).'%',1,0,'C');
 
 
             $pdf .= Fpdf::Ln();
