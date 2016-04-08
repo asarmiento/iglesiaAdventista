@@ -71,16 +71,34 @@ class EstadoDeCuenta extends Controller
         $pdf .= Fpdf::Cell(30,7,utf8_decode('Credito'),1,0,'C');
         $pdf .= Fpdf::Cell(30,7,utf8_decode('Balance'),1,1,'C');
         $date = new Carbon(Input::get('dateIn'));
-        $dateIn = $date->subMonth(1);
-         $banksE = $this->bankRepository->getModel()->where('account_id',$id)->where('type','entradas')
-            ->whereBetween('date',[$dateIn->format('Y-m-d'),$dateIn->endOfMonth()->format('Y-m-d')])->sum('balance');
-        $banksS = $this->bankRepository->getModel()->where('account_id',$id)->where('type','salidas')
-            ->whereBetween('date',[$dateIn->format('Y-m-d'),$dateIn->endOfMonth()->format('Y-m-d')])->sum('balance');
-        $inicial = $banksE-$banksS;
 
-        $pdf .= Fpdf::Cell(100,7,utf8_decode('Saldo Inicial: '),1,0,'L');
+        $dateIn = $date->subMonth(1);
+
+         $banks = $this->bankRepository->getModel()->where('account_id',$id)
+            ->whereBetween('date',[$dateIn->format('Y-m-d'),$dateIn->endOfMonth()->format('Y-m-d')])->get();
+        $inicial=0;
+        foreach($banks AS $bank):
+            if($bank->type=='entradas'):
+
+                $inicial += $bank->balance;
+            elseif($bank->type=='salidas'):
+                $inicial -= $bank->balance;
+            endif;
+        endforeach;
+
+        $date = new Carbon(Input::get('dateIn'));
+
+        $dateIn = $date->subMonth(1);
+        $checks = $this->checkRepository->getModel()->where('account_id',$id)
+            ->whereBetween('date',[$dateIn->format('Y-m-d'),$dateIn->endOfMonth()->format('Y-m-d')])->orderBy('date','ASC')->get();
+        foreach($checks AS $check):
+            $inicial -=  $check->balance;
+        endforeach;
+
+
+        $pdf .= Fpdf::Cell(100,7,utf8_decode('Saldo Inicial: '),1,0,'R');
         if($inicial >= 0):
-        $pdf .= Fpdf::Cell(30,7,utf8_decode($inicial),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($inicial,2),1,0,'C');
         $pdf .= Fpdf::Cell(30,7,utf8_decode(0),1,0,'C');
         else:
             $pdf .= Fpdf::Cell(30,7,utf8_decode(0),1,0,'C');
@@ -89,7 +107,7 @@ class EstadoDeCuenta extends Controller
         endif;
         $pdf .= Fpdf::Cell(30,7,number_format($inicial,2),1,1,'C');
         $banks = $this->bankRepository->getModel()->where('account_id',$id)->whereBetween('date',[Input::get('dateIn'),Input::get('dateOut')])->orderBy('date','ASC')->get();
-        $balanceBank = 0;
+        $balanceBank = $inicial;
         foreach($banks AS $bank):
 
             $pdf .= Fpdf::Cell(25,7,utf8_decode($bank->date),1,0,'L');
@@ -128,7 +146,7 @@ class EstadoDeCuenta extends Controller
             $pdf .= Fpdf::Cell(30,7,number_format($balance,2),1,1,'C');
         endforeach;
         $pdf .= Fpdf::Cell(100,7,substr(utf8_decode('Total'),0,20),1,0,'R');
-        $pdf .= Fpdf::Cell(30,7,number_format($balanceBank),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($balanceBank,2),1,0,'C');
         $pdf .= Fpdf::Cell(30,7,number_format($totalC,2),1,0,'C');
         $pdf .= Fpdf::Cell(30,7,number_format($balance,2),1,1,'C');
         Fpdf::Output('Estado-de-Cuenta.pdf','I');
