@@ -161,8 +161,9 @@ class EstadoDeCuenta extends Controller
         $pdf .= Fpdf::Cell(0,7,utf8_decode('Año '.$year),0,1,'C');
         $pdf .= Fpdf::SetFont('Arial','',12);
 
-        $banks = $this->bankRepository->getModel()->whereBetween('date',[($year-1).'-12-27',($year).'-12-25'])->orderBy('date','ASC')->get();
+        $banks = $this->bankRepository->getModel()->with('records')->whereBetween('date',[($year-1).'-12-27',($year).'-12-25'])->orderBy('date','ASC')->get();
         foreach($banks AS $bank):
+            $pdf .=Fpdf::PageNo();
             $pdf .= Fpdf::Cell(25,7,utf8_decode('fecha'),1,0,'C');
             $pdf .= Fpdf::Cell(40,7,utf8_decode('N° Deposito'),1,0,'C');
             $pdf .= Fpdf::Cell(40,7,utf8_decode('Cantidad '),1,1,'C');
@@ -170,22 +171,31 @@ class EstadoDeCuenta extends Controller
             $pdf .= Fpdf::Cell(25,7,utf8_decode($bank->date),1,0,'C');
             $pdf .= Fpdf::Cell(40,7,utf8_decode($bank->number),1,0,'C');
             $pdf .= Fpdf::Cell(40,7,number_format($bank->balance,2),1,1,'C');
-        $records = $this->recordRepository->getModel()->where('id',$bank->record_id)->orderBy('saturday','ASC')->get();
 
+
+            $deposito=0;
+            $pdf .= Fpdf::Ln();
             $pdf .= Fpdf::SetX(15);
             $pdf .= Fpdf::Cell(25,7,utf8_decode('Sabado'),1,0,'C');
             $pdf .= Fpdf::Cell(40,7,utf8_decode('N° Control Interno'),1,0,'C');
             $pdf .= Fpdf::Cell(30,7,utf8_decode('N° Miembros'),1,0,'C');
             $pdf .= Fpdf::Cell(40,7,utf8_decode('Cantidad '),1,1,'C');
-        foreach($records AS $record):
+        foreach($bank->records AS $record):
             $pdf .= Fpdf::SetX(15);
             $pdf .= Fpdf::Cell(25,7,utf8_decode($record->saturday),1,0,'L');
             $pdf .= Fpdf::Cell(40,7,utf8_decode($record->controlNumber),1,0,'C');
             $pdf .= Fpdf::Cell(30,7,utf8_decode($record->rows),1,0,'C');
             $pdf .= Fpdf::Cell(40,7,number_format($record->balance,2),1,1,'C');
+            $deposito += $record->balance;
+        endforeach;
+            $pdf .= Fpdf::Ln();
+            $pdf .= Fpdf::Cell(80,7,utf8_decode('Balance: '),1,0,'R');
+            $pdf .= Fpdf::Cell(40,7,number_format($bank->balance - $deposito,2),1,1,'C');
+            $pdf .= Fpdf::Ln();
+            $y = Fpdf::GetY();
+            $pdf .= Fpdf::Line(20,$y,200,$y);
             $pdf .= Fpdf::Ln();
 
-        endforeach;
         endforeach;
 
         Fpdf::Output('Estado-de-Cuenta.pdf','I');

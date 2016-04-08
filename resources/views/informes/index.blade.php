@@ -50,7 +50,7 @@ Lista Informes Semanales
             @endif
             <td><a target="_blank"  href="{{route('post-report',$informe->saturday )}}"><i class="fa fa-file-pdf-o"></i></a></td>
 
-            @if(($informe->deposit == 'YES'))
+            @if(($informe->deposit == 'yes'))
                 <td><a><i class="fa fa-check"></i></a></td>
             @else
                 <td><a target="_blank" href="{{route('create-deposit')}}"><i class="fa fa-empire"></i></a></td>

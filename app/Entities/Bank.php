@@ -19,7 +19,7 @@ class Bank extends Entity
 
     public function records()
     {
-        return $this->belongsTo(Record::getClass(),'record_id','id');
+        return $this->belongsToMany(Record::getClass());
     }
 
 
