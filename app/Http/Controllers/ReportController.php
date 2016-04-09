@@ -337,9 +337,7 @@ class ReportController extends  Controller
        $pdf  = Fpdf::AddPage('P','letter');
         $this->headerInforme();
        $pdf  .= Fpdf::Cell(0,5,utf8_decode($dateIni.' al '.$dateOut),0,1,'C');
-       $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 31 de Marzo Banco Nacional: 1,354,230.09'),0,1,'C');
-       $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 31 de Marzo Banco Costa Rica: 318,606.59'),0,1,'C');
-       $pdf  .= Fpdf::Cell(0,5,utf8_decode('Total Saldo Bancos al 31 de Marzo: 1,672,836.68'),0,1,'C');
+
        $this->ingresos($dateIni,$dateOut);
        $pdf  = Fpdf::AddPage('P','letter');
         $this->headerInforme();
@@ -917,6 +915,13 @@ $i++;
             endif;
         endforeach;
 
+        $pdf .= Fpdf::Ln();
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 31 de Marzo Banco Nacional: 1,354,230.09'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 31 de Marzo Banco Costa Rica: 318,606.59'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Total Saldo Bancos al 31 de Marzo: 1,672,836.68'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Aislante: 1,200,962.78'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Equipo de Sonido: 130,025.00'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Disponible: 341,848.90'),0,1,'C');
         return $pdf;
     }
     /*
