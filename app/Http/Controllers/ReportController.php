@@ -334,18 +334,21 @@ class ReportController extends  Controller
 
         $dateIni = Input::get('dateIn');
         $dateOut = Input::get('dateOut');
-    /*   $pdf  = Fpdf::AddPage('P','letter');
+       $pdf  = Fpdf::AddPage('P','letter');
         $this->headerInforme();
        $pdf  .= Fpdf::Cell(0,5,utf8_decode($dateIni.' al '.$dateOut),0,1,'C');
+       $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 31 de Marzo Banco Nacional: 1,354,230.09'),0,1,'C');
+       $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 31 de Marzo Banco Costa Rica: 318,606.59'),0,1,'C');
+       $pdf  .= Fpdf::Cell(0,5,utf8_decode('Total Saldo Bancos al 31 de Marzo: 1,672,836.68'),0,1,'C');
        $this->ingresos($dateIni,$dateOut);
        $pdf  = Fpdf::AddPage('P','letter');
         $this->headerInforme();
-        $this->association($dateIni,$dateOut);*/
+        $this->association($dateIni,$dateOut);
         $pdf  = Fpdf::AddPage('L','letter');
         $this->headerInforme();
         $this->departament($dateIni,$dateOut);
-        $pdf  = Fpdf::AddPage('P','letter');
-        $this->headerInforme();
+       /* $pdf  = Fpdf::AddPage('P','letter');
+       $this->headerInforme();
         $this->promedios($dateIni,$dateOut);
         $pdf  = Fpdf::AddPage('P','letter');
         $this->headerInforme();
@@ -381,7 +384,7 @@ class ReportController extends  Controller
         $pdf   .= Fpdf::SetX(60);
         $pdf  .= Fpdf::Cell(70,5,utf8_decode('Total: '),1,0,'L');
         $pdf  .= Fpdf::Cell(35,5,number_format($totalmes),1,0,'C');
-        $pdf  .= Fpdf::Cell(35,5,number_format($totalAcum),1,1,'C');
+        $pdf  .= Fpdf::Cell(35,5,number_format($totalAcum),1,1,'C');*/
         Fpdf::Output('Informe-Mensual-Ingresos-Gastos.pdf','I');
         exit;
     }
