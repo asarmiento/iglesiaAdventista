@@ -916,12 +916,13 @@ $i++;
         endforeach;
 
         $pdf .= Fpdf::Ln();
-        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 31 de Marzo Banco Nacional: 1,354,230.09'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 31 de Marzo Banco Nacional: 2,200,080.90'),0,1,'C');
         $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 31 de Marzo Banco Costa Rica: 318,606.59'),0,1,'C');
-        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Total Saldo Bancos al 31 de Marzo: 1,672,836.68'),0,1,'C');
-        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Aislante: 1,200,962.78'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Total Saldo Bancos al 31 de Marzo: 2,518,687.49'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Aislante: 628,740.78'),0,1,'C');
         $pdf  .= Fpdf::Cell(0,5,utf8_decode('Equipo de Sonido: 130,025.00'),0,1,'C');
-        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Disponible: 341,848.90'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Asociación Central: 130,025.00'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Disponible: 1,759,921.71'),0,1,'C');
         return $pdf;
     }
     /*
