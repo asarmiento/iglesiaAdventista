@@ -61,8 +61,11 @@ class TestController extends Controller
         return redirect('/');
     }
 
-    public function updateBank()
+    public function updateToken()
     {
-
+        $checks = $this->checkRepository->allData();
+        foreach($checks AS $check):
+            $this->checkRepository->getModel()->where('id',$check->id)->update(['token'=>bcrypt($check->number)]);
+        endforeach;
     }
 }

@@ -25,6 +25,16 @@ abstract class BaseRepository {
     }
 
     public function token($token) {
+        $consults = $this->newQuery()->where('token', $token)->get();
+        if ($consults):
+            foreach ($consults as $consult):
+                return $consult;
+            endforeach;
+        endif;
+
+        return false;
+    }
+    public function _token($token) {
         $consults = $this->newQuery()->where('_token', $token)->get();
         if ($consults):
             foreach ($consults as $consult):
@@ -34,7 +44,6 @@ abstract class BaseRepository {
 
         return false;
     }
-
     public function newQuery() {
         return $this->getModel()->newQuery();
     }

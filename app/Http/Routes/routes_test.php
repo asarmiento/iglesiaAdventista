@@ -11,3 +11,4 @@ Route::get('test/token', 'TestController@token');
 Route::get('test/traslado', 'TestController@trasladoExpense');
 Route::get('test/typeExpense', 'TestController@typeExpense');
 Route::get('test/typeIncome', 'TestController@typeIncome');
+Route::get('test/updateToken', 'TestController@updateToken');

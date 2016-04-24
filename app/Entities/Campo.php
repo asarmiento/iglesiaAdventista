@@ -9,8 +9,9 @@
 namespace SistemasAmigables\Entities;
 
 
-class Campo extends Entity
+class DepositsLocalField extends Entity
 {
+    protected $table = 'deposits_local_fields';
     protected  $fillable  = ['check_id','record_id','date','number','amount'];
 
     public function getRules()

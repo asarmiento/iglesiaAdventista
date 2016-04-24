@@ -10,6 +10,7 @@ namespace SistemasAmigables\Repositories;
 
 
 use SistemasAmigables\Entities\Campo;
+use SistemasAmigables\Entities\DepositsLocalField;
 
 class CampoRepository extends BaseRepository
 {
@@ -19,6 +20,6 @@ class CampoRepository extends BaseRepository
      */
     public function getModel()
     {
-        return new Campo();// TODO: Implement getModel() method.
+        return new DepositsLocalField();// TODO: Implement getModel() method.
     }
 }
