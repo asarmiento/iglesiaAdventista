@@ -25,10 +25,11 @@ Lista Informes Semanales
             <th width="150">Lineas</th>
             <th width="180">Sábado</th>
             <th width="150">Monto</th>
-            <th width="150">Monto Mision/Asoc.</th>
+            <th width="150">Mision/Asoc.</th>
+            <th width="150">Fondo Local</th>
             <th width="50">Ver / Ingresar</th>
             <th width="50">Pdf</th>
-            <th width="50">Dep. Iglesia</th>
+            <th width="50">Dif./Dep.</th>
             <th width="50">Dep. Mision/Asoc</th>
             <th width="50">Enviar Asoc.</th>
         </tr>
@@ -43,17 +44,24 @@ Lista Informes Semanales
             <td>{{$informe->saturday}}</td>
             <td>{{number_format($informe->balance,2)}}</td>
             <td>{{number_format($informe->mision,2)}}</td>
+            <td>{{number_format($informe->balance-$informe->mision,2)}}</td>
             @if(($informe->incomes->isEmpty()))
             <td><a href="{{route('create-income',$informe->_token)}}"><i class="fa fa-book"></i></a></td>
             @else
             <td><a target="_blank" href="{{route('informe-semanal',$informe->_token )}}"><i class="fa fa-check"></i></a></td>
             @endif
             <td><a target="_blank"  href="{{route('post-report',$informe->saturday )}}"><i class="fa fa-file-pdf-o"></i></a></td>
-
-            @if(($informe->deposit == 'yes'))
-                <td><a><i class="fa fa-check"></i></a></td>
+            @if(($informe->banks->isEmpty()))
+                <td>No Tiene Dep. Ligado</td>
             @else
-                <td><a target="_blank" href="{{route('create-deposit')}}"><i class="fa fa-empire"></i></a></td>
+                @if(($informe->balance-$informe->banks->sum('balance'))==0)
+                    <td><a><i class="fa fa-check"></i></a></td>
+                @elseif(($informe->balance-$informe->banks->sum('balance'))<0)
+                    <td style="color: orange">{{number_format($informe->balance-$informe->banks->sum('balance'),2)}}</td>
+                @else
+                    <td style="color: red">{{number_format($informe->balance-$informe->banks->sum('balance'),2)}}</td>
+                @endif
+
             @endif
 
             @if(($informe->campo == 'true'))

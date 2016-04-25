@@ -5,11 +5,11 @@ class Bank extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['name','balance','date','url','type','record_id','check_id','account_id','number'];
+    protected $fillable= ['name','balance','date','url','type','check_id','account_id','number'];
 
     public function getRules()
     {
-        return ['record_id'=>'required' ,'balance'=>'required','date'=>'required','account_id'=>'required'];
+        return ['balance'=>'required','date'=>'required','account_id'=>'required'];
     }
 
     public function getExist()

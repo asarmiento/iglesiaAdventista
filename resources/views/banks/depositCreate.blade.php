@@ -43,7 +43,9 @@
                 <select name="record_id" class="form-control select2" >
                     <option value="">Seleccione un Informe</option>
                     @foreach($records AS $record)
-                    <option value="{{$record->_token}}">{{$record->controlNumber}} {{$record->saturday}}  <b>{{number_format($record->balance,2)}} </b></option>
+                        @if($record->balance >0)
+                    <option value="{{$record->token}}">{{$record->controlNumber}} {{$record->saturday}}  <b>{{number_format($record->balance,2)}} </b></option>
+                        @endif
                     @endforeach
                 </select>
             </div>

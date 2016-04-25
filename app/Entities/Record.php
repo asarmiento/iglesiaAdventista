@@ -8,7 +8,7 @@ class Record extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['numbers','controlNumber','saturday','balance','rows','_token'];
+    protected $fillable= ['numbers','controlNumber','saturday','balance','rows','token'];
 
     public function getRules()
     {
@@ -30,5 +30,10 @@ class Record extends Entity
     public function incomes()
     {
         return $this->hasMany(Income::getClass());
+    }
+
+    public function banks()
+    {
+        return $this->belongsToMany(Bank::getClass());
     }
 }

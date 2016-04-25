@@ -103,11 +103,34 @@ class BankController extends Controller
         return view('banks.estadoCuenta',compact('account'));
     }
 
+    /*
+    |---------------------------------------------------------------------
+    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+    |@Date Create: 2016-03-02
+    |@Date Update: 2016-00-00
+    |---------------------------------------------------------------------
+    |@Description:
+    |
+    |
+    |@Pasos:
+    |
+    |
+    |
+    |
+    |
+    |
+    |----------------------------------------------------------------------
+    | @return mixed
+    |----------------------------------------------------------------------
+    */
     public function depositCreate()
     {
         $records = $this->recordRepository->getModel()->where('deposit','no')->orderBy('saturday','DESC')->get();
         foreach($records AS $record):
-            $bank =$this->bankRepository->getModel()->where('record_id',$record->id)->sum('balance');
+            $bank = 0;
+            if(!$record->banks->isEmpty()):
+                $bank =$record->banks->sum('balance');
+            endif;
             $record->balance = $record->balance - $bank;
         endforeach;
         $accounts = $this->accountRepository->allData();
@@ -121,34 +144,50 @@ class BankController extends Controller
         $datos['type'] = 'entradas';
         $record = $this->recordRepository->token($datos['record_id']);
         $datos['record_id']= $record->id;
-        $account = $this->bankRepository->getModel();
+        $bank = $this->bankRepository->getModel();
         $accounts = $this->accountRepository->getModel()->find($datos['account_id']);
-        if($account->isValid($datos)):
-            $account->fill($datos);
-            $account->save();
+        if($bank->isValid($datos)):
+            $bank->fill($datos);
+            $bank->save();
 
+            $bank->records()->attach($datos['record_id']);
             $this->accountRepository->getModel()->where('id',$datos['account_id'])->update(['debit_balance'=>($accounts->debit_balance+$datos['balance']),
                 'balance'=>(($accounts->debit_balance+$datos['balance']+$accounts->initial_balance)-$accounts->credit_balance)]);
 
-            $this->recordUpdate($datos);
+            $this->recordUpdate($bank);
             return redirect()->route('deposito-ver');
         endif;
 
-        return redirect()->route('create-deposit')->withErrors($account)->withInput();
+        return redirect()->route('create-deposit')->withErrors($bank)->withInput();
     }
 
-    public function recordUpdate($datos)
+    /*
+    |---------------------------------------------------------------------
+    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+    |@Date Create: 2016-03-16
+    |@Date Update: 2016-00-00
+    |---------------------------------------------------------------------
+    |@Description: Con esta accion verificamos que los depositos sean
+    | Iguales al control interno para actualizar el informe ya fue
+    | depositado
+    |@Pasos:
+    |
+    |
+    |
+    |
+    |
+    |
+    |----------------------------------------------------------------------
+    | @return mixed
+    |----------------------------------------------------------------------
+    */
+    public function recordUpdate($bank)
     {
-        $record = $this->recordRepository->getModel()->find($datos['record_id']);
 
-        $amount = $this->bankRepository->getModel()->where('record_id',$record->id)->sum('balance');
+        $amount = $bank->records->sum('balance');
 
-        if($record->balance == $datos['balance']):
-              $this->recordRepository->getModel()->where('id',$record->id)->update(['deposit'=>'yes']);
-        elseif($amount == $record->balance):
-
-            $this->recordRepository->getModel()->where('id',$record->id)->update(['deposit'=>'yes']);
-
+        if($amount == $bank->records[0]->balance):
+            $this->recordRepository->getModel()->where('id',$bank->records[0]->id)->update(['deposit'=>'yes']);
         endif;
     }
     public function depositCampo()
