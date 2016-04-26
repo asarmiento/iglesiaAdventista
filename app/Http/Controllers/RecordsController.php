@@ -114,7 +114,7 @@ class RecordsController extends Controller {
                 ->with(['message'=>'EL Informe numero #: '.$data['controlNumber'].' ya Existe ']);
         endif;
 
-        $data['_token']= md5($data['controlNumber']);
+        $data['token']= md5($data['controlNumber']);
 
         if ($record->isValid($data)):
             $record->fill($data);

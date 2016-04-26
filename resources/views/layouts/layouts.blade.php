@@ -38,7 +38,11 @@
                         </div>
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="">Iglesias</a></li>
+                                <li><a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Iglesia<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{route('periodos-ver')}}">Periodos Ver</a></li>
+                                    </ul>
+                                </li>
                                 <li class="dropdown">
                                     <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Mision/Asociación<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
