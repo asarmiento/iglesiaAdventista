@@ -41,7 +41,7 @@ Route::group(['prefix' => 'iglesia'], function () {
 
 
 		$routes = ['members','checks','record','typeIncome','incomes',
-			'departaments','expenses','test','typeExpenses','banks'];
+			'departaments','expenses','test','typeExpenses','banks','periods'];
 		/*
         * Rutas de Bancos
         */

@@ -114,14 +114,14 @@ class RecordsController extends Controller {
                 ->with(['message'=>'EL Informe numero #: '.$data['controlNumber'].' ya Existe ']);
         endif;
 
-        $data['_token']= md5($data['controlNumber']);
+        $data['token']= md5($data['controlNumber']);
 
         if ($record->isValid($data)):
             $record->fill($data);
             $record->save();
             /* Comprobamos si viene activado o no para guardarlo de esa manera */
             /* Enviamos el mensaje de guardado correctamente */
-            return redirect()->route('create-income', [$record->_token]);
+            return redirect()->route('create-income', [$record->token]);
         endif;
 
         /* Enviamos el mensaje de error */

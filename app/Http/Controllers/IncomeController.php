@@ -154,7 +154,7 @@ class IncomeController extends Controller {
         $fixeds = $this->TypeIncomeRepository->allData();
 
         unset($data['tokenControlNumber']);
-        unset($data['_token']);
+        unset($data['token']);
         $token = md5($record);
         $data = Input::all();
 
