@@ -35,7 +35,7 @@ abstract class BaseRepository {
         return false;
     }
     public function _token($token) {
-        $consults = $this->newQuery()->where('_token', $token)->get();
+        $consults = $this->newQuery()->where('token', $token)->get();
         if ($consults):
             foreach ($consults as $consult):
                 return $consult;

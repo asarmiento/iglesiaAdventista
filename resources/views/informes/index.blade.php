@@ -46,9 +46,9 @@ Lista Informes Semanales
             <td>{{number_format($informe->mision,2)}}</td>
             <td>{{number_format($informe->balance-$informe->mision,2)}}</td>
             @if(($informe->incomes->isEmpty()))
-            <td><a href="{{route('create-income',$informe->_token)}}"><i class="fa fa-book"></i></a></td>
+            <td><a href="{{route('create-income',$informe->token)}}"><i class="fa fa-book"></i></a></td>
             @else
-            <td><a target="_blank" href="{{route('informe-semanal',$informe->_token )}}"><i class="fa fa-check"></i></a></td>
+            <td><a target="_blank" href="{{route('informe-semanal',$informe->token )}}"><i class="fa fa-check"></i></a></td>
             @endif
             <td><a target="_blank"  href="{{route('post-report',$informe->saturday )}}"><i class="fa fa-file-pdf-o"></i></a></td>
             @if(($informe->banks->isEmpty()))
@@ -70,7 +70,7 @@ Lista Informes Semanales
                 <td><a target="_blank" href="{{route('create-deposit-campo')}}"><i class="fa fa-empire"></i></a></td>
             @endif
 
-            <td><a href="{{route('send-income',$informe->_token)}}"><i class="fa fa-paper-plane"></i></a></td>
+            <td><a href="{{route('send-income',$informe->token)}}"><i class="fa fa-paper-plane"></i></a></td>
         </tr>
         @endforeach
     </tbody>

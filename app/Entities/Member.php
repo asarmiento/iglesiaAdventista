@@ -8,7 +8,7 @@ class Member extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['name','last','bautizmoDate','birthdate','phone','cell','email','church_id','_token'];
+    protected $fillable= ['name','last','bautizmoDate','birthdate','phone','cell','email','church_id','token'];
 
     public function getRules()
     {

@@ -121,7 +121,7 @@ class RecordsController extends Controller {
             $record->save();
             /* Comprobamos si viene activado o no para guardarlo de esa manera */
             /* Enviamos el mensaje de guardado correctamente */
-            return redirect()->route('create-income', [$record->_token]);
+            return redirect()->route('create-income', [$record->token]);
         endif;
 
         /* Enviamos el mensaje de error */

@@ -18,7 +18,7 @@ Lista Informes Semanales
 
 
     <tbody >
-        <input name="_token" type="hidden" value="{{csrf_token()}}">
+        {{csrf_field()}}
         <tr>
             <th><label>Numero #:</label></th>
             <td><input name="numbers" readonly  type="number" value="{{$consecutive}}"></td>
