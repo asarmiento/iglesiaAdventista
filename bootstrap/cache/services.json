@@ -46,6 +46,7 @@
         "Illuminate\\View\\ViewServiceProvider",
         "Rap2hpoutre\\LaravelLogViewer\\LaravelLogViewerServiceProvider",
         "Anouar\\Fpdf\\FpdfServiceProvider",
+        "Themsaid\\MailPreview\\MailPreviewServiceProvider",
         "SistemasAmigables\\Providers\\AppServiceProvider",
         "SistemasAmigables\\Providers\\BusServiceProvider",
         "SistemasAmigables\\Providers\\ConfigServiceProvider",
@@ -116,9 +117,9 @@
         "command.middleware.make": "Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider",
         "command.session.database": "Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider",
         "hash": "Illuminate\\Hashing\\HashServiceProvider",
-        "mailer": "Themsaid\\MailPreview\\MailPreviewServiceProvider",
-        "swift.mailer": "Themsaid\\MailPreview\\MailPreviewServiceProvider",
-        "swift.transport": "Themsaid\\MailPreview\\MailPreviewServiceProvider",
+        "mailer": "Illuminate\\Mail\\MailServiceProvider",
+        "swift.mailer": "Illuminate\\Mail\\MailServiceProvider",
+        "swift.transport": "Illuminate\\Mail\\MailServiceProvider",
         "Illuminate\\Contracts\\Pipeline\\Hub": "Illuminate\\Pipeline\\PipelineServiceProvider",
         "queue": "Illuminate\\Queue\\QueueServiceProvider",
         "queue.worker": "Illuminate\\Queue\\QueueServiceProvider",
@@ -151,7 +152,6 @@
         "Illuminate\\Redis\\RedisServiceProvider": [],
         "Illuminate\\Auth\\Passwords\\PasswordResetServiceProvider": [],
         "Illuminate\\Translation\\TranslationServiceProvider": [],
-        "Collective\\Html\\HtmlServiceProvider": [],
-        "Themsaid\\MailPreview\\MailPreviewServiceProvider": []
+        "Collective\\Html\\HtmlServiceProvider": []
     }
 }
