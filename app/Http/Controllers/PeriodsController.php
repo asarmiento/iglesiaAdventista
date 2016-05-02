@@ -2,11 +2,15 @@
 
 namespace SistemasAmigables\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Input;
 use SistemasAmigables\Http\Requests;
 use SistemasAmigables\Http\Controllers\Controller;
+use SistemasAmigables\Repositories\CheckRepository;
 use SistemasAmigables\Repositories\PeriodRepository;
+use SistemasAmigables\Repositories\RecordRepository;
 
 class PeriodsController extends Controller
 {
@@ -14,13 +18,27 @@ class PeriodsController extends Controller
      * @var PeriodRepository
      */
     private $periodRepository;
+    /**
+     * @var CheckRepository
+     */
+    private $checkRepository;
+    /**
+     * @var RecordRepository
+     */
+    private $recordRepository;
 
     public function __construct(
-        PeriodRepository $periodRepository
+        PeriodRepository $periodRepository,
+        CheckRepository $checkRepository,
+        RecordRepository $recordRepository
+
+
     )
     {
 
         $this->periodRepository = $periodRepository;
+        $this->checkRepository = $checkRepository;
+        $this->recordRepository = $recordRepository;
     }
     /**
      * Display a listing of the resource.
@@ -41,7 +59,13 @@ class PeriodsController extends Controller
     public function create()
     {
         $period = $this->periodRepository->getModel()->orderBy('year','DESC')->orderBy('month','DESC')->first();
-        $periods = ['old'=>$period->month.'-'.$period->year,'new'=>($period->month+1).'-'.$period->year];
+
+        $day = 26;
+        $date = new Carbon($day.'-'.$period->month.'-'.$period->year);
+        $date = $date->addMonth(1);
+
+        $periods = ['old'=>$period->month.'-'.$period->year,'new'=>($date->format('m')).'-'.$date->format('Y')];
+
         return view('periods.create',compact('periods'));
     }
 
@@ -53,7 +77,17 @@ class PeriodsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datos = Input::all();
+        $dateOld = explode("-",$datos['oldPeriod']);
+        $spli = explode("-",$datos['newPeriod']);
+        $data = ['month'=>$spli[0],'year'=>$spli[1],'church_id'=>1,'token'=>bcrypt($datos['oldPeriod'])];
+
+        $period = $this->periodRepository->getModel();
+        if($period->isValid($data)):
+            $period->fill($data);
+            $period->save();
+            $this->updateFinishBalance($dateOld);
+        endif;
     }
 
     /**
@@ -62,7 +96,7 @@ class PeriodsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function updateFinishBalance($dateOld)
     {
         //
     }

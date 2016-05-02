@@ -13,6 +13,7 @@ use SistemasAmigables\Http\Controllers\Controller;
 use SistemasAmigables\Repositories\AccountRepository;
 use SistemasAmigables\Repositories\BankRepository;
 use SistemasAmigables\Repositories\CheckRepository;
+use SistemasAmigables\Repositories\RecordRepository;
 
 class TestController extends Controller
 {
@@ -29,17 +30,23 @@ class TestController extends Controller
      * @var BankRepository
      */
     private $bankRepository;
+    /**
+     * @var RecordRepository
+     */
+    private $recordRepository;
 
     public function __construct(
         CheckRepository $checkRepository,
         AccountRepository $accountRepository,
-        BankRepository $bankRepository
+        BankRepository $bankRepository,
+        RecordRepository $recordRepository
     )
     {
 
         $this->checkRepository = $checkRepository;
         $this->accountRepository = $accountRepository;
         $this->bankRepository = $bankRepository;
+        $this->recordRepository = $recordRepository;
     }
 
 
@@ -67,5 +74,12 @@ class TestController extends Controller
         foreach($checks AS $check):
             $this->checkRepository->getModel()->where('id',$check->id)->update(['token'=>bcrypt($check->number)]);
         endforeach;
+    }
+
+    public function saldoChurch()
+    {
+        $mes =[1,2];
+
+        $records = $this->recordRepository->oneWhereSum();
     }
 }
