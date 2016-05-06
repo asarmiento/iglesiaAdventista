@@ -22,4 +22,6 @@ class Church extends Entity
     {
         // TODO: Implement getExist() method.
     }
+
+
 }

@@ -281,7 +281,18 @@ class InformeDieOfe extends Controller
             $pdf .= Fpdf::Cell(15,7,number_format($totalOfe),1,0,'C');
             $pdf .= Fpdf::Ln();
         endforeach;
-
+        $pdf .= Fpdf::Cell(55,7,substr(utf8_decode('Total'),0,35),1,0,'L');
+        for($i=0;$i<count($mes);$i++):
+            $diezmo = $this->incomeRepository->getModel()->where('type_income_id',$typeDie[0])->whereBetween('date',[$year.'-'.$mes[$i].'-01',$year.'-'.$mes[$i].'-31'])->sum('balance');
+            $totalDie += $diezmo;
+            $pdf .= Fpdf::Cell(15,7,number_format($diezmo),1,0,'C');
+            $ofrenda = $this->incomeRepository->getModel()->whereIn('type_income_id',$typeOfe)->whereBetween('date',[$year.'-'.$mes[$i].'-01',$year.'-'.$mes[$i].'-31'])->sum('balance');
+            $totalOfe += $ofrenda;
+            $pdf .= Fpdf::Cell(15,7,number_format($ofrenda),1,0,'C');
+        endfor;
+        $pdf .= Fpdf::Cell(15,7,number_format($totalDie),1,0,'C');
+        $pdf .= Fpdf::Cell(15,7,number_format($totalOfe),1,0,'C');
+        $pdf .= Fpdf::Ln();
         $pdf .= Fpdf::Ln();
         $pdf = Fpdf::SetFont('Arial','B',10);
         $pdf .= Fpdf::Cell(55,7,utf8_decode('Miembros'),1,0,'C');

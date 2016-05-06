@@ -73,4 +73,36 @@ class IncomeRepository extends BaseRepository
         return $total;
     }
 
+    public function campoRecord($id,$dateIn,$dateout)
+    {
+        $ofrenda = $this->newQuery()->wherehas('typeIncomes',function($q){
+            $q->where('part','si');
+        })->where('record_id',$id)->whereBetween('date',[$dateIn,$dateout])->sum('balance');
+
+        $ofrendas = ($ofrenda/5)*2;
+
+        $diezmos = $this->newQuery()->wherehas('typeIncomes',function($q){
+            $q->where('part','no')->where('association','si');
+        })->where('record_id',$id)->whereBetween('date',[$dateIn,$dateout])->sum('balance');
+
+        $total = $ofrendas+$diezmos;
+
+        return $total;
+    }
+
+    public function diezmosRecord($id,$dateIn,$dateout){
+
+        return $this->newQuery()->wherehas('typeIncomes',function($q){
+            $q->where('part','no')->where('association','si');
+        })->where('record_id',$id)->whereBetween('date',[$dateIn,$dateout])->sum('balance');
+    }
+
+    public function ofrendaRecord($id,$dateIn,$dateout)
+    {
+        $ofrenda = $this->newQuery()->wherehas('typeIncomes',function($q){
+            $q->where('part','si');
+        })->where('record_id',$id)->whereBetween('date',[$dateIn,$dateout])->sum('balance');
+
+        return ($ofrenda/5);
+    }
 }

@@ -41,8 +41,8 @@ return $months[$month];
  */
 function periodSchool()
 {
-    if(userSchool()):
-    //return \AccountHon\Entities\AccountingPeriod::where('school_id',userSchool()->id)->get()->last();
+    if(1):
+    return \SistemasAmigables\Entities\Period::where('church_id',1)->get()->last();
     endif;
 
     return false;
@@ -55,9 +55,16 @@ function period(){
         return "No existe periodo contable.";
     }
 }
+
+function dayFinish($month){
+    $finsh = ['01'=>31,'02'=>28,'03'=>31,'04'=>30,'05'=>31,'06'=>30,
+        '07'=>31,'08'=>31,'09'=>30,'10'=>31,'11'=>30,'12'=>31];
+    return $finsh[$month];
+}
 function dateShort()
 {
     $mes_actual = date("n");
+
     $mes=periodSchool()->month;
     if($mes != $mes_actual):
 

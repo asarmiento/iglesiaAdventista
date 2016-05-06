@@ -6,9 +6,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 use SistemasAmigables\Http\Requests;
 use SistemasAmigables\Http\Controllers\Controller;
+use SistemasAmigables\Repositories\BalanceChurchRepository;
 use SistemasAmigables\Repositories\CheckRepository;
+use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\PeriodRepository;
 use SistemasAmigables\Repositories\RecordRepository;
 
@@ -26,12 +29,21 @@ class PeriodsController extends Controller
      * @var RecordRepository
      */
     private $recordRepository;
+    /**
+     * @var BalanceChurchRepository
+     */
+    private $balanceChurchRepository;
+    /**
+     * @var IncomeRepository
+     */
+    private $incomeRepository;
 
     public function __construct(
         PeriodRepository $periodRepository,
         CheckRepository $checkRepository,
-        RecordRepository $recordRepository
-
+        RecordRepository $recordRepository,
+        BalanceChurchRepository $balanceChurchRepository,
+        IncomeRepository $incomeRepository
 
     )
     {
@@ -39,6 +51,8 @@ class PeriodsController extends Controller
         $this->periodRepository = $periodRepository;
         $this->checkRepository = $checkRepository;
         $this->recordRepository = $recordRepository;
+        $this->balanceChurchRepository = $balanceChurchRepository;
+        $this->incomeRepository = $incomeRepository;
     }
     /**
      * Display a listing of the resource.
@@ -79,6 +93,7 @@ class PeriodsController extends Controller
     {
         $datos = Input::all();
         $dateOld = explode("-",$datos['oldPeriod']);
+        Session::put('dateOld',$dateOld);
         $spli = explode("-",$datos['newPeriod']);
         $data = ['month'=>$spli[0],'year'=>$spli[1],'church_id'=>1,'token'=>bcrypt($datos['oldPeriod'])];
 
@@ -86,7 +101,9 @@ class PeriodsController extends Controller
         if($period->isValid($data)):
             $period->fill($data);
             $period->save();
-            $this->updateFinishBalance($dateOld);
+            $this->updateFinishBalance($period->id);
+            $this->updatePeriod($spli,$period->id);
+            return redirect('/iglesia/cambiar/periodo');
         endif;
     }
 
@@ -96,9 +113,26 @@ class PeriodsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateFinishBalance($dateOld)
+    public function updateFinishBalance($period)
     {
-        //
+        $dateOld = Session::get('dateOld');
+        $periodOld = $this->periodRepository->getModel()->where('month',$dateOld[0])->where('church_id',1)
+            ->where('year',$dateOld[1])->lists('id');
+        $income = $this->recordRepository->oneWhereSum('period_id',$periodOld[0],'balance');
+        $check = $this->checkRepository->oneWhereSum('period_id',$periodOld[0],'balance');
+        $balanceSum = $this->balanceChurchRepository->getModel()->whereHas('periods',function($q){
+            $dateOld = Session::get('dateOld');
+            $q->where('month',12)->where('church_id',1)->where('year',2014);
+        })->sum('amount');
+        $carbon = new Carbon($dateOld[1].'-'.$dateOld[0].'-1');
+        $dateIn =  $dateOld[1].'-'.$dateOld[0].'-1';
+        $dateOut =  $dateOld[1].'-'.$dateOld[0].'-'.dayFinish($dateOld[0]);
+        $campo = $this->incomeRepository->Campo($dateIn,$dateOut);
+        $total = ($balanceSum+($income-$campo)) - $check;
+        $data =['period_id'=>$periodOld[0],'date'=>$carbon->endOfMonth()->format('Y-m-d'),'amount'=>$total];
+        $balance = $this->balanceChurchRepository->getModel();
+        $balance->fill($data);
+        $balance->save();
     }
 
     /**
@@ -107,31 +141,19 @@ class PeriodsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function updatePeriod($date,$id)
     {
-        //
+        $dateIn =  $date[1].'-'.$date[0].'-1';
+        $dateOut =  $date[1].'-'.$date[0].'-'.dayFinish($date[0]);
+        $this->recordRepository->getModel()->whereBetween('saturday',[$dateIn,$dateOut])
+            ->update(['period_id'=>$id]);
+        $this->checkRepository->getModel()->whereBetween('date',[$dateIn,$dateOut])
+            ->update(['period_id'=>$id]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function balance()
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $periods = $this->balanceChurchRepository->allData();
+        return view('periods.balancePeriods',compact('periods'));
     }
 }

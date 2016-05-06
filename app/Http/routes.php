@@ -32,6 +32,7 @@ Route::get('/email', [ 'as' => 'email', 'uses' => 'EmailController@index' ]);
 Route::resource('expenses','ExpenseController');
 
 Route::get('test/saldo', 'TestController@index');
+
 Route::group(['prefix' => 'iglesia'], function () {
 
 	Route::resource('iglesias','ChurchController');
@@ -40,7 +41,7 @@ Route::group(['prefix' => 'iglesia'], function () {
 	Route::get('reportes/fondos/{date}', ['as' => 'post-report', 'uses' => 'ReportController@store']);
 
 
-		$routes = ['members','checks','record','typeIncome','incomes',
+		$routes = ['members','checks','record','typeIncome','incomes','church',
 			'departaments','expenses','test','typeExpenses','banks','periods'];
 		/*
         * Rutas de Bancos
