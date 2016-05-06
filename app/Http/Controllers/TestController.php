@@ -72,7 +72,7 @@ class TestController extends Controller
     {
         $checks = $this->checkRepository->allData();
         foreach($checks AS $check):
-            $this->checkRepository->getModel()->where('id',$check->id)->update(['token'=>bcrypt($check->number)]);
+            $this->checkRepository->getModel()->where('id',$check->id)->update(['token'=>md5($check->number)]);
         endforeach;
     }
 

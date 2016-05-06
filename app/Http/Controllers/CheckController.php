@@ -97,7 +97,7 @@ class CheckController extends Controller {
 				->with(['message'=>'EL Cheque numero #: '.$check['number'].' ya Existe ']);
 		endif;
 		$checks = $this->checkRepository->getModel();
-		$check['token']= bcrypt($check['number']);
+		$check['token']= md5($check['number']);
 		if($checks->isValid($check)):
 			$checks->fill($check);
 			$checks->save();

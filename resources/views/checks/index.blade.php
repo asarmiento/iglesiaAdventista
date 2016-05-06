@@ -30,8 +30,8 @@ Lista Cheques
         <td>{{$check->date}}</td>
         <td>{{$check->balance}}</td>
         <td>{{$check->number}}</td>
-        <td><a href="{{route('ver-gasto',$check->id)}}"><i class="fa fa-eye"></i></a></td>
-        <td><a href="{{route('ver-gasto-pdf',$check->token)}}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></td>
+        <td><a target="_blank" href="{{route('ver-gasto',$check->id)}}"><i class="fa fa-eye"></i></a></td>
+        <td><a target="_blank" href="{{route('ver-gasto-pdf',$check->token)}}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></td>
         </tr>
             @endforeach
         </tbody>
