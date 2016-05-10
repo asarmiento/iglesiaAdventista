@@ -38,6 +38,13 @@
                         </div>
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">
+                                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Mision/Asociación<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{route('deposito-campo-ver')}}">Depositos</a></li>
+                                        <li><a href="{{route('campo-ver')}}">Reporte de Pagos</a></li>
+                                    </ul>
+                                </li>
                                 <li><a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Iglesia<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="{{route('periodos-saldos')}}">Saldos Por Mes</a></li>
@@ -45,10 +52,13 @@
                                     </ul>
                                 </li>
                                 <li class="dropdown">
-                                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Mision/Asociación<span class="caret"></span></a>
+                                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Departamentos<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{{route('deposito-campo-ver')}}">Depositos</a></li>
-                                        <li><a href="{{route('campo-ver')}}">Reporte de Pagos</a></li>
+                                        <li><a href="{{route('index-depart')}}">Departamentos</a></li>
+                                        <li><a href="{{route('date-depart')}}">Movimiento x Departamentos</a></li>
+                                        <li><a href="{{route('typeFix-lista')}}">Tipos de Ingresos</a></li>
+                                        <li><a href="{{route('typeExp-lista')}}">Tipos de Gastos</a></li>
+
                                     </ul>
                                 </li>
                                 <li class="dropdown">
@@ -82,9 +92,6 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Configuración <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{route('index-depart')}}">Departamentos</a></li>
-                                        <li><a href="{{route('typeFix-lista')}}">Tipos de Ingresos</a></li>
-                                        <li><a href="{{route('typeExp-lista')}}">Tipos de Gastos</a></li>
                                         <li><a href="{{route('fondos-report')}}">Reporte Fondos</a></li>
                                         <li><a href="{{route('ddd-store')}}">Traspaso de Fondos</a></li>
                                         <li><a href="{{url()}}/iglesia/type_users">Tipos de Usuarios</a></li>

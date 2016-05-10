@@ -69,7 +69,10 @@ abstract class BaseRepository {
     {
         return $this->newQuery()->where($data,$id)->sum($sum);
     }
-
+    public function oneWhereList($data,$id,$lists)
+    {
+        return $this->newQuery()->where($data,$id)->lists($lists);
+    }
     public function twoWhereList($data,$id,$data1,$id1,$sum)
     {
         return $this->newQuery()->where($data,$id)->where($data1,$id1)->sum($sum);
