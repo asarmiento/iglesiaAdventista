@@ -303,12 +303,10 @@ class DepartamentsController extends Controller {
             endif;
 
         endforeach;
-        $typeIncomes = $this->typeIncomeRepository->getModel()->where('departament_id',$id)->get();
-        $incomesSum = 0;
-        foreach($typeIncomes AS $typeIncome):
-                $incomesSum += $this->incomeRepository->getModel()->where('type_income_id',$typeIncome)
+        $typeIncomes = $this->typeIncomeRepository->getModel()->where('departament_id',$id)->lists('id');
+        $incomesSum = $this->incomeRepository->getModel()->whereIn('type_income_id',$typeIncomes)
             ->whereBetween('date',[$datos['dateIn'],$datos['dateOut']])->sum('balance');
-        endforeach;
+
         $pdf .= Fpdf::SetFont('Arial','B',14);
         $pdf .= Fpdf::SetX(15);
         $pdf .= Fpdf::Cell(150,7,utf8_decode('Total de Departamento'),1,0,'R');
