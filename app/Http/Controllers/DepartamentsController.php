@@ -301,11 +301,23 @@ class DepartamentsController extends Controller {
                 $pdf .= Fpdf::Ln();
                 $totalTypeEx += $totalExpenses;
             endif;
+
+        endforeach;
+        $typeIncomes = $this->typeIncomeRepository->getModel()->where('departament_id',$id)->get();
+        $incomesSum = 0;
+        foreach($typeIncomes AS $typeIncome):
+                $incomesSum += $this->incomeRepository->getModel()->where('type_income_id',$typeIncome)
+            ->whereBetween('date',[$datos['dateIn'],$datos['dateOut']])->sum('balance');
         endforeach;
         $pdf .= Fpdf::SetFont('Arial','B',14);
         $pdf .= Fpdf::SetX(15);
         $pdf .= Fpdf::Cell(150,7,utf8_decode('Total de Departamento'),1,0,'R');
         $pdf .= Fpdf::Cell(30,7,number_format($totalTypeEx,2),1,1,'C');
+        $pdf .= Fpdf::Ln();
+        $pdf .= Fpdf::SetFont('Arial','B',14);
+        $pdf .= Fpdf::SetX(15);
+        $pdf .= Fpdf::Cell(150,7,utf8_decode('Saldo de Departamento'),1,0,'R');
+        $pdf .= Fpdf::Cell(30,7,number_format($incomesSum-$totalTypeEx,2),1,1,'C');
         $pdf .= Fpdf::Ln();
 
 
@@ -341,8 +353,7 @@ class DepartamentsController extends Controller {
         foreach($typeIncomes AS $typeIncome):
             $incomes = $this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)
                 ->whereBetween('date',[$datos['dateIn'],$datos['dateOut']])->get();
-            $incomesSum = $this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)->groupBy('type_income_id')
-                ->whereBetween('date',[$datos['dateIn'],$datos['dateOut']])->sum('balance');
+
             if(!$incomes->isEmpty()):
                 $pdf .= Fpdf::SetX(30);
                 $pdf .= Fpdf::Cell(30,7,utf8_decode('Fecha'),1,0,'C');
