@@ -1,10 +1,14 @@
 <?php namespace SistemasAmigables\Http\Controllers;
 
+use Anouar\Fpdf\Facades\Fpdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Input;
 use SistemasAmigables\Entities\Church;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
+use SistemasAmigables\Repositories\TypeExpenseRepository;
+use SistemasAmigables\Repositories\TypeIncomeRepository;
 
 class DepartamentsController extends Controller {
     /**
@@ -19,23 +23,37 @@ class DepartamentsController extends Controller {
      * @var IncomeRepository
      */
     private $incomeRepository;
+    /**
+     * @var TypeIncomeRepository
+     */
+    private $typeIncomeRepository;
+    /**
+     * @var TypeExpenseRepository
+     */
+    private $typeExpenseRepository;
 
     /**
      * DepartamentsController constructor.
      * @param DepartamentRepository $departamentRepository
      * @param ExpensesRepository $expensesRepository
      * @param IncomeRepository $incomeRepository
+     * @param TypeIncomeRepository $typeIncomeRepository
+     * @param TypeExpenseRepository $typeExpenseRepository
      */
     public function __construct(
         DepartamentRepository $departamentRepository,
         ExpensesRepository $expensesRepository,
-        IncomeRepository $incomeRepository
+        IncomeRepository $incomeRepository,
+        TypeIncomeRepository $typeIncomeRepository,
+        TypeExpenseRepository $typeExpenseRepository
     )
     {
 
         $this->departamentRepository = $departamentRepository;
         $this->expensesRepository = $expensesRepository;
         $this->incomeRepository = $incomeRepository;
+        $this->typeIncomeRepository = $typeIncomeRepository;
+        $this->typeExpenseRepository = $typeExpenseRepository;
     }
     /**
      * Display a listing of departamentos
@@ -144,6 +162,257 @@ class DepartamentsController extends Controller {
         Departamento::destroy($id);
 
         return Redirect::route('departamentos.index');
+    }
+
+    /**
+     * ---------------------------------------------------------------------
+     * @Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+     * @Date Create: 2016-05-09
+     * @Date Update: 2016-00-00
+     * ---------------------------------------------------------------------
+     * @Description: Mostramos la vista para seleccionar uno o todos los
+     *  departamentos para ver los ingresos y gastos o ambos
+     *
+     * @Pasos:
+     *
+     *
+     *
+     *
+     *
+     *
+     * ----------------------------------------------------------------------
+     * @return mixed
+     * ----------------------------------------------------------------------
+     */
+    public function moveDepartament()
+    {
+        $departaments = $this->departamentRepository->allData();
+        return view('departamentos.movimientos', compact('departaments'));
+    }
+
+    /**
+     * ---------------------------------------------------------------------
+     * @Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+     * @Date Create: 2016-05-09
+     * @Date Update: 2016-00-00
+     * ---------------------------------------------------------------------
+     * @Description: Generaremos el reporte de pdf para todos los departaments
+     * o de forma individual
+     *
+     * @Pasos:
+     *
+     *
+     *
+     *
+     *
+     *
+     * ----------------------------------------------------------------------
+     * @return mixed
+     * ----------------------------------------------------------------------
+     */
+    public function storeDepartament(){
+        $datos = Input::all();
+        $this->header();
+        if($datos['departament']=='1-2'):
+            $pdf = Fpdf::Cell(0,7,utf8_decode('Informe movimientos x Departamento'),0,1,'C');
+            $pdf .= Fpdf::SetFont('Arial','BI',12);
+            $pdf .= Fpdf::Cell(0,7,utf8_decode('Fecha Inicial: '.$datos['dateIn'].' A '.$datos['dateOut']),0,1,'C');
+            $pdf .= Fpdf::Ln();
+            $departaments = $this->departamentRepository->getModel()->where('type','iglesia')->get();
+            foreach($departaments AS $departament):
+                $pdf .= Fpdf::SetFont('Arial','B',14);
+                $pdf .= Fpdf::Cell(0,7,utf8_decode($departament->name),0,1,'C');
+                $pdf .= Fpdf::Ln();
+                $this->typeIncomesReport($departament->id,$datos);
+                $pdf .= Fpdf::Ln();
+                $this->typeExpesesReport($departament->id,$datos);
+            endforeach;
+            $pdf .= Fpdf::Ln();
+        else:
+            $pdf = Fpdf::Cell(0,7,utf8_decode('Informe movimientos x Departamento'),0,1,'C');
+            $pdf .= Fpdf::SetFont('Arial','BI',12);
+            $pdf .= Fpdf::Cell(0,7,utf8_decode('Fecha Inicial: '.$datos['dateIn'].' A '.$datos['dateOut']),0,1,'C');
+            $pdf .= Fpdf::Ln();
+            $departaments = $this->departamentRepository->find($datos['departament']);
+            $pdf .= Fpdf::SetFont('Arial','B',14);
+            $pdf .= Fpdf::Cell(0,7,utf8_decode($departaments->name),0,1,'C');
+            $pdf .= Fpdf::Ln();
+            $this->typeIncomesReport($departaments->id,$datos);
+            $pdf .= Fpdf::Ln();
+            $this->typeExpesesReport($departaments->id,$datos);
+        endif;
+
+        Fpdf::Output('Informe x Departamentos.pdf','I');
+        exit;
+    }
+    /**
+     * ---------------------------------------------------------------------
+     * @Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+     * @Date Create: 2016-05-09
+     * @Date Update: 2016-00-00
+     * ---------------------------------------------------------------------
+     * @Description: Generamos la seccion de ingresos del reporte de movimientos
+     * de los departamentos
+     *
+     * @Pasos:
+     *
+     *
+     *
+     *
+     *
+     *
+     * ----------------------------------------------------------------------
+     * @return mixed
+     * ----------------------------------------------------------------------
+     */
+    public function typeExpesesReport($id,$datos)
+    {
+        $pdf = Fpdf::SetFont('Arial','B',12);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Gastos'),1,1,'C');
+        $pdf .= Fpdf::Ln();
+
+        $typeExpenses = $this->typeExpenseRepository->getModel()->where('departament_id',$id)->get();
+        $totalTypeEx = 0;
+        foreach($typeExpenses AS $typeExpense):
+            $expenses = $this->expensesRepository->getModel()->where('type_expense_id',$typeExpense->id)
+                ->whereBetween('invoiceDate',[$datos['dateIn'],$datos['dateOut']])->get();
+            $incomesSum = $this->expensesRepository->getModel()->where('type_expense_id',$typeExpense->id)
+                ->whereBetween('invoiceDate',[$datos['dateIn'],$datos['dateOut']])->sum('amount');
+            if(!$expenses->isEmpty()):
+                $pdf .= Fpdf::SetX(15);
+                $pdf .= Fpdf::Cell(30,7,utf8_decode('Fecha'),1,0,'C');
+                $pdf .= Fpdf::Cell(40,7,utf8_decode('Informe'),1,0,'C');
+                $pdf .= Fpdf::Cell(80,7,utf8_decode('Tipo Gasto'),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,utf8_decode('Monto'),1,1,'C');
+                $totalExpenses =0;
+                foreach($expenses AS $expense):
+                    $pdf .= Fpdf::SetFont('Arial','',12);
+                    $pdf .= Fpdf::SetX(15);
+                    $pdf .= Fpdf::Cell(30,7,utf8_decode($expense->date),1,0,'C');
+                    $pdf .= Fpdf::Cell(40,7,utf8_decode($expense->invoiceNumber),1,0,'C');
+                    $pdf .= Fpdf::Cell(80,7,utf8_decode($expense->typeExpenses->name),1,0,'C');
+                    $pdf .= Fpdf::Cell(30,7,number_format($expense->amount,2),1,1,'C');
+                    $totalExpenses += $expense->amount;
+                endforeach;
+                $pdf .= Fpdf::SetFont('Arial','B',14);
+                $pdf .= Fpdf::SetX(15);
+                $pdf .= Fpdf::Cell(150,7,utf8_decode('Total x Tipo de Gasto'),1,0,'R');
+                $pdf .= Fpdf::Cell(30,7,number_format($totalExpenses,2),1,1,'C');
+                $pdf .= Fpdf::Ln();
+                $totalTypeEx += $totalExpenses;
+            endif;
+        endforeach;
+        $pdf .= Fpdf::SetFont('Arial','B',14);
+        $pdf .= Fpdf::SetX(15);
+        $pdf .= Fpdf::Cell(150,7,utf8_decode('Total de Departamento'),1,0,'R');
+        $pdf .= Fpdf::Cell(30,7,number_format($totalTypeEx,2),1,1,'C');
+        $pdf .= Fpdf::Ln();
+
+
+    }
+    /**
+     * ---------------------------------------------------------------------
+     * @Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+     * @Date Create: 2016-05-09
+     * @Date Update: 2016-00-00
+     * ---------------------------------------------------------------------
+     * @Description: Generamos la seccion de ingresos del reporte de movimientos
+     * de los departamentos
+     *
+     * @Pasos:
+     *
+     *
+     *
+     *
+     *
+     *
+     * ----------------------------------------------------------------------
+     * @return mixed
+     * ----------------------------------------------------------------------
+     */
+    public function typeIncomesReport($id,$datos)
+    {
+        $pdf = Fpdf::SetFont('Arial','B',12);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Ingresos'),1,1,'C');
+        $pdf .= Fpdf::Ln();
+
+        $typeIncomes = $this->typeIncomeRepository->getModel()->where('departament_id',$id)->get();
+        $totalType = 0;
+        foreach($typeIncomes AS $typeIncome):
+            $incomes = $this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)
+                ->whereBetween('date',[$datos['dateIn'],$datos['dateOut']])->get();
+            $incomesSum = $this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)->groupBy('type_income_id')
+                ->whereBetween('date',[$datos['dateIn'],$datos['dateOut']])->sum('balance');
+            if(!$incomes->isEmpty()):
+                $pdf .= Fpdf::SetX(30);
+                $pdf .= Fpdf::Cell(30,7,utf8_decode('Fecha'),1,0,'C');
+                $pdf .= Fpdf::Cell(20,7,utf8_decode('Informe'),1,0,'C');
+                $pdf .= Fpdf::Cell(40,7,utf8_decode('Tipo Ingreso'),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,utf8_decode('Monto'),1,1,'C');
+                $totalIncome =0;
+                foreach($incomes AS $income):
+                    $incomesSum = $income->balance;
+                    $pdf .= Fpdf::SetFont('Arial','',12);
+                    $pdf .= Fpdf::SetX(30);
+                    $pdf .= Fpdf::Cell(30,7,utf8_decode($income->date),1,0,'C');
+                    $pdf .= Fpdf::Cell(20,7,utf8_decode($income->numberOf),1,0,'C');
+                    $pdf .= Fpdf::Cell(40,7,utf8_decode($income->typeIncomes->name),1,0,'C');
+                    if($typeIncome->part == 'SI'):
+                        $pdf .= Fpdf::Cell(30,7,number_format(($incomesSum/5)*3,2),1,1,'C');
+                        $totalIncome += ($incomesSum/5)*3;
+                    else:
+                        $pdf .= Fpdf::Cell(30,7,number_format($incomesSum,2),1,1,'C');
+                        $totalIncome += $incomesSum;
+                    endif;
+
+                endforeach;
+                $pdf .= Fpdf::SetFont('Arial','B',14);
+                $pdf .= Fpdf::SetX(30);
+                $pdf .= Fpdf::Cell(90,7,utf8_decode('Total x Tipo de Ingreso'),1,0,'R');
+                $pdf .= Fpdf::Cell(30,7,number_format($totalIncome,2),1,1,'C');
+                $pdf .= Fpdf::Ln();
+                $totalType += $totalIncome;
+            endif;
+        endforeach;
+        $pdf .= Fpdf::SetFont('Arial','B',14);
+        $pdf .= Fpdf::SetX(30);
+        $pdf .= Fpdf::Cell(90,7,utf8_decode('Total de Departamento'),1,0,'R');
+        $pdf .= Fpdf::Cell(30,7,number_format($totalType,2),1,1,'C');
+        $pdf .= Fpdf::Ln();
+
+
+    }
+    /**
+     * ---------------------------------------------------------------------
+     * @Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+     * @Date Create: 2016-05-09
+     * @Date Update: 2016-00-00
+     * ---------------------------------------------------------------------
+     * @Description:Encabezado de reporte
+     *
+     *
+     * @Pasos:
+     *
+     *
+     *
+     *
+     *
+     *
+     * ----------------------------------------------------------------------
+     * @return mixed
+     * ----------------------------------------------------------------------
+     */
+    public function header()
+    {
+        $pdf  = Fpdf::AddPage('p','letter');
+        $pdf .= Fpdf::SetFont('Arial','B',16);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Asociación Central Sur de Costa Rica de los Adventista del Séptimo Día'),0,1,'C');
+        $pdf .= Fpdf::SetFont('Arial','',12);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Apartado 10113-1000 San José, Costa Rica'),0,1,'C');
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Teléfonos: 2224-8311 Fax:2225-0665'),0,1,'C');
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('acscrtesoreria07@gmail.com acscr_tesoreria@hotmail.com'),0,1,'C');
+        $pdf .= Fpdf::SetFont('Arial','B',16);
+        return $pdf;
     }
 
 }

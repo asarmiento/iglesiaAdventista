@@ -65,7 +65,7 @@
                             <option value="{{$departament->id}}">{{ucwords(strtolower($departament->name))}}</option>
                         @endforeach
                     </select>
-                    {{csrf_field()}}
+
                 </div>
                 <div class="col-md-7 col-lg-7">
                     <input type="submit" class="btn btn-primary">

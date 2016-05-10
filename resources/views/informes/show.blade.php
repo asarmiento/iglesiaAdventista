@@ -1,1 +1,0 @@
-C:\xampp\htdocs\iglesiaQuepos\app/views/informes/show.blade.php

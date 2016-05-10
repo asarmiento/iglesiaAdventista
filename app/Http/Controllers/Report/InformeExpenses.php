@@ -17,6 +17,7 @@ use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\MemberRepository;
 use SistemasAmigables\Repositories\TypeExpenseRepository;
+use SistemasAmigables\Repositories\TypeIncomeRepository;
 
 class InformeExpenses extends Controller
 {
@@ -50,7 +51,8 @@ class InformeExpenses extends Controller
         IncomeRepository $incomeRepository,
         TypeExpenseRepository $typeExpenseRepository,
         ExpensesRepository $expensesRepository,
-        DepartamentRepository $departamentRepository
+        DepartamentRepository $departamentRepository,
+        TypeIncomeRepository $typeIncomeRepository
     )
     {
 
@@ -59,6 +61,7 @@ class InformeExpenses extends Controller
         $this->typeExpenseRepository = $typeExpenseRepository;
         $this->expensesRepository = $expensesRepository;
         $this->departamentRepository = $departamentRepository;
+        $this->typeIncomeRepository = $typeIncomeRepository;
     }
     public function index(){
         $year = Input::get('year');
@@ -72,7 +75,7 @@ class InformeExpenses extends Controller
             $this->header('L');
             $this->departament($year);
         else:
-            $this->header();
+            $this->header('P');
 
             $this->notOfrendas($year,Input::get('tipo'));
         endif;
@@ -107,6 +110,7 @@ class InformeExpenses extends Controller
         $pdf .= Fpdf::Cell(10,7,utf8_decode('N°'),1,0,'C');
         $pdf .= Fpdf::Cell(80,7,utf8_decode('Miembros'),1,0,'C');
         $ofrendas = $this->typeIncomeRepository->getModel()->where('id',$tipo)->get();
+
         foreach($ofrendas AS $ofrenda):
             $ofrend = $this->incomeRepository->getModel()
                 ->where('type_income_id',$ofrenda->id)->whereBetween('date',[($year-1).'-12-26',$year.'-12-25'])->sum('balance');
