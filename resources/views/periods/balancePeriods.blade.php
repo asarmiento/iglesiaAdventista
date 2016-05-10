@@ -16,7 +16,9 @@ Lista Miembros
             <thead>
             <tr>
                 <th>Nº</th>
+                <th width="250">Fecha</th>
                 <th width="250">Periodo</th>
+                <th width="250">Monto de Cierre</th>
                 <th width="50"></th>
             </tr>
             </thead>
@@ -24,8 +26,10 @@ Lista Miembros
             @foreach($periods AS $key=>$period)
                 <tr>
                     <td>{{$key+1}}</td>
-                    <td>{{$period->month}}-{{$period->year}}</td>
-                    <td class="text-center"><a  href="{{route('informe-mensual',$period->token)}}"><span class="fa fa-file-pdf-o"></span></a></td>
+                    <td>{{$period->date}}</td>
+                    <td>{{$period->periods->month}}-{{$period->periods->year}}</td>
+                    <td>{{number_format($period->amount,2)}}</td>
+                    <td class="text-center"><a  href="#"><span class="fa fa-street-view"></span></a></td>
                 </tr>
             @endforeach
             </tbody>

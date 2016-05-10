@@ -32,5 +32,10 @@ class TypeIncomeRepository extends BaseRepository
         return $this->newQuery()->where($data,$name)->get();
     }
 
+    public function ofrendaAsoc()
+    {
+        return $this->newQuery()->where('offering','si')->Where('part','no')->where('association','si')->get();
+    }
+
 
 }

@@ -17,12 +17,12 @@ class EmailController extends Controller
     {
         $data =array('email' => 'asarmiento@sistemasamigables.com','password'=>'F4cc0unt');
         $message='Prueba de Correo';
-        Mail::send('emails.welcome', $data, function ($message) {
+      /*  Mail::send('emails.welcome', $data, function ($message) {
 
             $message->from('anwarsarmiento@gmail.com', 'Laravel');
 
             $message->to('asarmiento@sistemasamigables.com')->cc('info@sistemasamigables.com');
-        });
+        });*/
 
         print('Enviado');
     }
@@ -31,11 +31,11 @@ class EmailController extends Controller
     {
         $user = User::findOrFail($id);
 
-        Mail::send('emails.reminder', ['user' => $user], function ($m) use ($user) {
+       /* Mail::send('emails.reminder', ['user' => $user], function ($m) use ($user) {
             $m->from('hello@app.com', 'Your Application');
 
             $m->to($user->email, $user->name)->subject('Your Reminder!');
-        });
+        });*/
     }
 
     /**

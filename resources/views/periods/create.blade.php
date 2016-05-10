@@ -12,7 +12,7 @@ Lista Informes Semanales
 
 <div>@include('partials/errors')</div>
 <div>@include('partials/message')</div>
-<form action="{{route('save-record')}}" method="post" role="form" class="form-inline">
+<form action="{{route('periodos-store')}}" method="post" role="form" class="form-inline">
 <table class="table">
         <tbody >
         {{csrf_field()}}
