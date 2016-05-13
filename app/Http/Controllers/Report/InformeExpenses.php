@@ -186,9 +186,11 @@ class InformeExpenses extends Controller
     public function departament($year)
     {
         $pdf = Fpdf::Ln();
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Año: '.$year),1,0,'C');
+        $pdf = Fpdf::Ln();
         $pdf = Fpdf::SetFont('Arial','B',10);
         $pdf .= Fpdf::Cell(5,7,utf8_decode('N°'),1,0,'C');
-        $pdf .= Fpdf::Cell(40,7,utf8_decode('Tipo de Gasto'),1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,utf8_decode('Departamento'),1,0,'C');
         $pdf .= Fpdf::Cell(15,7,utf8_decode('Ene'),1,0,'C');
         $pdf .= Fpdf::Cell(15,7,utf8_decode('Feb'),1,0,'C');
         $pdf .= Fpdf::Cell(15,7,utf8_decode('Mar'),1,0,'C');
@@ -201,8 +203,8 @@ class InformeExpenses extends Controller
         $pdf .= Fpdf::Cell(15,7,utf8_decode('Oct'),1,0,'C');
         $pdf .= Fpdf::Cell(15,7,utf8_decode('Nov'),1,0,'C');
         $pdf .= Fpdf::Cell(15,7,utf8_decode('Dic'),1,0,'C');
-        $pdf .= Fpdf::Cell(15,7,utf8_decode('Total'),1,0,'C');
-        $pdf .= Fpdf::Cell(15,7,utf8_decode('%'),1,1,'C');
+        $pdf .= Fpdf::Cell(20,7,utf8_decode('Total'),1,0,'C');
+        $pdf .= Fpdf::Cell(14,7,utf8_decode('%'),1,1,'C');
 
 
 
@@ -226,13 +228,27 @@ class InformeExpenses extends Controller
                 $totalDie += $gasto;
                 $pdf .= Fpdf::Cell(15,7,number_format($gasto),1,0,'C');
             endfor;
-            $pdf .= Fpdf::Cell(15,7,number_format($totalDie),1,0,'C');
+            $pdf = Fpdf::SetFont('Arial','BI',8);
+            $pdf .= Fpdf::Cell(20,7,number_format($totalDie,2),1,0,'C');
             $total = $this->expensesRepository->getModel()->whereIn('type_expense_id',$typesList)
                 ->whereBetween('invoiceDate',[$year.'-01-01',$year.'-12-31'])->sum('amount');
             $percent = ($totalDie/$total)*100;
-            $pdf .= Fpdf::Cell(15,7,number_format($percent).'%',1,0,'C');
+            $pdf .= Fpdf::Cell(14,7,number_format($percent).'%',1,0,'C');
             $pdf .= Fpdf::Ln();
         endforeach;
+        $pdf = Fpdf::SetFont('Arial','B',8);
+        $pdf .= Fpdf::Cell(45,7,utf8_decode('Total'),1,0,'L');
+        $pdf = Fpdf::SetFont('Arial','BI',7.5);
+        for($i=0;$i<count($mes);$i++):
+            $gasto = $this->expensesRepository->getModel()->whereHas('typeExpenses',function($q){
+                $q->where('type','iglesia');
+            })->whereBetween('invoiceDate',[$year.'-'.$mes[$i].'-01',$year.'-'.$mes[$i].'-31'])->sum('amount');
+            $totalDie += $gasto;
+            $pdf .= Fpdf::Cell(15,7,number_format($gasto,2),1,0,'C');
+        endfor;
+        $pdf .= Fpdf::Cell(20,7,number_format($totalDie,2),1,0,'C');
+        $percent = ($totalDie/$total)*100;
+        $pdf .= Fpdf::Cell(14,7,number_format(100).'%',1,0,'C');
         Fpdf::Output('Informe-de-gastos.pdf','I');
         exit;
     }
@@ -284,8 +300,8 @@ class InformeExpenses extends Controller
             $total = $this->expensesRepository->getModel()->whereIn('type_expense_id',$typesList)
                 ->whereBetween('invoiceDate',[$year.'-01-01',$year.'-12-31'])->sum('amount');
             $percent = ($totalDie/$total)*100;
-            $pdf .= Fpdf::Cell(15,7,number_format($percent,2).'%',1,0,'C');
-            $pdf .= Fpdf::Ln();
+            $pdf .= Fpdf::Cell(15,7,number_format($percent,2).'%',1,1,'C');
+
         endforeach;
 
         $pdf .= Fpdf::Ln();
