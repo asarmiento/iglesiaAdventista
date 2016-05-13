@@ -1,9 +1,11 @@
 <?php namespace SistemasAmigables\Http\Controllers;
 
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use SistemasAmigables\Repositories\CheckRepository;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
+use SistemasAmigables\Repositories\TransfersRepository;
 use SistemasAmigables\Repositories\TypeExpenseRepository;
 use SistemasAmigables\Repositories\TypeIncomeRepository;
 use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
@@ -32,7 +34,11 @@ class ExpenseController extends Controller {
 	/**
 	 * @var TypeIncomeRepository
 	 */
-	private $TypeIncomeRepository;
+	private $typeIncomeRepository;
+	/**
+	 * @var TransfersRepository
+	 */
+	private $transfersRepository;
 
 	/**
 	 * ExpenseController constructor.
@@ -40,16 +46,18 @@ class ExpenseController extends Controller {
 	 * @param CheckRepository $checkRepository
 	 * @param DepartamentRepository $departamentRepository
 	 * @param TypeExpenseRepository $typeExpenseRepository
-	 * @param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
-	 * @param TypeIncomeRepository $TypeIncomeRepository
+	 * @param TypeIncomeRepository $typeIncomeRepository
+	 * @param TransfersRepository $transfersRepository
+	 * @internal param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
+	 * @internal param TypeIncomeRepository $TypeIncomeRepository
 	 */
 	public function __construct(
 		ExpensesRepository $expensesRepository,
 		CheckRepository $checkRepository,
 		DepartamentRepository $departamentRepository,
 		TypeExpenseRepository $typeExpenseRepository,
-
-		TypeIncomeRepository $TypeIncomeRepository
+		TypeIncomeRepository $typeIncomeRepository,
+		TransfersRepository $transfersRepository
 	)
 	{
 
@@ -57,8 +65,8 @@ class ExpenseController extends Controller {
 		$this->checkRepository = $checkRepository;
 		$this->departamentRepository = $departamentRepository;
 		$this->typeExpenseRepository = $typeExpenseRepository;
-
-		$this->TypeIncomeRepository = $TypeIncomeRepository;
+		$this->typeIncomeRepository = $typeIncomeRepository;
+		$this->transfersRepository = $transfersRepository;
 	}
 	/**
 	 * Display a listing of expenses
@@ -207,8 +215,47 @@ class ExpenseController extends Controller {
 
 	public function trapaso()
 	{
+		$departaments = $this->departamentRepository->allData();
+		return view('expenses.traspaso',compact('departaments'));
+	}
 
-		return view('expenses.traspaso');
+	public function trapasoStore()
+	{
+		$datos = Input::all();
+
+		$gastoLocal = $this->typeExpenseRepository->oneWhere('name','Votos de Junta Autorizaciones');
+
+
+
+		$income   = [
+			'date'=>$datos['date'],
+			'departament_id'=>$datos['departament_id'],
+			'detail'=>$datos['detail'],
+			'vote'=>$datos['votoTraspaso'],
+			'amount'=>$datos['amountTraspaso'],
+			'type'=>'entrada'];
+
+		$expenses = [
+			'date'=>$datos['date'],
+			'departament_id'=>$gastoLocal[0]['departament_id'],
+			'detail'=>$datos['detail'],
+			'vote'=>$datos['votoTraspaso'],
+			'amount'=>$datos['amountTraspaso'],
+			'type'=>'salida'];
+
+		$transfer = $this->transfersRepository->getModel();
+
+		if($transfer->isValid($income)):
+			$transfer->fill($income);
+			$transfer->save();
+		endif;
+		$transfer = $this->transfersRepository->getModel();
+		if($transfer->isValid($expenses)):
+			$transfer->fill($expenses);
+			$transfer->save();
+		endif;
+
+		return redirect()->route('ddd-store');
 	}
 
 }

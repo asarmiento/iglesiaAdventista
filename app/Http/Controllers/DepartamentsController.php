@@ -233,7 +233,7 @@ class DepartamentsController extends Controller {
             $pdf .= Fpdf::SetFont('Arial','BI',12);
             $pdf .= Fpdf::Cell(0,7,utf8_decode('Fecha Inicial: '.$datos['dateIn'].' A '.$datos['dateOut']),0,1,'C');
             $pdf .= Fpdf::Ln();
-            $departaments = $this->departamentRepository->find($datos['departament']);
+            $departaments = $this->departamentRepository->getModel()->find($datos['departament']);
             $pdf .= Fpdf::SetFont('Arial','B',14);
             $pdf .= Fpdf::Cell(0,7,utf8_decode($departaments->name),0,1,'C');
             $pdf .= Fpdf::Ln();
