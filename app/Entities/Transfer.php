@@ -24,4 +24,10 @@ class Transfer extends Entity
            'amount'=>'required'
             ]; // TODO: Implement getRules() method.
     }
+
+
+    public function departaments()
+    {
+        return $this->belongsTo(Departament::getClass(),'departament_id','id');
+    }
 }

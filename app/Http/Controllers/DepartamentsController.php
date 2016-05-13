@@ -7,6 +7,7 @@ use SistemasAmigables\Entities\Church;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
+use SistemasAmigables\Repositories\TransfersRepository;
 use SistemasAmigables\Repositories\TypeExpenseRepository;
 use SistemasAmigables\Repositories\TypeIncomeRepository;
 
@@ -31,6 +32,10 @@ class DepartamentsController extends Controller {
      * @var TypeExpenseRepository
      */
     private $typeExpenseRepository;
+    /**
+     * @var TransfersRepository
+     */
+    private $transfersRepository;
 
     /**
      * DepartamentsController constructor.
@@ -39,13 +44,15 @@ class DepartamentsController extends Controller {
      * @param IncomeRepository $incomeRepository
      * @param TypeIncomeRepository $typeIncomeRepository
      * @param TypeExpenseRepository $typeExpenseRepository
+     * @param TransfersRepository $transfersRepository
      */
     public function __construct(
         DepartamentRepository $departamentRepository,
         ExpensesRepository $expensesRepository,
         IncomeRepository $incomeRepository,
         TypeIncomeRepository $typeIncomeRepository,
-        TypeExpenseRepository $typeExpenseRepository
+        TypeExpenseRepository $typeExpenseRepository,
+        TransfersRepository $transfersRepository
     )
     {
 
@@ -54,6 +61,7 @@ class DepartamentsController extends Controller {
         $this->incomeRepository = $incomeRepository;
         $this->typeIncomeRepository = $typeIncomeRepository;
         $this->typeExpenseRepository = $typeExpenseRepository;
+        $this->transfersRepository = $transfersRepository;
     }
     /**
      * Display a listing of departamentos
@@ -303,19 +311,48 @@ class DepartamentsController extends Controller {
             endif;
 
         endforeach;
+
+
+        $transfers = $this->transfersRepository->getModel()->where('departament_id',$id)->where('type','salida')->get();
+        $totalTransfer = 0;
+        if(!$transfers->isEmpty()):
+            $pdf = Fpdf::SetFont('Arial','B',12);
+            $pdf .= Fpdf::Cell(0,7,utf8_decode('Transferencia'),1,1,'C');
+            $pdf .= Fpdf::Ln();
+            $pdf .= Fpdf::SetX(15);
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('Fecha'),1,0,'C');
+            $pdf .= Fpdf::Cell(70,7,utf8_decode('Informe'),1,0,'C');
+            $pdf .= Fpdf::Cell(50,7,utf8_decode('Tipo Gasto'),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('Monto'),1,1,'C');
+
+            foreach($transfers AS $transfer):
+                $pdf .= Fpdf::SetFont('Arial','',12);
+                $pdf .= Fpdf::SetX(15);
+                $pdf .= Fpdf::Cell(30,7,utf8_decode($transfer->date),1,0,'C');
+                $pdf .= Fpdf::Cell(70,7,utf8_decode(substr($transfer->detail,0,30)),1,0,'C');
+                $pdf .= Fpdf::Cell(50,7,utf8_decode($transfer->departaments->name),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,number_format($transfer->amount,2),1,1,'C');
+                $totalTransfer += $expense->amount;
+            endforeach;
+            $pdf .= Fpdf::SetFont('Arial','B',14);
+            $pdf .= Fpdf::SetX(15);
+            $pdf .= Fpdf::Cell(150,7,utf8_decode('Total x Transferencias'),1,0,'R');
+            $pdf .= Fpdf::Cell(30,7,number_format($totalTransfer,2),1,1,'C');
+            $pdf .= Fpdf::Ln();
+        endif;
         $typeIncomes = $this->typeIncomeRepository->getModel()->where('departament_id',$id)->lists('id');
         $incomesSum = $this->incomeRepository->getModel()->whereIn('type_income_id',$typeIncomes)
             ->whereBetween('date',[$datos['dateIn'],$datos['dateOut']])->sum('balance');
-
+        $transfersEnt = $this->transfersRepository->getModel()->where('departament_id',$id)->where('type','entrada')->sum('amount');
         $pdf .= Fpdf::SetFont('Arial','B',14);
         $pdf .= Fpdf::SetX(15);
-        $pdf .= Fpdf::Cell(150,7,utf8_decode('Total de Departamento'),1,0,'R');
-        $pdf .= Fpdf::Cell(30,7,number_format($totalTypeEx,2),1,1,'C');
+        $pdf .= Fpdf::Cell(150,7,utf8_decode('Gasto Total del Departamento'),1,0,'R');
+        $pdf .= Fpdf::Cell(30,7,number_format($totalTypeEx+$totalTransfer,2),1,1,'C');
         $pdf .= Fpdf::Ln();
         $pdf .= Fpdf::SetFont('Arial','B',14);
         $pdf .= Fpdf::SetX(15);
-        $pdf .= Fpdf::Cell(150,7,utf8_decode('Saldo de Departamento'),1,0,'R');
-        $pdf .= Fpdf::Cell(30,7,number_format($incomesSum-$totalTypeEx,2),1,1,'C');
+        $pdf .= Fpdf::Cell(150,7,utf8_decode('Saldo Disponible del Departamento'),1,0,'R');
+        $pdf .= Fpdf::Cell(30,7,number_format(($incomesSum+$transfersEnt)-($totalTypeEx+$totalTransfer),2),1,1,'C');
         $pdf .= Fpdf::Ln();
 
 
@@ -383,10 +420,39 @@ class DepartamentsController extends Controller {
                 $totalType += $totalIncome;
             endif;
         endforeach;
+        $transfers = $this->transfersRepository->getModel()->where('departament_id',$id)->where('type','entrada')->get();
+        $totalTransfer = 0;
+
+        if(!$transfers->isEmpty()):
+            $pdf = Fpdf::SetFont('Arial','B',12);
+            $pdf .= Fpdf::Cell(0,7,utf8_decode('Transferencia'),1,1,'C');
+            $pdf .= Fpdf::Ln();
+            $pdf .= Fpdf::SetX(15);
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('Fecha'),1,0,'C');
+            $pdf .= Fpdf::Cell(70,7,utf8_decode('Informe'),1,0,'C');
+            $pdf .= Fpdf::Cell(50,7,utf8_decode('Tipo Ingresos'),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('Monto'),1,1,'C');
+
+            foreach($transfers AS $transfer):
+                $pdf .= Fpdf::SetFont('Arial','',12);
+                $pdf .= Fpdf::SetX(15);
+                $pdf .= Fpdf::Cell(30,7,utf8_decode($transfer->date),1,0,'C');
+                $pdf .= Fpdf::Cell(70,7,utf8_decode(substr($transfer->detail,0,30)),1,0,'C');
+                $pdf .= Fpdf::Cell(50,7,utf8_decode($transfer->departaments->name),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,number_format($transfer->amount,2),1,1,'C');
+                $totalTransfer += $transfer->amount;
+            endforeach;
+            $pdf .= Fpdf::SetFont('Arial','B',14);
+            $pdf .= Fpdf::SetX(15);
+            $pdf .= Fpdf::Cell(150,7,utf8_decode('Total x Transferencias'),1,0,'R');
+            $pdf .= Fpdf::Cell(30,7,number_format($totalTransfer,2),1,1,'C');
+            $pdf .= Fpdf::Ln();
+        endif;
+
         $pdf .= Fpdf::SetFont('Arial','B',14);
         $pdf .= Fpdf::SetX(30);
-        $pdf .= Fpdf::Cell(90,7,utf8_decode('Total de Departamento'),1,0,'R');
-        $pdf .= Fpdf::Cell(30,7,number_format($totalType,2),1,1,'C');
+        $pdf .= Fpdf::Cell(90,7,utf8_decode('Ingresos Total del Departamento'),1,0,'R');
+        $pdf .= Fpdf::Cell(30,7,number_format($totalType+$totalTransfer,2),1,1,'C');
         $pdf .= Fpdf::Ln();
 
 
