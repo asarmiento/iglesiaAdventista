@@ -25,7 +25,7 @@ Lista Miembros
                 <tr>
                     <td>{{$key+1}}</td>
                     <td>{{$period->month}}-{{$period->year}}</td>
-                    <td class="text-center"><a  href="{{route('informe-mensual',$period->token)}}"><span class="fa fa-file-pdf-o"></span></a></td>
+                    <td class="text-center"><a target="_blank" href="{{route('informe-mensual',$period->token)}}"><span class="fa fa-file-pdf-o"></span></a></td>
                 </tr>
             @endforeach
             </tbody>
