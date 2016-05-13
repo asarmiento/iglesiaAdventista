@@ -68,6 +68,7 @@
         </br>
         <div class="row">
             <div class="large-12 columns text-center">
+                <div class="btn btn-info"><a href="{{route('index-transfer')}}"  class="button radius">regresar</a></div>
                 <input type="submit" value="Guardar" class="btn btn-info radius" />
             </div>
         </div>

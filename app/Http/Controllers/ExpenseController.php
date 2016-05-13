@@ -218,7 +218,11 @@ class ExpenseController extends Controller {
 		$departaments = $this->departamentRepository->allData();
 		return view('expenses.traspaso',compact('departaments'));
 	}
-
+	public function transfer()
+	{
+		$transfers = $this->transfersRepository->allData();
+		return view('transfer.index', compact('transfers'));
+	}
 	public function trapasoStore()
 	{
 		$datos = Input::all();
