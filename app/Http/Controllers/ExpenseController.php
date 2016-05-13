@@ -95,7 +95,7 @@ class ExpenseController extends Controller {
 		$expenses= $this->expensesRepository->oneWhere('check_id',$id);
 		$total= $this->expensesRepository->oneWhereSum('check_id',$id,'amount');
 		$typeExpenses= $this->typeExpenseRepository->allData();
-		$typeFixs = $this->TypeIncomeRepository->allData();
+		$typeFixs = $this->typeIncomeRepository->allData();
 		return View('expenses.create',compact('checks','departaments',
 			'expenses','total','typeExpenses','typeFixs'));
 	}
