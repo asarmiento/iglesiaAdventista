@@ -296,7 +296,7 @@ class DepartamentsController extends Controller {
                 foreach($expenses AS $expense):
                     $pdf .= Fpdf::SetFont('Arial','',12);
                     $pdf .= Fpdf::SetX(15);
-                    $pdf .= Fpdf::Cell(30,7,utf8_decode($expense->date),1,0,'C');
+                    $pdf .= Fpdf::Cell(30,7,utf8_decode($expense->invoiceDate),1,0,'C');
                     $pdf .= Fpdf::Cell(40,7,utf8_decode($expense->invoiceNumber),1,0,'C');
                     $pdf .= Fpdf::Cell(80,7,utf8_decode($expense->typeExpenses->name),1,0,'C');
                     $pdf .= Fpdf::Cell(30,7,number_format($expense->amount,2),1,1,'C');

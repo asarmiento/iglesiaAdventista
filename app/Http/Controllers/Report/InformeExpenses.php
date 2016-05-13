@@ -218,13 +218,8 @@ class InformeExpenses extends Controller
             $pdf .= Fpdf::Cell(5,7,$key+1,1,0,'L');
             $pdf .= Fpdf::Cell(40,7,substr(utf8_decode(ucwords(strtolower($departament->name))),0,33),1,0,'L');
             $types = $this->typeExpenseRepository->getModel()->where('departament_id',$departament->id)->lists('id');
-
-
             $totalDie=0;
-
-
             $pdf = Fpdf::SetFont('Arial','I',8);
-
             for($i=0;$i<count($mes);$i++):
                 $gasto = $this->expensesRepository->getModel()->whereIn('type_expense_id',$types)
                     ->whereBetween('invoiceDate',[$year.'-'.$mes[$i].'-01',$year.'-'.$mes[$i].'-31'])->sum('amount');
@@ -236,13 +231,8 @@ class InformeExpenses extends Controller
                 ->whereBetween('invoiceDate',[$year.'-01-01',$year.'-12-31'])->sum('amount');
             $percent = ($totalDie/$total)*100;
             $pdf .= Fpdf::Cell(15,7,number_format($percent).'%',1,0,'C');
-
-
             $pdf .= Fpdf::Ln();
         endforeach;
-
-
-
         Fpdf::Output('Informe-de-gastos.pdf','I');
         exit;
     }
