@@ -916,13 +916,26 @@ $i++;
         endforeach;
 
         $pdf .= Fpdf::Ln();
-        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 31 de Marzo Banco Nacional: 2,200,080.90'),0,1,'C');
-        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 31 de Marzo Banco Costa Rica: 318,606.59'),0,1,'C');
-        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Total Saldo Bancos al 31 de Marzo: 2,518,687.49'),0,1,'C');
-        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Aislante: 628,740.78'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 13 de Mayo Banco Nacional: 1,859,623.83'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Bancos al 13 de Mayo Banco Costa Rica: 318,606.59'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo En Transito: 547,545.00'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Total Saldo Bancos al 13 de Mayo: 2,725,775.42'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('_________________________________________'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Aislante: 1,200,962.78'),0,1,'C');
         $pdf  .= Fpdf::Cell(0,5,utf8_decode('Equipo de Sonido: 130,025.00'),0,1,'C');
-        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Asociación Central: 130,025.00'),0,1,'C');
-        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Disponible: 1,759,921.71'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Aula Infantes: 188,247.95'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Dorcas: 400,000.00'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Aire Acondicionado: 38,925.00'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Retiro Jovenes: 28,000.00'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('_________________________________________'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Total Fondos Asignados: 1,986,160,73'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('_________________________________________'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Asociación Central: 339,008,85'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('_________________________________________'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Sub Total: 400,605,84'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Presupuesto Departamentos Disponible: 102,314.85'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('_________________________________________'),0,1,'C');
+        $pdf  .= Fpdf::Cell(0,5,utf8_decode('Saldo Disponible: 298,290,99'),0,1,'C');
         return $pdf;
     }
     /*
