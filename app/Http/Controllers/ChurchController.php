@@ -2,7 +2,9 @@
 
 use Anouar\Fpdf\Facades\Fpdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Input;
 use SistemasAmigables\Repositories\BalanceChurchRepository;
+use SistemasAmigables\Repositories\CheckRepository;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
@@ -41,6 +43,10 @@ class ChurchController extends Controller {
      * @var ExpensesRepository
      */
     private $expensesRepository;
+    /**
+     * @var CheckRepository
+     */
+    private $checkRepository;
 
     public function __construct(
         RecordRepository $recordRepository,
@@ -49,7 +55,8 @@ class ChurchController extends Controller {
         TypeIncomeRepository $typeIncomeRepository,
         DepartamentRepository $departamentRepository,
         BalanceChurchRepository $balanceChurchRepository,
-        ExpensesRepository $expensesRepository
+        ExpensesRepository $expensesRepository,
+        CheckRepository $checkRepository
     )
     {
 
@@ -60,6 +67,7 @@ class ChurchController extends Controller {
         $this->departamentRepository = $departamentRepository;
         $this->balanceChurchRepository = $balanceChurchRepository;
         $this->expensesRepository = $expensesRepository;
+        $this->checkRepository = $checkRepository;
     }
     /**
      * Display a listing of iglesias
@@ -181,14 +189,222 @@ class ChurchController extends Controller {
         return json_encode(array('message' => 'Ya esta activa'));
     }
 
+    /**
+     * ---------------------------------------------------------------------
+     * @Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+     * @Date Create: 2016-05-26
+     * @Date Update: 2016-00-00
+     * ---------------------------------------------------------------------
+     * @Description:
+     *
+     *
+     * @Pasos:
+     *
+     *
+     *
+     *
+     *
+     *
+     * ----------------------------------------------------------------------
+     * @return mixed
+     * ----------------------------------------------------------------------
+     */
+    public function auditoria()
+    {
+        $periods = $this->periodRepository->getModel()->get();
+        return view('iglesias.auditoria',compact('periods'));
+    }
+
+    /**
+     * ---------------------------------------------------------------------
+     * @Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
+     * @Date Create: 2016-05-26
+     * @Date Update: 2016-00-00
+     * ---------------------------------------------------------------------
+     * @Description:
+     *
+     *
+     * @Pasos:
+     *
+     *
+     *
+     *
+     *
+     *
+     * ----------------------------------------------------------------------
+     * @return mixed
+     * ----------------------------------------------------------------------
+     */
+    public function pdfAuditoria()
+    {
+        $year = Input::get('year');
+        $pdf  = Fpdf::AddPage('L','letter');
+        $pdf .= Fpdf::SetFont('Arial','B',16);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Asociación Central Sur de Costa Rica de los Adventista del Séptimo Día'),0,1,'C');
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('INFORME PARA AUDITORIA'),0,1,'C');
+        $pdf .= Fpdf::SetFont('Arial','i',10);
+        $pdf .= Fpdf::Cell(0,5,utf8_decode('Apartado 10113-1000 San José, Costa Rica'),0,1,'C');
+        $pdf .= Fpdf::Cell(0,5,utf8_decode('Teléfonos: 2224-8311 Fax:2225-0665'),0,1,'C');
+        $pdf .= Fpdf::Cell(0,5,utf8_decode('acscrtesoreria07@gmail.com acscr_tesoreria@hotmail.com'),0,1,'C');
+        $pdf .= Fpdf::SetFont('Arial','B',12);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('AÑO '.$year),0,1,'C');
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('IGLESIA DE QUEPOS'),0,1,'C');
+
+        $pdf .= Fpdf::SetFont('Arial','B',10);
+
+        $pdf .= Fpdf::Cell(20,7,utf8_decode('Fecha'),1,0,'C');
+        $pdf .= Fpdf::Cell(25,7,utf8_decode('Cont. Interno'),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,utf8_decode('Ing. Generales'),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,utf8_decode('Fon.ACSCR'),1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,utf8_decode('60% Of. Loc. y Otros'),1,0,'C');
+        $pdf .= Fpdf::Cell(25,7,utf8_decode('Fondo Const.'),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,utf8_decode('Gastos'),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,utf8_decode('Pru. de Saldo'),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,utf8_decode('Saldo'),1,1,'C');
+        $periods = $this->periodRepository->getModel()->where('year',$year)->get();
+        $periodsSaldoIni = $this->balanceChurchRepository->getModel()->whereHas('periods',function($q){
+            $q->where('year',Input::get('year')-1);
+        })->get()->last();
+        $pdf .= Fpdf::Cell(105,7,utf8_decode('Saldo Inicial '.(Input::get('year')-1)),1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,number_format($periodsSaldoIni->amount,2),1,0,'C');
+        $pdf .= Fpdf::Cell(25,7,utf8_decode(''),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,utf8_decode(''),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,utf8_decode(''),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,utf8_decode(''),1,1,'C');
+        $totalM =0;
+        $totalA =0;
+        $totalC =0;
+        $totalP =0;
+        $totalS =0;
+        $totalgasto =0;
+        foreach($periods AS $period):
+            $informes = $this->recordRepository->getModel()->where('period_id',$period->id)->orderBy('saturday','ASC')->get();
+            $totalMes = 0;
+            $totalAsc = 0;
+            $totalCamp = 0;
+            $totalPrueba = 0;
+            $pdf .= Fpdf::SetFont('Arial','I',12);
+            $pdf .= Fpdf::Cell(20,7,utf8_decode($period->month.'-'.$period->year),1,0,'C');
+            foreach($informes AS $informe):
+                $campo = $this->incomeRepository->getModel()->amountCampo($informe->id);
+                $iglesia = $informe->balance-$campo;
+                $totalMes += $informe->balance;
+                $totalAsc += $campo;
+                $totalCamp += $iglesia;
+                $totalPrueba += ($campo+$iglesia);
+            endforeach;
+            $date = new Carbon($period->year.'-'.$period->month.'-01');
+            $dateIn = $date->format('Y-m-d');
+            $dateP = $date;
+            if( $date->format('Y-m-d') == '2015-01-01'):
+                $dateIn = '2014-12-20';
+            endif;
+            $dateOut = $dateP->endOfMonth()->format('Y-m-d');
+            $gasto  = $this->expensesRepository->getModel()->whereHas('typeExpenses',function($q){
+                $q->where('type','iglesia');
+            })->whereBetween('invoiceDate',[$dateIn,$dateOut])->sum('amount');
+
+
+
+            $pdf .= Fpdf::Cell(25,7,utf8_decode(''),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,number_format($totalMes,2),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,number_format($totalAsc,2),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,number_format($totalCamp,2),1,0,'C');
+            $pdf .= Fpdf::Cell(25,7,utf8_decode(''),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,number_format($gasto,2),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,number_format($totalPrueba,2),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,number_format($totalCamp-$gasto,2),1,1,'C');
+            $totalM += $totalMes;
+            $totalA += $totalAsc;
+            $totalC += $totalCamp;
+            $totalS += $totalCamp-$gasto;
+            $totalP += $totalAsc+$totalCamp;
+            $totalgasto += $gasto;
+        endforeach;
+        $pdf .= Fpdf::SetFont('Arial','B',12);
+        $pdf .= Fpdf::Cell(20,7,utf8_decode(''),1,0,'C');
+        $pdf .= Fpdf::Cell(25,7,utf8_decode(''),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($totalM,2),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($totalA,2),1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,number_format($totalC,2),1,0,'C');
+        $pdf .= Fpdf::Cell(25,7,utf8_decode(''),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($totalgasto,2),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($totalP,2),1,0,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($totalS+$periodsSaldoIni->amount,2),1,1,'C');
+        $pdf .= Fpdf::Ln(50);
+        $this->detalleAuditoria($year);
+
+        Fpdf::Output('Informe-Mendual.pdf','I');
+        exit;
+    }
+
+    public function detalleAuditoria($year)
+    {
+        $periods = $this->periodRepository->getModel()->where('year',$year)->get();
+        foreach($periods AS $period):
+            $informes = $this->recordRepository->getModel()->where('period_id',$period->id)->orderBy('saturday','ASC')->get();
+            $totalMes = 0;
+            $totalAsc = 0;
+            $totalCamp = 0;
+            $totalPrueba = 0;
+            $pdf = Fpdf::SetFont('Arial','B',12);
+            $pdf .= Fpdf::Cell(265,7,utf8_decode($period->month.'-'.$period->year),1,1,'C');
+            $pdf .= Fpdf::SetFont('Arial','B',10);
+
+            $pdf .= Fpdf::Cell(20,7,utf8_decode('Fecha'),1,0,'C');
+            $pdf .= Fpdf::Cell(25,7,utf8_decode('Cont. Interno'),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,utf8_decode('Ing. Generales'),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('Fon.ACSCR'),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,utf8_decode('60% Of. Loc. y Otros'),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('Fondo Const.'),1,0,'C');
+            $pdf .= Fpdf::Cell(25,7,utf8_decode('Gastos'),1,0,'C');
+            $pdf .= Fpdf::Cell(25,7,utf8_decode('Pru. de Saldo'),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('Saldo'),1,1,'C');
+            foreach($informes AS $informe):
+                $campo = $this->incomeRepository->getModel()->amountCampo($informe->id);
+                $iglesia = $informe->balance-$campo;
+                $pdf .= Fpdf::Cell(20,7,utf8_decode($informe->saturday),1,0,'C');
+                $pdf .= Fpdf::Cell(25,7,utf8_decode($informe->controlNumber),1,0,'C');
+                $pdf .= Fpdf::Cell(40,7,number_format($informe->balance,2),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,number_format($campo,2),1,0,'C');
+                $pdf .= Fpdf::Cell(40,7,number_format($iglesia,2),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,utf8_decode(''),1,0,'C');
+                $pdf .= Fpdf::Cell(25,7,utf8_decode(''),1,0,'C');
+                $pdf .= Fpdf::Cell(25,7,number_format(($campo+$iglesia),2),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,number_format($iglesia,2),1,1,'C');
+                $totalMes += $informe->balance;
+                $totalAsc += $campo;
+                $totalCamp += $iglesia;
+                $totalPrueba += ($campo+$iglesia);
+
+            endforeach;
+            $pdf .= Fpdf::Cell(20,7,utf8_decode('Totales'),1,0,'C');
+            $pdf .= Fpdf::Cell(25,7,utf8_decode(''),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,number_format($totalMes,2),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,number_format($totalAsc,2),1,0,'C');
+            $pdf .= Fpdf::Cell(40,7,number_format($totalCamp,2),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode(''),1,0,'C');
+            $pdf .= Fpdf::Cell(25,7,utf8_decode(''),1,0,'C');
+            $pdf .= Fpdf::Cell(25,7,number_format($totalPrueba,2),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,number_format($totalCamp,2),1,1,'C');
+            $pdf .= Fpdf::Ln();
+        endforeach;
+    }
     public function report($token)
     {
 
         $depart = $this->departamentRepository->getModel()->where('type','iglesia')->orderBy('id','DESC')->count();
         $period = $this->periodRepository->token($token);
-        $this->header($period->month.'-'.$period->year);
-        $pdf = Fpdf::Ln();
-        $pdf = Fpdf::SetFont('Arial','B',10);
+        $this->header();
+
+        $pdf = Fpdf::SetFont('Arial','B',12);
+        $pdf .= Fpdf::Cell(200,7,utf8_decode('Nombre del Tesorero: Anwar Sarmiento Ramos'),1,0,'L');
+        $pdf .= Fpdf::Cell(60,7,utf8_decode('Iglesia de: QUEPOS'),1,1,'L');
+        $pdf .= Fpdf::Cell(150,7,utf8_decode(''),1,0,'L');
+        $pdf .= Fpdf::Cell(110,7,utf8_decode('Para mes de: '.$period->month.'-'.$period->year),1,1,'L');
+
+        $pdf .= Fpdf::Ln();
+        $pdf .= Fpdf::SetFont('Arial','B',10);
         $pdf .= Fpdf::Cell(74,7,utf8_decode(''),1,0,'C');
         $pdf .= Fpdf::Cell(154,7,utf8_decode('FONDOS PARA ENVIAR A LA ASOCIACIÓN'),1,1,'C');
        // $pdf .= Fpdf::Cell(($depart*25),7,utf8_decode('FONDOS PARA EL PRESUPUESTO LOCAL'),1,1,'C');
@@ -230,6 +446,7 @@ class ChurchController extends Controller {
         $dateOut = $dateP->subMonth(1)->endOfMonth()->format('Y-m-d');
 
         $saldo = $this->balanceChurchRepository->oneWhere('date',$dateOut);
+
         $pdf = Fpdf::Ln();
         $pdf = Fpdf::SetFont('Arial','B',10);
         $pdf .= Fpdf::Cell(198,15,utf8_decode('VIENE'),1,0,'R');
@@ -301,7 +518,7 @@ class ChurchController extends Controller {
         exit;
     }
 
-    public function header($date)
+    public function header()
     {
         $pdf  = Fpdf::AddPage('L','letter');
         $pdf .= Fpdf::SetFont('Arial','B',16);
@@ -311,11 +528,6 @@ class ChurchController extends Controller {
         $pdf .= Fpdf::Cell(0,5,utf8_decode('Apartado 10113-1000 San José, Costa Rica'),0,1,'C');
         $pdf .= Fpdf::Cell(0,5,utf8_decode('Teléfonos: 2224-8311 Fax:2225-0665'),0,1,'C');
         $pdf .= Fpdf::Cell(0,5,utf8_decode('acscrtesoreria07@gmail.com acscr_tesoreria@hotmail.com'),0,1,'C');
-        $pdf .= Fpdf::SetFont('Arial','B',12);
-        $pdf .= Fpdf::Cell(200,7,utf8_decode('Nombre del Tesorero: Anwar Sarmiento Ramos'),1,0,'L');
-        $pdf .= Fpdf::Cell(60,7,utf8_decode('Iglesia de: QUEPOS'),1,1,'L');
-        $pdf .= Fpdf::Cell(150,7,utf8_decode(''),1,0,'L');
-        $pdf .= Fpdf::Cell(110,7,utf8_decode('Para mes de: '.$date),1,1,'L');
-        return $pdf;
+         return $pdf;
     }
 }
