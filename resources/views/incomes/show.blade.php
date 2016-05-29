@@ -43,7 +43,7 @@
                                 <td style="margin: 4px">{{$member->incomes->numberOf}}</td>
                                 @foreach($typeIncomes AS $typeIncome)
                                     @if($income->where('type_income_id',$typeIncome->id)->where('date',$control->saturday)->sum('balance') >0 )
-                                        <td style="margin: 4px">{{number_format($member->incomes->treeWhere('type_income_id',$typeIncome->id,'member_id',$member->id,'date',$control->saturday))}}</td>
+                                        <td style="margin: 4px">{{number_format($member->incomes->treeWhere('type_income_id',$typeIncome->id,'member_id',$member->id,'date',$control->saturday),2)}}</td>
                                     @endif
                                 @endforeach
 
@@ -54,7 +54,7 @@
                             <td colspan="3" class="text-right"><strong>Total _ _ _ _ _</strong></td>
                             @foreach($typeIncomes AS $typeIncome)
                                 @if($income->where('type_income_id',$typeIncome->id)->where('date',$control->saturday)->sum('balance') >0 )
-                                    <td style="margin: 4px"><strong>{{number_format($income->twoWhere('type_income_id',$typeIncome->id,'date',$control->saturday))}}</strong></td>
+                                    <td style="margin: 4px"><strong>{{number_format($income->twoWhere('type_income_id',$typeIncome->id,'date',$control->saturday),2)}}</strong></td>
                                 @endif
                             @endforeach
                         </tr>

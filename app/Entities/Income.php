@@ -64,5 +64,22 @@ class Income extends Entity
         return $this->where($data,$id)->sum('balance');
     }
 
+    public function amountCampo($id)
+    {
+        $ofrenda = $this->wherehas('typeIncomes',function($q){
+            $q->where('part','si');
+        })->where('record_id',$id)->sum('balance');
+
+        $ofrendas = ($ofrenda/5)*2;
+
+        $diezmos = $this->wherehas('typeIncomes',function($q){
+            $q->where('part','no')->where('association','si');
+        })->where('record_id',$id)->sum('balance');
+
+        $total = $ofrendas+$diezmos;
+
+        return $total;
+    }
+
 
 }

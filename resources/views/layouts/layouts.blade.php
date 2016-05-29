@@ -49,6 +49,7 @@
                                     <ul class="dropdown-menu">
                                         <li><a href="{{route('periodos-saldos')}}">Saldos Por Mes</a></li>
                                         <li><a href="{{route('periodos-ver')}}">Periodos Ver</a></li>
+                                        <li><a href="{{route('auditoria-ver')}}">Reporte Auditoria</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">

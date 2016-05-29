@@ -74,6 +74,9 @@ class InformeExpenses extends Controller
         elseif(Input::get('departament') == '1-2'):
             $this->header('L');
             $this->departament($year);
+        elseif(Input::get('tipo') == '1-3'):
+            $this->header('P');
+            $this->gastoMonth($year);
         else:
             $this->header('P');
 
@@ -83,7 +86,9 @@ class InformeExpenses extends Controller
         Fpdf::Output('Informe-Semana.pdf','I');
         exit;
     }
+    public function gastoMonth($year){
 
+    }
     /*
     |---------------------------------------------------------------------
     |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
@@ -258,6 +263,7 @@ class InformeExpenses extends Controller
     {
         $pdf = Fpdf::Ln();
         $pdf = Fpdf::SetFont('Arial','B',10);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('AÑO: '.$year),1,1,'C');
         $pdf .= Fpdf::Cell(55,7,utf8_decode('Tipo de Gasto'),1,0,'C');
         $pdf .= Fpdf::Cell(15,7,utf8_decode('Ene'),1,0,'C');
         $pdf .= Fpdf::Cell(15,7,utf8_decode('Feb'),1,0,'C');
@@ -282,6 +288,7 @@ class InformeExpenses extends Controller
 
         $mes = ['01','02','03','04','05','06','07','08','09','10','11','12'];
         $total=0;
+        $graTotal=0;
         foreach($types AS $type):
             $totalDie=0;
 
@@ -291,21 +298,36 @@ class InformeExpenses extends Controller
             $pdf = Fpdf::SetFont('Arial','I',8);
 
             for($i=0;$i<count($mes);$i++):
+
                 $gasto = $this->expensesRepository->getModel()->where('type_expense_id',$type->id)
-                    ->whereBetween('date',[$year.'-'.$mes[$i].'-01',$year.'-'.$mes[$i].'-31'])->sum('amount');
+                    ->whereBetween('invoiceDate',[$year.'-'.$mes[$i].'-01',$year.'-'.$mes[$i].'-31'])->sum('amount');
                 $totalDie += $gasto;
                 $pdf .= Fpdf::Cell(15,7,number_format($gasto),1,0,'C');
+
+
             endfor;
+
             $pdf .= Fpdf::Cell(15,7,number_format($totalDie),1,0,'C');
             $total = $this->expensesRepository->getModel()->whereIn('type_expense_id',$typesList)
                 ->whereBetween('invoiceDate',[$year.'-01-01',$year.'-12-31'])->sum('amount');
+
             $percent = ($totalDie/$total)*100;
             $pdf .= Fpdf::Cell(15,7,number_format($percent,2).'%',1,1,'C');
 
         endforeach;
+        $pdf .= Fpdf::Cell(55,7,'Total',1,0,'R');
+        for($i=0;$i<count($mes);$i++):
 
+            $gasto = $this->expensesRepository->getModel()->whereIn('type_expense_id',$typesList)
+                ->whereBetween('invoiceDate',[$year.'-'.$mes[$i].'-01',$year.'-'.$mes[$i].'-31'])->sum('amount');
+            $totalDie += $gasto;
+            $pdf .= Fpdf::Cell(15,7,number_format($gasto),1,0,'C');
+            $graTotal += $gasto;
+        endfor;
+        $pdf .= Fpdf::Cell(30,7,number_format($graTotal,2),1,1,'C');
         $pdf .= Fpdf::Ln();
-
+        $pdf .= Fpdf::Cell(55,7,'Promedio de Gasto por mes',1,0,'R');
+        $pdf .= Fpdf::Cell(30,7,number_format($graTotal/12,2),1,1,'C');
         Fpdf::Output('Informe-de-gastos.pdf','I');
         exit;
     }

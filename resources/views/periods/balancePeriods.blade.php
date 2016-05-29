@@ -1,10 +1,10 @@
 @extends('layouts.layouts')
 @section('title')
-Miembros
+Periodos
 @stop
 
 @section('title-form')
-Lista Miembros
+Lista de Periodos
 @stop
 
 @section('content')
