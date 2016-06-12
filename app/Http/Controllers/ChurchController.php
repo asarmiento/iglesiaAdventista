@@ -281,7 +281,7 @@ class ChurchController extends Controller {
             $informes = $this->recordRepository->getModel()->where('period_id',$period->id)->orderBy('saturday','ASC')->get();
             $totalMes = 0;
             $totalAsc = 0;
-            $totalCamp = 0;
+            $totalCamp = $periodsSaldoIni->amount;
             $totalPrueba = 0;
             $pdf .= Fpdf::SetFont('Arial','I',12);
             $pdf .= Fpdf::Cell(20,7,utf8_decode($period->month.'-'.$period->year),1,0,'C');
@@ -330,7 +330,7 @@ class ChurchController extends Controller {
         $pdf .= Fpdf::Cell(25,7,utf8_decode(''),1,0,'C');
         $pdf .= Fpdf::Cell(30,7,number_format($totalgasto,2),1,0,'C');
         $pdf .= Fpdf::Cell(30,7,number_format($totalP,2),1,0,'C');
-        $pdf .= Fpdf::Cell(30,7,number_format($totalS+$periodsSaldoIni->amount,2),1,1,'C');
+        $pdf .= Fpdf::Cell(30,7,number_format($totalS,2),1,1,'C');
         $pdf .= Fpdf::Ln(50);
         $this->detalleAuditoria($year);
 
