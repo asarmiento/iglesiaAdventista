@@ -19,37 +19,29 @@ Lista Departamentos
         <tr> 
             <th>Nº</th>
             <th>Departamento</th>
-            <th>Presupuesto</th>
-            <th>Gasado del Mes</th>
-            <th>Saldo Mes</th>
-
-            <th>Ing Año Ant.</th>
-            <th>Gto Año Ant.</th>
-
-            <th>Ing Año Act.</th>
-            <th>Gto Año Act.</th>
-
-            <th>Acum. Ing.</th>
-            <th>Acum. Gto</th>
+            <th>Porcentaje</th>
+            <th>Saldo Actual</th>
         </tr>
     </thead> 
     <tbody>
+    <?php
+            $porcent=0;
+            $budget=0;
+    ?>
         @foreach($departaments AS $key=>$departament)
         <tr class="text-center">
             <td>{{$key+1}}</td>
             <td>{{$departament->name}}</td>
-            <td>{{number_format($departament->budget,2)}}</td>
-            <td>{{number_format($departament->month,2)}}</td>
-            <td>{{number_format($departament->budget-$departament->month,2)}}</td>
-
-            <td>{{number_format($departament->income,2)}}</td>
-            <td>{{number_format($departament->expense,2)}}</td>
-
-            <td></td>
-            <td></td>
-            <td>{{number_format($departament->allIncome,2)}}</td>
-            <td>{{number_format($departament->allExpense,2)}}</td>
+            <td>{{number_format($departament->budget*100,2)}}%</td>
+            @if($departament->balance < 0)
+                <td style="color: #ac1212"> ₡ {{number_format($departament->balance,2)}}</td>
+            @else
+                <td> ₡ {{number_format($departament->balance,2)}}</td>
+            @endif
         </tr>
+            <?php
+            $porcent+=$departament->budget;
+            $budget+=$departament->balance;?>
         @endforeach
 
     </tbody>
@@ -59,11 +51,9 @@ Lista Departamentos
         <tr class="color-green">
             <td></td>
             <td>Total</td>
-            <td>Presupuesto: {{number_format($totalPresupuesto,2)}}</td>
-            <td>Ingresos: {{number_format($totalIncomes,2)}}</td>
-            <td>Gastos: {{number_format($totalExpenses,2)}}</td>
-            <td class="color-red">Disponible para gasto: {{number_format($totalIncomes-($totalPresupuesto+$totalExpenses),2)}}</td>
-        </tr>
+            <td>Porcentaje: {{number_format($porcent*100,2)}}%</td>
+            <td>Total del Presupuesto: {{number_format($budget,2)}}</td>
+       </tr>
         </tbody>
     </table>
 </div>
