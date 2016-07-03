@@ -63,21 +63,36 @@ class DepartamentsController extends Controller {
         $this->typeExpenseRepository = $typeExpenseRepository;
         $this->transfersRepository = $transfersRepository;
     }
-    /**
-     * Display a listing of departamentos
-     *
-     * @return Response
-     */
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com  
+    * @Create: 3/7/16 12:05 AM   @Update 0000-00-00
+    ***************************************************
+    * @Description: Enviamos los datos a la vista
+    *
+    *
+    *
+    * @return View($departaments)
+    * 
+    ***************************************************/
     public function index() {
-
-
-        $departaments = $this->departamentRepository->saldosIndex($this->dateSearch());
-        $totalExpenses  = $this->expensesRepository->getModel()->sum('amount');
-        $totalIncomes  = $this->incomeRepository->getModel()->sum('balance');
-        $totalPresupuesto = $this->departamentRepository->getModel()->sum('budget');
-        return View('departamentos.index', compact('departaments','totalExpenses','totalPresupuesto','totalIncomes'));
+        $departaments = $this->departamentRepository->allData();
+        return View('departamentos.index', compact('departaments'));
     }
-
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com  
+    * @Create: 3/7/16 12:10 AM   @Update 0000-00-00
+    ***************************************************
+    * @Description:
+    *
+    *
+    *
+    * @Pasos:
+    *
+    *
+    * @return DATE
+    ***************************************************/
     public function dateSearch()
     {
         $now = Carbon::now();
