@@ -22,7 +22,7 @@
 
                 </span>
                 <span class="church">
-                    Bienvenido a la Iglesia Quepos
+                    Bienvenido a la Iglesia Adventista de Quepos
                 </span>
             </div>
             <div class="menu">
