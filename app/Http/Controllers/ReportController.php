@@ -183,7 +183,7 @@ class ReportController extends  Controller
         $pdf .= $this->firmas($orientacion);
         $pdf = Fpdf::SetXY(110,$y);
         $pdf .= $this->footer($date,$orientacion,$y);
-        Fpdf::Output('Informe-Semana: '.$date.'.pdf','I');
+        Fpdf::Output('Informe-Semanal: '.$date.'.pdf','I');
         exit;
     }
 
@@ -260,26 +260,20 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::Cell(40,5,utf8_decode('Dir. Mayordomia o Diacono'),0,1,'C');
     }
 
-    /*
-    |---------------------------------------------------------------------
-    |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
-    |@Date Create: 2015-01-10
-    |@Date Update: 2015-00-00
-    |---------------------------------------------------------------------
-    |@Description:
-    |
-    |
-    |@Pasos:
-    |
-    |
-    |
-    |
-    |
-    |
-    |----------------------------------------------------------------------
-    | @return mixed
-    |----------------------------------------------------------------------
-    */
+ /**************************************************
+ * @Author: Anwar Sarmiento Ramos
+ * @Email: asarmiento@sistemasamigables.com
+ * @Create: 10/01/16 07:10 PM   @Update 2016-07-11
+ ***************************************************
+ * @Description: En esta accion creamos el bloque
+ *  de los totales de la asociacion y la iglesia
+ *
+ *
+ * @Pasos:
+ *
+ *
+ * @return
+ ***************************************************/
     public function footer($date,$orientacion,$y)
     {
 
@@ -292,7 +286,7 @@ class ReportController extends  Controller
         $i = 0;
         foreach($typeIncomes AS $typeIncome):
             $pdf  .= Fpdf::SetX(10);
-            if($typeIncome->part == 'SI'): $i++;
+            if($typeIncome->part == 'si'): $i++;
                 $type = $this->typeIncomeRepository->getModel()->where('part','si')->lists('id');
                 $ofrenda = $this->incomeRepository->getModel()->where('date',$date)->whereIn('type_income_id',$type)->sum('balance');
                 if($i==1):
@@ -301,7 +295,7 @@ class ReportController extends  Controller
                 else:
                     $pdf  .= Fpdf::Cell(30,5,utf8_decode('20% DESARROLLO'),0,0,'L');
                     $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format(($ofrenda/5),2),0,1,'L');
-                    endif;
+                endif;
              else:
                  $pdf  .= Fpdf::Cell(30,5,utf8_decode(strtoupper($typeIncome->name)),0,0,'L');
                  $Total = $this->incomeRepository->getModel()->twoWhere('date',$date,'type_income_id',$typeIncome->id);
@@ -440,7 +434,7 @@ class ReportController extends  Controller
             $incomePart =$this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->where('part','SI')->whereBetween('date',['2016-01-01','2016-02-28'])->sum('incomes.balance');
+                ->where('departament_id',$departament->id)->where('part','si')->whereBetween('date',['2016-01-01','2016-02-28'])->sum('incomes.balance');
             $totalIngA += $income+$incomePart;
             $partAsocAcum +=($incomePart/5)*2;
             $partIgl =    ($incomePart/5)*3;
@@ -608,18 +602,18 @@ $i++;
             $totalIncome = $this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->where('part','NO')
+                ->where('departament_id',$departament->id)->where('part','no')
                 ->where('date','>=',$dateIni)
                 ->where('date','<=',$dateOut)->sum('incomes.balance');
             $acum = $this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('part','NO')
+                ->where('part','no')
                 ->where('departament_id',$departament->id)->sum('incomes.balance');
             $totalAcum = $this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('part','NO')
+                ->where('part','no')
                 ->where('departament_id',$departament->id)->sum('incomes.balance');
             $pdf   .= Fpdf::SetX(10);
             $pdf  .= Fpdf::Cell(5,6,utf8_decode($i),1,0,'L');
@@ -631,14 +625,14 @@ $i++;
             $income =$this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->where('part','NO')
+                ->where('departament_id',$departament->id)->where('part','no')
                 ->whereBetween('date',[$date->subMonth(1)->format('Y-m-d'),$date->endOfMonth()->format('Y-m-d')])->sum('incomes.balance');
             $date = new Carbon($dateIni);
 
             $incomePart =$this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->where('part','SI')
+                ->where('departament_id',$departament->id)->where('part','si')
                 ->whereBetween('date',[$date->subMonth(1)->format('Y-m-d'),$date->endOfMonth()->format('Y-m-d')])->sum('incomes.balance');
             $totalIngMAnt += $income+$incomePart;
             $partAsocAnt +=($incomePart/5)*2;
@@ -694,12 +688,12 @@ $i++;
             $income =$this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->where('part','NO')
+                ->where('departament_id',$departament->id)->where('part','no')
                 ->whereBetween('date',[$dateIni,$dateOut])->sum('incomes.balance');
             $incomePart =$this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->join('departaments','type_incomes.departament_id','=','departaments.id')
-                ->where('departament_id',$departament->id)->where('part','SI')
+                ->where('departament_id',$departament->id)->where('part','si')
                 ->whereBetween('date',[$dateIni,$dateOut])->sum('incomes.balance');
             $totalIngM += $income+$incomePart;
             $partAsoc +=($incomePart/5)*2;
@@ -757,11 +751,11 @@ $i++;
             $income =$this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->whereBetween('incomes.date',[$year.'-01-01',$year.'-12-31'])
-                ->where('departament_id',$departament->id)->where('part','NO')->sum('incomes.balance');
+                ->where('departament_id',$departament->id)->where('part','no')->sum('incomes.balance');
             $incomePart =$this->incomeRepository->getModel()
                 ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
                 ->whereBetween('incomes.date',[$year.'-01-01',$year.'-12-31'])
-                ->where('departament_id',$departament->id)->where('part','SI')->sum('incomes.balance');
+                ->where('departament_id',$departament->id)->where('part','si')->sum('incomes.balance');
 
             $totalIngA += $income+$incomePart;
             $partAsocAcum +=($incomePart/5)*2;
@@ -871,7 +865,7 @@ $i++;
         $pdf  .= Fpdf::Cell(35,7,utf8_decode('% Acum.'),0,1,'C');
         $typeIncomes = $this->typeIncomeRepository->allData();
         foreach($typeIncomes As $typeIncome):
-            if($typeIncome->association == 'SI'):
+            if($typeIncome->association == 'si'):
                 $pdf   = Fpdf::SetFont('Arial','',12);
 
 
@@ -896,7 +890,7 @@ $i++;
                 /**************************************************************************************************/
                 $totalIncome = $this->incomeRepository->getModel()
                     ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
-                    ->where('association','SI')->where('date','>=',$dateIni)
+                    ->where('association','si')->where('date','>=',$dateIni)
                     ->where('date','<=',$dateOut)->sum('incomes.balance');
                 if($income>0):
                     $pdf  .= Fpdf::Cell(40,7,number_format(($income/$totalIncome)*100,2).'%',0,0,'C');
@@ -906,7 +900,7 @@ $i++;
                 /**************************************************************************************************/
                 $totalAcum = $this->incomeRepository->getModel()
                     ->join('type_incomes','type_incomes.id','=','incomes.type_income_id')
-                    ->where('association','SI')->whereBetween('date',[$year.'-01-01',$dateOut])->sum('incomes.balance');
+                    ->where('association','si')->whereBetween('date',[$year.'-01-01',$dateOut])->sum('incomes.balance');
                 if($acum>0):
                     $pdf  .= Fpdf::Cell(35,7,number_format(($acum/$totalAcum)*100,2).'%',0,1,'C');
                 else:
