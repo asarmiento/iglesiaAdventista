@@ -105,4 +105,8 @@ class IncomeRepository extends BaseRepository
 
         return ($ofrenda/5);
     }
+
+    public function incomeDateMember($member,$date){
+        return $this->newQuery()->where('member_id',$member)->where('date',$date)->orderBy('id','ASC');
+    }
 }

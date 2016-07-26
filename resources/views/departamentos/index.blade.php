@@ -40,8 +40,11 @@ Lista Departamentos
             @endif
         </tr>
             <?php
-            $porcent+=$departament->budget;
-            $budget+=$departament->balance;?>
+                    if($departament->type=='iglesia'):
+                        $porcent+=$departament->budget;
+                        $budget+=$departament->balance;
+                    endif;
+            ?>
         @endforeach
 
     </tbody>

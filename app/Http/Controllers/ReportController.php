@@ -103,76 +103,70 @@ class ReportController extends  Controller
     {
         //$date = Input::get('date');
 
-        $fixs = $this->typeIncomeRepository->allData();
 
-        $miembros = $this->memberRepository->allData();
-        $incomes = $this->incomeRepository->getModel()->where('date',$date)->groupBy('numberOf')->orderBy('id','ASC')->get();
-        $i=0;
-        foreach($fixs AS $fix):
-            $amount=  $this->incomeRepository->twoWhereList('type_income_id',$fix->id,'date',$date,'balance');
 
-            if($amount > 0):
-                $i++;
-            endif;
-        endforeach;
-        if($i <= 9):
+
+        $fixs = $this->typeIncomeRepository->getModel()->whereHas('incomes',function ($q) use ($date){
+            $q->where('date',$date);
+        })->count();
+        if($fixs <= 9):
             $orientacion = 'P';
-            else:
+        else:
                 $orientacion = 'L';
-                endif;
-        $this->header($date,$orientacion);
+        endif;
 
+        $this->header($date,$orientacion);
         $pdf    = Fpdf::SetFont('Arial','B',7);
-        $pdf    = Fpdf::SetX(5);
+        $pdf    .= Fpdf::SetX(5);
         $pdf  .= Fpdf::Cell(5,7,utf8_decode('N°'),1,0,'C');
         $pdf  .= Fpdf::Cell(40,7,utf8_decode('Nombres'),1,0,'C');
         $pdf  .= Fpdf::Cell(13,7,utf8_decode('Recibo N°'),1,0,'C');
         $pdf  .= Fpdf::Cell(13,7,utf8_decode('Total'),1,0,'C');
         $i=0;
+        $fixs = $this->typeIncomeRepository->getModel()->whereHas('incomes',function ($q) use ($date){
+            $q->where('date',$date);
+        })->get();
         foreach($fixs AS $fix): $i++;
-            $amount=  $this->incomeRepository->twoWhereList('type_income_id',$fix->id,'date',$date,'balance');
-
-            if($amount > 0):
-                $pdf  .= Fpdf::Cell(13,7,substr(utf8_decode($fix->name),0,8),1,0,'C');
-            endif;
+           $pdf  .= Fpdf::Cell(13,7,substr(utf8_decode($fix->name),0,8),1,0,'C');
         endforeach;
 
         $pdf  .= Fpdf::ln();
         $e =0;
         $fin = 0;
+        $pdf  .= Fpdf::SetFont('Arial','I',7);
+
         /* INICIO DE CUERPO */
-        foreach($incomes AS $income):
-            $miembros = $this->memberRepository->getModel()->where('type','miembro')->where('id',$income->member_id)->get();
-            if(!$miembros->isEmpty()):
+        $miembros = $this->memberRepository->getModel()->whereHas('incomes',function ($q) use ($date){
+            $q->where('date',$date)->groupBy('numberOf')->orderBy('id','ASC');
+        })->get();
+        foreach($miembros AS $miembro):
             $e++;
-            $pdf    .= Fpdf::SetX(5);
+            $pdf  .= Fpdf::SetX(5);
             $pdf  .= Fpdf::Cell(5,7,utf8_decode($e),1,0,'C');
-            $pdf  .= Fpdf::Cell(40,7,substr(utf8_decode($miembros[0]->completo()),0,30),1,0,'L');
-            $pdf  .= Fpdf::Cell(13,7,$miembros[0]->incomes->numberOf,1,0,'C');
-                $total = $this->incomeRepository->getModel()->where('date',$date)->where('numberOf',$income->numberOf)->where('member_id',$miembros[0]->id)->sum('balance');
-                $fin += $total;
-                $pdf  .= Fpdf::Cell(13,7,number_format($total,2),1,0,'C');
+            $pdf  .= Fpdf::Cell(40,7,substr(utf8_decode($miembro->completo()),0,30),1,0,'L');
+            $numberOf = $this->incomeRepository->incomeDateMember($miembro->id,$date)->get();
+            $pdf  .= Fpdf::Cell(13,7,$numberOf[0]->numberOf,1,0,'C');
+            $total = $numberOf = $this->incomeRepository->incomeDateMember($miembro->id,$date)->sum('balance');
+            $fin += $total;
+            $pdf  .= Fpdf::Cell(13,7,number_format($total,2),1,0,'C');
+
             foreach($fixs AS $fix):
-                $amount=  $this->incomeRepository->twoWhereList('type_income_id',$fix->id,'date',$date,'balance');
-                if($amount > 0):
-                    $pdf  .= Fpdf::Cell(13,7,number_format($miembros[0]->incomes->fourWhere('type_income_id',$fix->id,'member_id',$miembros[0]->id,'date',$date,'numberOf',$income->numberOf),2),1,0,'C');
-                endif;
+                $amount = $this->incomeRepository->incomeDateMember($miembro->id,$date)->where('type_income_id',$fix->id)->sum('balance');
+                $pdf  .= Fpdf::Cell(13,7,number_format($amount,2),1,0,'C');
             endforeach;
 
             $pdf  .= Fpdf::ln();
-        endif;
+
 
         endforeach;
         /*fIN DE CUERPO*/
-        $pdf    = Fpdf::SetFont('Arial','B',6.5);
-        $pdf    = Fpdf::SetX(5);
+        $pdf  .= Fpdf::SetFont('Arial','B',6.5);
+        $pdf  .= Fpdf::SetX(5);
         $pdf  .= Fpdf::Cell(58,7,'TOTALES _  _  _  _  _  _',0,0,'R');
         $pdf  .= Fpdf::Cell(13,7,number_format($fin,2),1,0,'R');
         foreach($fixs AS $fix):
             $amount=  $this->incomeRepository->twoWhereList('type_income_id',$fix->id,'date',$date,'balance');
-            if($amount > 0):
-                $pdf  .= Fpdf::Cell(13,7,number_format($income->twoWhere('type_income_id',$fix->id,'date',$date),2),1,0,'C');
-            endif;
+           $pdf  .= Fpdf::Cell(13,7,number_format($amount,2),1,0,'C');
         endforeach;
 
 
