@@ -101,13 +101,10 @@ class ReportController extends  Controller
 
     public function store($date)
     {
-        //$date = Input::get('date');
-
-
-
+        $date = new Carbon($date);
 
         $fixs = $this->typeIncomeRepository->getModel()->whereHas('incomes',function ($q) use ($date){
-            $q->where('date',$date);
+            $q->where('date',$date->format('Y-m-d'));
         })->count();
         if($fixs <= 9):
             $orientacion = 'P';
@@ -115,7 +112,7 @@ class ReportController extends  Controller
                 $orientacion = 'L';
         endif;
 
-        $this->header($date,$orientacion);
+        $this->header($date->format('Y-m-d'),$orientacion);
         $pdf    = Fpdf::SetFont('Arial','B',7);
         $pdf    .= Fpdf::SetX(5);
         $pdf  .= Fpdf::Cell(5,7,utf8_decode('N°'),1,0,'C');
@@ -124,7 +121,7 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::Cell(13,7,utf8_decode('Total'),1,0,'C');
         $i=0;
         $fixs = $this->typeIncomeRepository->getModel()->whereHas('incomes',function ($q) use ($date){
-            $q->where('date',$date);
+            $q->where('date',$date->format('Y-m-d'));
         })->get();
         foreach($fixs AS $fix): $i++;
            $pdf  .= Fpdf::Cell(13,7,substr(utf8_decode($fix->name),0,8),1,0,'C');
@@ -136,22 +133,24 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::SetFont('Arial','I',7);
 
         /* INICIO DE CUERPO */
+
         $miembros = $this->memberRepository->getModel()->whereHas('incomes',function ($q) use ($date){
-            $q->where('date',$date)->groupBy('numberOf')->orderBy('id','ASC');
+            $q->where('date',$date->format('Y-m-d'))->orderBy('id','ASC');
         })->get();
+
         foreach($miembros AS $miembro):
             $e++;
             $pdf  .= Fpdf::SetX(5);
             $pdf  .= Fpdf::Cell(5,7,utf8_decode($e),1,0,'C');
             $pdf  .= Fpdf::Cell(40,7,substr(utf8_decode($miembro->completo()),0,30),1,0,'L');
-            $numberOf = $this->incomeRepository->incomeDateMember($miembro->id,$date)->get();
+            $numberOf = $this->incomeRepository->incomeDateMember($miembro->id,$date->format('Y-m-d'))->get();
             $pdf  .= Fpdf::Cell(13,7,$numberOf[0]->numberOf,1,0,'C');
-            $total = $numberOf = $this->incomeRepository->incomeDateMember($miembro->id,$date)->sum('balance');
+            $total = $numberOf = $this->incomeRepository->incomeDateMember($miembro->id,$date->format('Y-m-d'))->sum('balance');
             $fin += $total;
             $pdf  .= Fpdf::Cell(13,7,number_format($total,2),1,0,'C');
 
             foreach($fixs AS $fix):
-                $amount = $this->incomeRepository->incomeDateMember($miembro->id,$date)->where('type_income_id',$fix->id)->sum('balance');
+                $amount = $this->incomeRepository->incomeDateMember($miembro->id,$date->format('Y-m-d'))->where('type_income_id',$fix->id)->sum('balance');
                 $pdf  .= Fpdf::Cell(13,7,number_format($amount,2),1,0,'C');
             endforeach;
 
@@ -165,7 +164,7 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::Cell(58,7,'TOTALES _  _  _  _  _  _',0,0,'R');
         $pdf  .= Fpdf::Cell(13,7,number_format($fin,2),1,0,'R');
         foreach($fixs AS $fix):
-            $amount=  $this->incomeRepository->twoWhereList('type_income_id',$fix->id,'date',$date,'balance');
+            $amount=  $this->incomeRepository->twoWhereList('type_income_id',$fix->id,'date',$date->format('Y-m-d'),'balance');
            $pdf  .= Fpdf::Cell(13,7,number_format($amount,2),1,0,'C');
         endforeach;
 
