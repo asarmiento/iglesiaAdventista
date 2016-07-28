@@ -21,4 +21,11 @@ class BalanceChurchRepository extends BaseRepository
     {
         return new BalanceChurch();// TODO: Implement getModel() method.
     }
+
+    public function saldoInitial($period)
+    {
+        $initial = $this->newQuery()->where('period_id',$period)->get();
+
+        return $initial[0];
+    }
 }

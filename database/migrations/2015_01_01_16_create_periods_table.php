@@ -18,6 +18,9 @@ class CreatePeriodsTable extends Migration
             $table->string('year',4);
             $table->integer('church_id')->unsigned()->index();
             $table->foreign('church_id')->references('id')->on('churches')->onDelete('no action');
+            $table->date('dateIn');
+            $table->date('dateOut');
+            $table->text('token');
             $table->engine = 'InnoDB';
             $table->timestamps();
             $table->softDeletes();
