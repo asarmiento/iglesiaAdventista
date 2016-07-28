@@ -85,6 +85,7 @@
             <thead>
                 <tr>
                     <th>N°</th>
+                    <th>Saldo Departamento</th>
                     <th>Departamento</th>
                     <th>Gasto</th>
                     <th>Detalle</th>
@@ -98,8 +99,9 @@
                 @foreach($expenses AS $key=>$expense)
                     <tr>
                         <td>{{$key+1}}</td>
-                        <td>{{$expense->typeExpenses->departaments[0]->name}}</td>
-                        <td>{{$expense->typeExpenses->name}}</td>
+                        <td>{{$expense->typeExpense->departament->balance}}</td>
+                        <td>{{$expense->typeExpense->departament->name}}</td>
+                        <td>{{$expense->typeExpense->name}}</td>
                         <td>{{$expense->detail}}</td>
                         <td>{{$expense->invoiceDate}}</td>
                         <td>{{$expense->invoiceNumber}}</td>

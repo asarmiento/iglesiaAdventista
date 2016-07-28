@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Period extends Entity
 {
-    protected $fillable = ['month','year','church_id','token'];
+    protected $fillable = ['month','year','church_id','dateIn','dateOut','token'];
 
     public function getRules()
     {

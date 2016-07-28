@@ -435,7 +435,8 @@ class DepartamentsController extends Controller {
                 $totalType += $totalIncome;
             endif;
         endforeach;
-        $transfers = $this->transfersRepository->getModel()->where('departament_id',$id)->where('type','entrada')->get();
+        $transfers = $this->transfersRepository->getModel()->whereBetween('date',[$datos['dateIn'],$datos['dateOut']])
+            ->where('departament_id',$id)->where('type','entrada')->get();
         $totalTransfer = 0;
 
         if(!$transfers->isEmpty()):

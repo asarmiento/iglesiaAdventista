@@ -21,9 +21,9 @@ class TypeExpense extends Entity
        ]; // TODO: Implement getRules() method.
     }
 
-    public function departaments()
+    public function departament()
     {
-        return $this->hasMany(Departament::getClass(),'id','departament_id');
+        return $this->belongsTo(Departament::getClass());
     }
 
     public function expenses()

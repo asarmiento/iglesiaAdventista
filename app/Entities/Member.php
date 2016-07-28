@@ -31,4 +31,9 @@ class Member extends Entity
     {
         return $this->name. '  '.$this->last;
     }
+
+    public function member($date){
+        return $this->belongsTo(Member::getClass(),'member_id','id')->where('date',$date);
+    }
+
 }

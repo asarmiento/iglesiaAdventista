@@ -72,7 +72,20 @@ class IncomeRepository extends BaseRepository
 
         return $total;
     }
-
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com
+    * @Create: 27/07/16 08:21 AM   @Update 0000-00-00
+    ***************************************************
+    * @Description: Con esta consultas recibimos el total
+    * de la asociación segun el id del control interno
+    *
+    *
+    * @Pasos:
+    *
+    *
+    * @return amount
+    ***************************************************/
     public function campoRecord($id,$dateIn,$dateout)
     {
         $ofrenda = $this->newQuery()->wherehas('typeIncomes',function($q){
@@ -89,14 +102,60 @@ class IncomeRepository extends BaseRepository
 
         return $total;
     }
-
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com
+    * @Create: 27/07/16 08:27 AM   @Update 0000-00-00
+    ***************************************************
+    * @Description: Total de diezmos segun el id del
+    *   control interno en un rango de fechas
+    *
+    *
+    * @Pasos:
+    *
+    *
+    * @return amount
+    ***************************************************/
     public function diezmosRecord($id,$dateIn,$dateout){
 
         return $this->newQuery()->wherehas('typeIncomes',function($q){
             $q->where('part','no')->where('association','si');
         })->where('record_id',$id)->whereBetween('date',[$dateIn,$dateout])->sum('balance');
     }
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com
+    * @Create: 27/07/16 08:30 AM   @Update 0000-00-00
+    ***************************************************
+    * @Description:
+    *
+    *
+    *
+    * @Pasos:
+    *
+    *
+    * @return
+    ***************************************************/
+    public function diezmos($dateIn,$dateout){
 
+        return $this->newQuery()->wherehas('typeIncomes',function($q){
+            $q->where('part','no')->where('association','si');
+        })->whereBetween('date',[$dateIn,$dateout])->sum('balance');
+    }
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com
+    * @Create: 27/07/16 08:30 AM   @Update 0000-00-00
+    ***************************************************
+    * @Description:
+    *
+    *
+    *
+    * @Pasos:
+    *
+    *
+    * @return amount
+    ***************************************************/
     public function ofrendaRecord($id,$dateIn,$dateout)
     {
         $ofrenda = $this->newQuery()->wherehas('typeIncomes',function($q){
@@ -104,5 +163,43 @@ class IncomeRepository extends BaseRepository
         })->where('record_id',$id)->whereBetween('date',[$dateIn,$dateout])->sum('balance');
 
         return ($ofrenda/5);
+    }
+
+    public function ofrenda($dateIn,$dateout)
+    {
+        $ofrenda = $this->newQuery()->wherehas('typeIncomes',function($q){
+            $q->where('part','si');
+        })->whereBetween('date',[$dateIn,$dateout])->sum('balance');
+
+        return ($ofrenda/5);
+    }
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com
+    * @Create: 27/07/16 04:50 PM   @Update 0000-00-00
+    ***************************************************
+    * @Description:
+    *
+    *
+    *
+    * @Pasos:
+    *
+    *
+    * @return
+    ***************************************************/
+    public function ofrendaLocal($dateIn,$dateout)
+    {
+        $ofrenda = $this->newQuery()->wherehas('typeIncomes',function($q){
+            $q->where('part','si');
+        })->whereBetween('date',[$dateIn,$dateout])->sum('balance');
+
+        $ofrendaOther = $this->newQuery()->wherehas('typeIncomes',function($q){
+            $q->where('part','no')->where('offering','si')->where('association','no');
+        })->whereBetween('date',[$dateIn,$dateout])->sum('balance');
+
+        return (($ofrenda/5)*3)+$ofrendaOther;
+    }
+    public function incomeDateMember($member,$date){
+        return $this->newQuery()->where('member_id',$member)->where('date',$date)->orderBy('id','ASC');
     }
 }

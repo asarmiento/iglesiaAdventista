@@ -114,9 +114,9 @@ class ExpenseController extends Controller {
 		if($expenses->isValid($gasto)):
 			$expenses->fill($gasto);
 			$expenses->save();
-
-			$this->typeExpenseRepository->updatesOutBalance($expenses->type_expense_id,$expenses->amount,'balance');
-			return redirect()->route('create-gasto',$gasto['check_id']);
+           $this->typeExpenseRepository->updatesOutBalance($expenses->type_expense_id,$expenses->amount,'balance');
+            $this->departamentRepository->updatesOutBalance($expenses->typeExpense->departament->id,$expenses->amount,'balance');
+			return redirect()->route('create-gasto',$expenses->check_id);
 		endif;
 
 		return redirect('iglesia/gastos/create/'.$gasto['check_id'])->withErrors($expenses)->withInput();
@@ -207,8 +207,10 @@ class ExpenseController extends Controller {
 	public function deleteExpense($id)
 	{
 		$expense=$this->expensesRepository->getModel()->find($id);
+        $this->typeExpenseRepository->updateBalance($expense->type_expense_id,$expense->amount,'balance');
+        $this->departamentRepository->updateBalance($expense->typeExpense->departament->id,$expense->amount,'balance');
 
-		$this->expensesRepository->getModel()->destroy($id);
+        $this->expensesRepository->getModel()->destroy($id);
 
 		return Redirect::route('create-gasto',$expense->check_id);
 	}
