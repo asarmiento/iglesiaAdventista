@@ -7,12 +7,13 @@ class TypeIncome extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['balance','name', 'church_id','departament_id'];
+    protected $fillable= ['balance','name', 'church_id','departament_id','abreviation'];
 
     public function getRules()
     {
         return [
             'name'                =>'required',
+            'abreviation'      =>'required',
             'departament_id'      =>'required',
             'church_id' =>'required'
         ];
@@ -32,9 +33,9 @@ class TypeIncome extends Entity
     {
         return $this->belongsTo(Income::getClass(),'id','type_income_id');
     }
-    public function departaments()
+    public function departament()
     {
-        return $this->hasMany(Departament::getClass(),'id','departament_id');
+        return $this->belongsTo(Departament::getClass());
     }
     public function incomes()
     {

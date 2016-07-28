@@ -34,6 +34,16 @@ abstract class BaseRepository {
 
         return false;
     }
+    public function one($campo,$token) {
+        $consults = $this->newQuery()->where($campo, $token)->get();
+        if ($consults):
+            foreach ($consults as $consult):
+                return $consult;
+            endforeach;
+        endif;
+
+        return false;
+    }
     public function _token($token) {
         $consults = $this->newQuery()->where('token', $token)->get();
         if ($consults):
@@ -78,6 +88,10 @@ abstract class BaseRepository {
         return $this->newQuery()->where($data,$id)->where($data1,$id1)->sum($sum);
     }
     public function treeWhereList($data,$id,$data1,$id1,$data2,$id2,$sum)
+    {
+        return $this->newQuery()->where($data,$id)->where($data2,$id2)->where($data1,$id1)->lists($sum);
+    }
+    public function treeWhereSum($data,$id,$data1,$id1,$data2,$id2,$sum)
     {
         return $this->newQuery()->where($data,$id)->where($data2,$id2)->where($data1,$id1)->sum($sum);
     }

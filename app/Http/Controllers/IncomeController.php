@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use SistemasAmigables\Entities\Record;
 use SistemasAmigables\Entities\TypeFixedIncome;
 use SistemasAmigables\Entities\TypesTemporaryIncome;
+use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\MemberRepository;
 use SistemasAmigables\Repositories\RecordRepository;
@@ -37,6 +38,10 @@ class IncomeController extends Controller {
      * @var TypeIncomeRepository
      */
     private $typeIncomeRepository;
+    /**
+     * @var DepartamentRepository
+     */
+    private $departamentRepository;
 
     /**
      * @param RecordRepository $recordRepository
@@ -44,6 +49,7 @@ class IncomeController extends Controller {
      * @param TypeIncomeRepository $TypeIncomeRepository
      * @param TypeIncomeRepository $typeIncomeRepository
      * @param IncomeRepository $incomeRepository
+     * @param DepartamentRepository $departamentRepository
      * @internal param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
      */
     public function __construct(
@@ -51,16 +57,17 @@ class IncomeController extends Controller {
         MemberRepository $memberRepository,
         TypeIncomeRepository $TypeIncomeRepository,
         TypeIncomeRepository $typeIncomeRepository,
-        IncomeRepository $incomeRepository
+        IncomeRepository $incomeRepository,
+        DepartamentRepository $departamentRepository
     )
     {
 
         $this->recordRepository = $recordRepository;
         $this->memberRepository = $memberRepository;
         $this->TypeIncomeRepository = $TypeIncomeRepository;
-
         $this->incomeRepository = $incomeRepository;
         $this->typeIncomeRepository = $typeIncomeRepository;
+        $this->departamentRepository = $departamentRepository;
     }
     /**
      * Display a listing of incomes
@@ -80,7 +87,7 @@ class IncomeController extends Controller {
      */
     public function create($token) {
 
-        $typeIncomes=  $this->typeIncomeRepository->allData();
+        $typeIncomes=  $this->typeIncomeRepository->oneWhere('status','activo');
         $incomes=  $this->recordRepository->token($token);
         $members = $this->memberRepository->getModel()->all();
         return View('incomes.form', compact('incomes','typeIncomes','members'));
@@ -105,23 +112,80 @@ class IncomeController extends Controller {
             DB::beginTransaction();
             $datas = $this->dataAbout();
             $control = Input::all();
-
+            /** Inicializacion de variables para totales */
             $balance = 0;
-
+            $totalOfrenda =0;
+            $totalIglOfrenda =0;
+            $totalAsociacion =0;
+            $otrosIglesia=[];
+            $otrosNoIglesia=[];
+            $allIncomeIglesia=[];
+            /** Busqueda de los id */
+            $diezmos = $this->typeIncomeRepository->treeWhereList('offering','no','part','no','association','si','id');
+            $ofrenda = $this->typeIncomeRepository->treeWhereList('part','si','association','si','offering','si','id');
+            $otrasAsocOfrendas = $this->typeIncomeRepository->treeWhereList('part','no','association','si','offering','si','id');
+            $otrasIglOfrendas = $this->typeIncomeRepository->treeWhereList('part','no','association','no','offering','si','id');
+            $otrasIgl = $this->typeIncomeRepository->treeWhereList('part','no','association','no','offering','no','id');
+            $allTypeIncomes = $this->typeIncomeRepository->allData();
             foreach ($datas AS $data):
+
                 $record = $this->incomeRepository->getModel();
                $balance += $data['balance'];
 
-                if ($record->isValid($data)):
+               if ($record->isValid($data)):
                     $record->fill($data);
                     $record->save();
-
+                     /** Buscamos los montos para las cantidades para su distribución*/
+                if($diezmos[0] == $data['type_income_id']):
+                    $totalAsociacion += $data['balance'];
                 endif;
+                if($ofrenda[0] == $data['type_income_id']):
+
+                    $totalAsociacion += ($data['balance']*0.4);
+                    $totalIglOfrenda += ($data['balance']*0.6);
+                endif;
+                if($ofrenda[1] == $data['type_income_id']):
+                    $totalAsociacion += ($data['balance']*0.4);
+                    $totalIglOfrenda += ($data['balance']*0.6);
+                endif;
+                foreach ($otrasAsocOfrendas AS $otrasAsocOfrenda):
+                    if($otrasAsocOfrenda == $data['type_income_id']):
+                        $totalAsociacion += $data['balance'];
+                    endif;
+                endforeach;
+                foreach ($otrasIglOfrendas AS $otrasOfrenda):
+                    if($otrasOfrenda == $data['type_income_id']):
+                        if (array_key_exists($otrasOfrenda, $otrosIglesia)) :
+                            $value = $data['balance'] + $otrosIglesia[$otrasOfrenda];
+                            $otrosIglesia[$otrasOfrenda] = $value;
+                            break;
+                        endif;
+                        $otrosIglesia[$otrasOfrenda] = $data['balance'];
+                        break;
+                    endif;
+                endforeach;
+
+                foreach ($otrasIgl AS $otrasIglesia):
+                    if($otrasIglesia == $data['type_income_id']):
+                        if (array_key_exists($otrasIglesia, $otrosIglesia)) :
+                            $value = $data['balance'] + $otrosIglesia[$otrasIglesia];
+                            $otrosIglesia[$otrasIglesia] = $value;
+                            break;
+                        endif;
+                        $otrosIglesia[$otrasIglesia] = $data['balance'];
+                    endif;
+                endforeach;
+
+                $totalesDepartaments= ['asociacion'=>$totalAsociacion,
+                    'iglesia'=>['Ofrenda'=>($totalIglOfrenda),$otrosIglesia,$otrosNoIglesia]];
+                    endif;
+
             endforeach;
+             $this->ingresoDepartaments($totalesDepartaments);
 
             if($balance == $control['balanceControl']):
             DB::commit();
-            return redirect()->route('index-income');
+            return redirect()->route('post-report',$data['date']);
             endif;
             return redirect()->route('index-income')->withErrors(['balance'=>'Hay un monto mal no es igual'])
                 ->withInput();
@@ -132,6 +196,40 @@ class IncomeController extends Controller {
         }
     }
 
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com
+    * @Create: 11/07/16 06:10 PM   @Update 0000-00-00
+    ***************************************************
+    * @Description: En esta accion hacemos la distribucion
+    * entre todos los departamentos
+    *
+    *
+    * @Pasos:
+    * @param $datos
+    *
+    * @return not
+    ***************************************************/
+
+    private function ingresoDepartaments($datos)
+    {
+        $balanceCampo = $this->departamentRepository->oneWhereSum('type','campo','balance');
+        $this->departamentRepository->getModel()->where('type','campo')->update(['balance'=>($datos['asociacion']+$balanceCampo)]);
+        $departaments = $this->departamentRepository->oneWhere('type','iglesia');
+        foreach ($departaments AS $departament):
+            $this->departamentRepository->getModel()->where('id',$departament->id)
+                ->update(['balance'=>(($datos['iglesia']['Ofrenda']*$departament->budget)+$departament->balance)]);
+        endforeach;
+
+        foreach ($datos['iglesia'][0] AS $key => $otrosIngresos):
+            $type = $this->departamentRepository->getModel()->whereHas('typeIncomes',function ($q) use ($key) {
+            $q->where('type_incomes.id',$key);
+            })->get();
+
+            $this->departamentRepository->updateBalance($type[0]->id,(($otrosIngresos)+$type[0]->balance),'balance');
+        endforeach;
+
+    }
     /*
     |---------------------------------------------------------------------
     |@Author: Anwar Sarmiento <asarmiento@sistemasamigables.com
@@ -151,7 +249,7 @@ class IncomeController extends Controller {
 
         $i=1;
         $record = $this->recordRepository->token(Input::get('tokenControlNumber'));
-        $fixeds = $this->TypeIncomeRepository->allData();
+        $fixeds = $this->TypeIncomeRepository->oneWhere('status','activo');
 
         unset($data['tokenControlNumber']);
         unset($data['token']);

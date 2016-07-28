@@ -8,8 +8,10 @@ Formulario  Ingresos
 @stop
 
 @section('content')
-<div class="panel-primary">
+<div class="panel-primary right"  style="width:1024px; height:710px; overflow: scroll;">
+<div class="panel-primary panel-body "  >
     <div class="panel">@include('partials/errors')</div>
+
         <form method="post" action="{{route('incomes-store')}}" role='form' class='form-inline'>
         <div class="list-group">
             <div class="col-sm-3">
@@ -33,6 +35,7 @@ Formulario  Ingresos
             </div>
         </div>
         <div class="row">
+
             <table class="table-bordered">
                 <thead class="headerTable color-green">
                     <tr>
@@ -40,7 +43,7 @@ Formulario  Ingresos
                         <th>Miembro</th>
                         <th>Numero Sobre</th>
                         @foreach($typeIncomes AS $typeIncome)
-                        <th>{{$typeIncome->name}}</th>
+                        <th>{{$typeIncome->abreviation}}</th>
                         @endforeach
                     </tr>
                 </thead>
@@ -72,5 +75,6 @@ Formulario  Ingresos
             </div>
         </div>
     </form>
+</div>
 </div>
 @stop
