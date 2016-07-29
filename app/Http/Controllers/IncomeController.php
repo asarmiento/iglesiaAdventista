@@ -120,6 +120,7 @@ class IncomeController extends Controller {
             $otrosIglesia=[];
             $otrosNoIglesia=[];
             $allIncomeIglesia=[];
+            $TotalDiezmos = 0;
             /** Busqueda de los id */
             $diezmos = $this->typeIncomeRepository->treeWhereList('offering','no','part','no','association','si','id');
             $ofrenda = $this->typeIncomeRepository->treeWhereList('part','si','association','si','offering','si','id');
@@ -127,6 +128,7 @@ class IncomeController extends Controller {
             $otrasIglOfrendas = $this->typeIncomeRepository->treeWhereList('part','no','association','no','offering','si','id');
             $otrasIgl = $this->typeIncomeRepository->treeWhereList('part','no','association','no','offering','no','id');
             $allTypeIncomes = $this->typeIncomeRepository->allData();
+           // echo json_encode($datas).'</br>';
             foreach ($datas AS $data):
 
                 $record = $this->incomeRepository->getModel();
@@ -138,6 +140,7 @@ class IncomeController extends Controller {
                      /** Buscamos los montos para las cantidades para su distribución*/
                 if($diezmos[0] == $data['type_income_id']):
                     $totalAsociacion += $data['balance'];
+
                 endif;
                 if($ofrenda[0] == $data['type_income_id']):
 
@@ -181,14 +184,15 @@ class IncomeController extends Controller {
                     endif;
 
             endforeach;
+
              $this->ingresoDepartaments($totalesDepartaments);
 
             if($balance == $control['balanceControl']):
             DB::commit();
-            return redirect()->route('post-report',$data['date']);
+          //  return redirect()->route('post-report',$data['date']);
             endif;
-            return redirect()->route('index-income')->withErrors(['balance'=>'Hay un monto mal no es igual'])
-                ->withInput();
+         //   return redirect()->route('index-income')->withErrors(['balance'=>'Hay un monto mal no es igual'])
+          //      ->withInput();
             /* Enviamos el mensaje de error */
         }catch (Exception $e) {
             \Log::error($e);
@@ -214,19 +218,23 @@ class IncomeController extends Controller {
     private function ingresoDepartaments($datos)
     {
         $balanceCampo = $this->departamentRepository->oneWhereSum('type','campo','balance');
+
         $this->departamentRepository->getModel()->where('type','campo')->update(['balance'=>($datos['asociacion']+$balanceCampo)]);
+
         $departaments = $this->departamentRepository->oneWhere('type','iglesia');
         foreach ($departaments AS $departament):
+
             $this->departamentRepository->getModel()->where('id',$departament->id)
                 ->update(['balance'=>(($datos['iglesia']['Ofrenda']*$departament->budget)+$departament->balance)]);
         endforeach;
 
         foreach ($datos['iglesia'][0] AS $key => $otrosIngresos):
+
             $type = $this->departamentRepository->getModel()->whereHas('typeIncomes',function ($q) use ($key) {
             $q->where('type_incomes.id',$key);
             })->get();
 
-            $this->departamentRepository->updateBalance($type[0]->id,(($otrosIngresos)+$type[0]->balance),'balance');
+            $this->departamentRepository->updateBalance($type[0]->id,(($otrosIngresos)),'balance');
         endforeach;
 
     }

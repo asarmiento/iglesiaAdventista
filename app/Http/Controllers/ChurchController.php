@@ -497,7 +497,7 @@ class ChurchController extends Controller {
         foreach($typeIncomes As $typeIncome):
             $pdf .= Fpdf::Cell(15,7,number_format($this->incomeRepository->ofrendaRecord($typeIncome->id,$period->dateIn,$period->dateOut),2),1,0,'C');
         endforeach;
-        $pdf .= Fpdf::Cell(20,7,number_format($record->balance-$this->incomeRepository->ofrendaLocal($period->dateIn,$period->dateOut),2),1,1,'C');
+        $pdf .= Fpdf::Cell(20,7,number_format($this->incomeRepository->ofrendaLocal($period->dateIn,$period->dateOut),2),1,1,'C');
         /** */
         $pdf .= Fpdf::Cell(149,7,utf8_decode('Total de Ingresos:'),1,0,'R');
         $pdf .= Fpdf::Cell(20,7,number_format($saldo->amount+$totalFondoLocal,2),1,1,'C');
