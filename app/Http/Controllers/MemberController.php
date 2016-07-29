@@ -6,10 +6,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 use SistemasAmigables\Entities\Church;
 use SistemasAmigables\Entities\Member;
 use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\MemberRepository;
+use SistemasAmigables\Repositories\TypeExpenseRepository;
 use SistemasAmigables\Repositories\TypeIncomeRepository;
 use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
 
@@ -30,17 +32,24 @@ class MemberController extends Controller {
      * @var IncomeRepository
      */
     private $incomeRepository;
+    /**
+     * @var TypeExpenseRepository
+     */
+    private $typeExpenseRepository;
 
     /**
      * @param MemberRepository $memberRepository
-     * @param TypeIncomeRepository $TypeIncomeRepository
+     * @param TypeIncomeRepository $typeIncomeRepository
      * @param IncomeRepository $incomeRepository
+     * @param TypeExpenseRepository $typeExpenseRepository
+     * @internal param TypeIncomeRepository $TypeIncomeRepository
      * @internal param TypeTemporaryIncomeRepository $typeTemporaryIncomeRepository
      */
     public function __construct(
         MemberRepository $memberRepository,
         TypeIncomeRepository $typeIncomeRepository,
-        IncomeRepository $incomeRepository
+        IncomeRepository $incomeRepository,
+        TypeExpenseRepository $typeExpenseRepository
     )
     {
 
@@ -48,6 +57,7 @@ class MemberController extends Controller {
         $this->typeIncomeRepository = $typeIncomeRepository;
 
         $this->incomeRepository = $incomeRepository;
+        $this->typeExpenseRepository = $typeExpenseRepository;
     }
     /**
      * Display a listing of members
@@ -206,6 +216,13 @@ class MemberController extends Controller {
         Member::destroy($id);
 
         return Redirect('/miembros');
+    }
+
+    public function matOther()
+    {
+        $members = $this->memberRepository->allData();
+        $typeExpenses = $this->typeExpenseRepository->allData();
+        return view('members.matOther',compact('members','typeExpenses'));
     }
 
 }

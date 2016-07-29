@@ -410,6 +410,7 @@ class ChurchController extends Controller {
         $depart = $this->departamentRepository->getModel()->where('type','iglesia')->orderBy('id','DESC')->count();
         $period = $this->periodRepository->token($token);
         $periodBefoere = $this->periodRepository->before($period);
+
         $this->header();
 
         $pdf = Fpdf::SetFont('Arial','B',12);
@@ -420,8 +421,8 @@ class ChurchController extends Controller {
 
         $pdf .= Fpdf::Ln();
         $pdf .= Fpdf::SetFont('Arial','B',7);
-        $pdf .= Fpdf::Cell(74,7,utf8_decode(''),1,0,'C');
-        $pdf .= Fpdf::Cell(154,7,utf8_decode('FONDOS PARA ENVIAR A LA ASOCIACIÓN'),1,1,'C');
+        $pdf .= Fpdf::Cell(54,7,utf8_decode(''),1,0,'C');
+        $pdf .= Fpdf::Cell(124,7,utf8_decode('FONDOS PARA ENVIAR A LA ASOCIACIÓN'),1,1,'C');
        // $pdf .= Fpdf::Cell(($depart*25),7,utf8_decode('FONDOS PARA EL PRESUPUESTO LOCAL'),1,1,'C');
 
         $pdf = Fpdf::SetFont('Arial','B',7);

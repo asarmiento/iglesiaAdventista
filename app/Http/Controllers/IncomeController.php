@@ -9,6 +9,7 @@ use SistemasAmigables\Entities\TypesTemporaryIncome;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\MemberRepository;
+use SistemasAmigables\Repositories\PeriodRepository;
 use SistemasAmigables\Repositories\RecordRepository;
 use SistemasAmigables\Repositories\TypeIncomeRepository;
 use SistemasAmigables\Repositories\TypeTemporaryIncomeRepository;
@@ -42,6 +43,10 @@ class IncomeController extends Controller {
      * @var DepartamentRepository
      */
     private $departamentRepository;
+    /**
+     * @var PeriodRepository
+     */
+    private $periodRepository;
 
     /**
      * @param RecordRepository $recordRepository
@@ -58,7 +63,8 @@ class IncomeController extends Controller {
         TypeIncomeRepository $TypeIncomeRepository,
         TypeIncomeRepository $typeIncomeRepository,
         IncomeRepository $incomeRepository,
-        DepartamentRepository $departamentRepository
+        DepartamentRepository $departamentRepository,
+        PeriodRepository $periodRepository
     )
     {
 
@@ -68,6 +74,7 @@ class IncomeController extends Controller {
         $this->incomeRepository = $incomeRepository;
         $this->typeIncomeRepository = $typeIncomeRepository;
         $this->departamentRepository = $departamentRepository;
+        $this->periodRepository = $periodRepository;
     }
     /**
      * Display a listing of incomes
@@ -365,7 +372,8 @@ class IncomeController extends Controller {
 
     public function estadoCuenta()
     {
-        return view('incomes.estadoCuenta');
+        $periods = $this->periodRepository->getModel()->orderBy('year','DESC')->get();
+        return view('incomes.estadoCuenta',compact('periods'));
     }
 
 }

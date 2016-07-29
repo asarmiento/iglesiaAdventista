@@ -20,6 +20,7 @@ return array(
     'CreateDepartamentsTable' => $baseDir . '/database/migrations/2015_01_01_11_create_departaments_table.php',
     'CreateExpensesTable' => $baseDir . '/database/migrations/2015_01_01_15_create_expenses_table.php',
     'CreateIncomesTable' => $baseDir . '/database/migrations/2015_01_01_09_create_incomes_table.php',
+    'CreateMaterialsTable' => $baseDir . '/database/migrations/2016_07_29_120806_create_materials_table.php',
     'CreateMembersTable' => $baseDir . '/database/migrations/2015_01_01_06_create_members_table.php',
     'CreateMenuTaskTable' => $baseDir . '/database/migrations/2015_06_17_001341_create_menu_task_table.php',
     'CreateMenusTable' => $baseDir . '/database/migrations/2015_06_16_210028_create_menus_table.php',
