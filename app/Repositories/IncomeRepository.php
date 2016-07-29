@@ -199,6 +199,17 @@ class IncomeRepository extends BaseRepository
 
         return (($ofrenda/5)*3)+$ofrendaOther;
     }
+
+    public function ofrendaTypeIncome($typeIncome,$date)
+    {
+        $ofrenda = $this->newQuery()->wherehas('typeIncomes',function($q) use ($typeIncome){
+            $q->where('id',$typeIncome);
+        })->whereBetween('date',[$date])->sum('balance');
+
+
+
+        return $ofrenda;
+    }
     public function incomeDateMember($member,$date){
         return $this->newQuery()->where('member_id',$member)->where('date',$date)->orderBy('id','ASC');
     }
