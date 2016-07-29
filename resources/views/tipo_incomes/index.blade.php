@@ -21,6 +21,7 @@ Lista Tipos de ingresos
                     <th width="150">Departamento</th>
                     <th width="150">Nombre</th>
                     <th width="150">Abreviación</th>
+                    <th width="150">Saldo</th>
                     <th width="150">Estado</th>
                     <th width="150">Editar</th>
                </tr>
@@ -32,6 +33,7 @@ Lista Tipos de ingresos
                     <td>{{$tipoincome->departament->name}}</td>
                     <td>{{$tipoincome->name}}</td>
                     <td>{{$tipoincome->abreviation}}</td>
+                    <td>{{number_format($tipoincome->balance,2)}}</td>
                     @if($tipoincome->status == 'activo')
                     <td><a href="{{route('desactivar-tipo-ingreso',$tipoincome->id)}}"><span class="label label-success">{{ $tipoincome->status }}</span></a></td>
                     @else

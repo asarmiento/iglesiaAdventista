@@ -102,7 +102,6 @@ class ReportController extends  Controller
     public function store($date)
     {
         $date = new Carbon($date);
-
         $fixs = $this->typeIncomeRepository->getModel()->whereHas('incomes',function ($q) use ($date){
             $q->where('date',$date->format('Y-m-d'));
         })->count();
@@ -111,7 +110,6 @@ class ReportController extends  Controller
         else:
                 $orientacion = 'L';
         endif;
-
         $this->header($date->format('Y-m-d'),$orientacion);
         $pdf    = Fpdf::SetFont('Arial','B',7);
         $pdf    .= Fpdf::SetX(5);
@@ -124,20 +122,16 @@ class ReportController extends  Controller
             $q->where('date',$date->format('Y-m-d'));
         })->get();
         foreach($fixs AS $fix): $i++;
-           $pdf  .= Fpdf::Cell(13,7,substr(utf8_decode($fix->name),0,8),1,0,'C');
+           $pdf  .= Fpdf::Cell(13,7,substr(utf8_decode($fix->abreviation),0,8),1,0,'C');
         endforeach;
-
         $pdf  .= Fpdf::ln();
         $e =0;
         $fin = 0;
         $pdf  .= Fpdf::SetFont('Arial','I',7);
-
         /* INICIO DE CUERPO */
-
         $miembros = $this->memberRepository->getModel()->whereHas('incomes',function ($q) use ($date){
             $q->where('date',$date->format('Y-m-d'))->orderBy('id','ASC');
         })->get();
-
         foreach($miembros AS $miembro):
             $e++;
             $pdf  .= Fpdf::SetX(5);
@@ -153,10 +147,7 @@ class ReportController extends  Controller
                 $amount = $this->incomeRepository->incomeDateMember($miembro->id,$date->format('Y-m-d'))->where('type_income_id',$fix->id)->sum('balance');
                 $pdf  .= Fpdf::Cell(13,7,number_format($amount,2),1,0,'C');
             endforeach;
-
             $pdf  .= Fpdf::ln();
-
-
         endforeach;
         /*fIN DE CUERPO*/
         $pdf  .= Fpdf::SetFont('Arial','B',6.5);
@@ -167,13 +158,10 @@ class ReportController extends  Controller
             $amount=  $this->incomeRepository->twoWhereList('type_income_id',$fix->id,'date',$date->format('Y-m-d'),'balance');
            $pdf  .= Fpdf::Cell(13,7,number_format($amount,2),1,0,'C');
         endforeach;
-
-
-
         $pdf  .= Fpdf::ln();
         $pdf  .= Fpdf::ln();
-        $y = Fpdf::GetY();
-        $pdf .= $this->firmas($orientacion);
+        $y     = Fpdf::GetY();
+        $pdf .= $this->firmas($orientacion,$date);
         $pdf = Fpdf::SetXY(110,$y);
         $pdf .= $this->footer($date,$orientacion,$y);
         Fpdf::Output('Informe-Semanal: '.$date.'.pdf','I');
@@ -233,24 +221,34 @@ class ReportController extends  Controller
     | @return mixed
     |----------------------------------------------------------------------
     */
-    public function firmas($orientacion)
+    public function firmas($orientacion,$date)
     {
         $y = Fpdf::GetY();
         if($orientacion == 'L' && $y > 150):
             $y = $y+170;
         endif;
-        $pdf = Fpdf::SetXY(110,$y);
+
+        $pdf = Fpdf::SetXY(90,$y);
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('______________________________'),0,1,'L');
-        $pdf = Fpdf::SetX(110);
+        $pdf = Fpdf::SetX(90);
         $pdf  .= Fpdf::Cell(40,5,utf8_decode('Tesorero'),0,1,'C');
-        $pdf = Fpdf::SetX(110);
+        $pdf = Fpdf::SetX(90);
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('______________________________'),0,1,'L');
-        $pdf = Fpdf::SetX(110);
+        $pdf = Fpdf::SetX(90);
         $pdf  .= Fpdf::Cell(40,5,utf8_decode('Pastor o Anciano'),0,1,'C');
-        $pdf = Fpdf::SetX(110);
+        $pdf = Fpdf::SetX(90);
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('______________________________'),0,1,'L');
-        $pdf = Fpdf::SetX(110);
+        $pdf = Fpdf::SetX(90);
         $pdf  .= Fpdf::Cell(40,5,utf8_decode('Dir. Mayordomia o Diacono'),0,1,'C');
+        $fixs = $this->typeIncomeRepository->getModel()->whereHas('incomes',function ($q) use ($date){
+            $q->where('date',$date->format('Y-m-d'));
+        })->get();
+        foreach($fixs AS $fix):
+            $pdf .= Fpdf::SetXY(135,$y);
+            $pdf  .= Fpdf::Cell(13,5,utf8_decode($fix->abreviation).' = '.utf8_decode($fix->name),0,1,'L');
+            $y +=5;
+        endforeach;
+
     }
 
  /**************************************************
