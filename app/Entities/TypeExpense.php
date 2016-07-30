@@ -28,7 +28,7 @@ class TypeExpense extends Entity
 
     public function expenses()
     {
-        return $this->belongsTo(Expense::getClass(),'expenses_id','id');
+        return $this->hasMany(Expense::getClass());
     }
 
     public function sumExpenses()
