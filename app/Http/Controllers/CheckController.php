@@ -101,7 +101,6 @@ class CheckController extends Controller {
 		if($checks->isValid($check)):
 			$checks->fill($check);
 			$checks->save();
-			$checks->accounts()->attach($checks->account_id,['balance'=>($checks->balance*-1)]);
 			$this->accountRepository->updateBalance($checks->account_id,$checks->balance,'balance');
 			return redirect()->route('create-gasto',$checks->id);
 		endif;

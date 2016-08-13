@@ -485,9 +485,9 @@ class ReportController extends  Controller
         $partAsocAnt =0;
         $totalGtoMAnt=0;
         $departaments = $this->departamentRepository->getModel()->orderBy('budget','DESC')->get();
-    $i=0;
+        $i=0;
         foreach($departaments As $departament):
-$i++;
+        $i++;
 
             $pdf   = Fpdf::SetFont('Arial','',9);
 
