@@ -368,6 +368,7 @@ class IncomeController extends Controller {
 
     public function send($token){
 
+
     }
 
     public function estadoCuenta()

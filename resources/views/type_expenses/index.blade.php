@@ -31,7 +31,7 @@ Lista Tipos de Gastos
          @foreach($typeExpenses AS $key=>$typeExpense)
             <tr>
                     <td>{{$key+1}}</td>
-                    <td>{{$typeExpense->departaments[0]->name}}</td>
+                    <td>{{$typeExpense->departament->name}}</td>
                     <td>{{convertTitle($typeExpense->name)}}</td>
                     <td>{{number_format($typeExpense->expense,2)}}</td>
                     <td>{{number_format($typeExpense->balance,2)}}</td>
