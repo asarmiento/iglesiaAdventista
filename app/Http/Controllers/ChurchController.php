@@ -331,7 +331,7 @@ class ChurchController extends Controller {
         $pdf .= Fpdf::Cell(30,7,number_format($totalgasto,2),1,0,'C');
         $pdf .= Fpdf::Cell(30,7,number_format($totalP,2),1,0,'C');
         $pdf .= Fpdf::Cell(30,7,number_format($totalS+$periodsSaldoIni->amount,2),1,1,'C');
-        $pdf .= Fpdf::Ln(50);
+        $pdf .= Fpdf::Ln(80);
         $this->detalleAuditoria($year);
 
         Fpdf::Output('Informe-Mendual.pdf','I');
