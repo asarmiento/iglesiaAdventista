@@ -444,7 +444,7 @@ class ReportController extends  Controller
     {
 
         $token = $this->convertionObjeto();
-        $period = $this->periodRepository->token($token['periods']);
+        $period = $this->periodRepository->token('7713686a7ecdc68b103e580352e7bfda');
         $beforePeriodo = $this->periodRepository->before($period);
 
         $pdf   = Fpdf::Ln();
@@ -459,7 +459,7 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::Cell(20,7,utf8_decode('presup.'),1,0,'C');
 
         $pdf  .= Fpdf::Cell(35,7,utf8_decode('Saldo Dispo'),1,0,'C');
-        $date = new Carbon($beforePeriodo->dateOut);
+        $date = new Carbon($period->dateOut);
         $pdf  .= Fpdf::Cell(81,7,utf8_decode('Mes '.$date->subMonth(1)->format('M')),1,0,'C');
         $date = new Carbon($period->dateOut);
         $pdf  .= Fpdf::Cell(81,7,utf8_decode('Mes '.$date->format('M')),1,1,'C');
