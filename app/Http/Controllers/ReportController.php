@@ -330,10 +330,10 @@ class ReportController extends  Controller
      //   $this->headerInforme();
      //   $this->promedios();
      //  $pdf  = Fpdf::AddPage('P','letter');
-        $this->headerInforme();
+    //    $this->headerInforme();
      //  $pdf  .= Fpdf::Cell(0,5,utf8_decode($dateIni.' al '.$dateOut),0,1,'C');
 
-       $this->ingresos();
+    //   $this->ingresos();
      //  $pdf  = Fpdf::AddPage('P','letter');
      //   $this->headerInforme();
       //  $this->association($dateIni,$dateOut);
