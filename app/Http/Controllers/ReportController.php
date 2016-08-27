@@ -326,7 +326,7 @@ class ReportController extends  Controller
     {
 
 
-        $pdf  = Fpdf::AddPage('P','letter');
+        //$pdf  = Fpdf::AddPage('P','letter');
      //   $this->headerInforme();
      //   $this->promedios();
      //  $pdf  = Fpdf::AddPage('P','letter');
