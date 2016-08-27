@@ -2,6 +2,7 @@
 
 use Anouar\Fpdf\Facades\Fpdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use SistemasAmigables\Entities\Church;
 use SistemasAmigables\Repositories\DepartamentRepository;
@@ -77,7 +78,6 @@ class DepartamentsController extends Controller {
     ***************************************************/
     public function index() {
         $departaments = $this->departamentRepository->getModel()
-            ->select(DB::raw('sum(amount) as month FROM expenses WHERE invoiceDate '))
             ->get();
         return View('departamentos.index', compact('departaments'));
     }
@@ -315,7 +315,7 @@ class DepartamentsController extends Controller {
                     $pdf .= Fpdf::SetX(15);
                     $pdf .= Fpdf::Cell(30,7,($expense->invoiceDate),1,0,'C');
                     $pdf .= Fpdf::Cell(40,7,utf8_decode($expense->invoiceNumber),1,0,'C');
-                    $pdf .= Fpdf::Cell(80,7,utf8_decode($expense->typeExpenses->name),1,0,'C');
+                    $pdf .= Fpdf::Cell(80,7,utf8_decode($expense->typeExpense->name),1,0,'C');
                     $pdf .= Fpdf::Cell(30,7,number_format($expense->amount,2),1,1,'C');
                     $totalExpenses += $expense->amount;
                 endforeach;

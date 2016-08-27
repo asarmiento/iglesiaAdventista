@@ -327,9 +327,9 @@ class ReportController extends  Controller
 
 
         $pdf  = Fpdf::AddPage('P','letter');
-        $this->headerInforme();
-        $this->promedios();
-       $pdf  = Fpdf::AddPage('P','letter');
+     //   $this->headerInforme();
+     //   $this->promedios();
+     //  $pdf  = Fpdf::AddPage('P','letter');
         $this->headerInforme();
      //  $pdf  .= Fpdf::Cell(0,5,utf8_decode($dateIni.' al '.$dateOut),0,1,'C');
 
@@ -459,9 +459,9 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::Cell(20,7,utf8_decode('presup.'),1,0,'C');
 
         $pdf  .= Fpdf::Cell(35,7,utf8_decode('Saldo Dispo'),1,0,'C');
-        $date = new Carbon($beforePeriodo->dateIn);
+        $date = new Carbon($beforePeriodo->dateOut);
         $pdf  .= Fpdf::Cell(81,7,utf8_decode('Mes '.$date->subMonth(1)->format('M')),1,0,'C');
-        $date = new Carbon($period->dateIn);
+        $date = new Carbon($period->dateOut);
         $pdf  .= Fpdf::Cell(81,7,utf8_decode('Mes '.$date->format('M')),1,1,'C');
         $pdf  .= Fpdf::SetX(109);
         $pdf  .= Fpdf::Cell(27,7,utf8_decode('Ing.'),1,0,'C');
