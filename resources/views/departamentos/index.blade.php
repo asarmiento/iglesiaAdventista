@@ -21,6 +21,7 @@ Lista Departamentos
             <th>Departamento</th>
             <th>Porcentaje</th>
             <th>Saldo Actual</th>
+            <th>Gasto del Mes</th>
         </tr>
     </thead> 
     <tbody>
@@ -38,6 +39,7 @@ Lista Departamentos
             @else
                 <td> ₡ {{number_format($departament->balance,2)}}</td>
             @endif
+            <td></td>
         </tr>
             <?php
                     if($departament->type=='iglesia'):
