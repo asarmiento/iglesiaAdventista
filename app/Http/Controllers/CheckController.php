@@ -216,7 +216,7 @@ class CheckController extends Controller {
 		$pdf .= Fpdf::Cell(17,7,utf8_decode($expense->invoiceNumber),1,0,'C');
 		$pdf .= Fpdf::Cell(20,7,utf8_decode($expense->invoiceDate),1,0,'C');
 		$pdf .= Fpdf::Cell(80,7,utf8_decode($expense->detail),1,0,'C');
-		$pdf .= Fpdf::Cell(30,7,utf8_decode(substr($expense->typeExpenses->name,0,22)),1,0,'C');
+		$pdf .= Fpdf::Cell(30,7,utf8_decode(substr($expense->typeExpense->name,0,22)),1,0,'C');
 		$pdf .= Fpdf::Cell(30,7,utf8_decode($expense->typeExpenses->departaments[0]->name),1,0,'C');
 		$pdf .= Fpdf::Cell(25,7,number_format($expense->amount,2),1,1,'C');
 		$total  += $expense->amount;
