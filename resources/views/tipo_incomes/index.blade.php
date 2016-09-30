@@ -41,7 +41,8 @@ Lista Tipos de ingresos
                     <td><a  href="{{route('activar-tipo-ingreso',$tipoincome->id)}}"><span class="label label-danger">{{ $tipoincome->status }}</span></a></td>
                     @endif
                     <td class="text-center"><a  href="{{route('typeFix-edit',$tipoincome->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
-            </tr><?php $total +=$tipoincome->balance;?>
+            </tr><?php if($tipoincome->part=='no' && $tipoincome->offering=='si' && $tipoincome->association=='no'): 
+            $total +=$tipoincome->balance; endif; ?>
                 @endforeach
             </tbody>
         </table>
