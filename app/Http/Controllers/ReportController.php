@@ -374,7 +374,7 @@ class ReportController extends  Controller
         foreach ($departamentos AS $departamento):
 
                 $pdf   = Fpdf::SetX(10);
-                $pdf   = Fpdf::Ln();
+
             if($departamento->balance > 0):  $e++;
                     $pdf  .= Fpdf::Cell(7,6,utf8_decode($e),0,0,'L');
             $pdf  .= Fpdf::Cell(150,6,utf8_decode($departamento->name),0,1,'L');
@@ -395,7 +395,7 @@ class ReportController extends  Controller
                 endforeach;
             endif;
                 endforeach;
-        $pdf  .= Fpdf::Cell(100,6,number_format($typeExpense->balance,2),0,0,'L');
+        $pdf  .= Fpdf::Cell(100,6,number_format($total,2),0,0,'L');
         return $pdf;
     }
     /*
