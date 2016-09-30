@@ -379,7 +379,12 @@ class ReportController extends  Controller
                     $pdf  .= Fpdf::Cell(7,6,utf8_decode($e),0,0,'L');
             $pdf  .= Fpdf::Cell(150,6,utf8_decode($departamento->name),0,1,'L');
 
-                $typeExpenses = $this->typeIncomeRepository->getModel()->where('departament_id',$departamento->id)->get();
+                $typeExpenses = $this->typeIncomeRepository->getModel()
+                    ->where('departament_id',$departamento->id)
+                    ->where('offering','si')
+                    ->where('part','no')
+                    ->where('association','no')
+                    ->get();
                 $i =0;
                 foreach($typeExpenses As $typeExpense):
                     $pdf   .= Fpdf::SetX(15);
