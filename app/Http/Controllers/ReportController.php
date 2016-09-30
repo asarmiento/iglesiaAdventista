@@ -381,7 +381,7 @@ class ReportController extends  Controller
                     $pdf   .= Fpdf::SetX(20);
                     $pdf  .= Fpdf::Cell(7,6,utf8_decode($i),0,0,'L');
                     $pdf  .= Fpdf::Cell(100,6,utf8_decode($typeExpense->name),0,0,'L');
-                    $pdf  .= Fpdf::Cell(35,6,(number_format($typeExpense->balance,2)),0,0,'C');
+                    $pdf  .= Fpdf::Cell(35,6,(number_format($typeExpense->balance,2)),0,1,'C');
                     endif;
                 endforeach;
 
