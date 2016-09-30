@@ -329,17 +329,18 @@ class ReportController extends  Controller
         //$pdf  = Fpdf::AddPage('P','letter');
      //   $this->headerInforme();
      //   $this->promedios();
-     //  $pdf  = Fpdf::AddPage('P','letter');
-    //    $this->headerInforme();
+            $pdf  = Fpdf::AddPage('L','letter');
+        $this->headerInforme();
+        $this->departament();
+      $pdf  = Fpdf::AddPage('P','letter');
+        $this->headerInforme();
      //  $pdf  .= Fpdf::Cell(0,5,utf8_decode($dateIni.' al '.$dateOut),0,1,'C');
 
-    //   $this->ingresos();
+      $this->ingresos();
      //  $pdf  = Fpdf::AddPage('P','letter');
      //   $this->headerInforme();
       //  $this->association($dateIni,$dateOut);
-        $pdf  = Fpdf::AddPage('L','letter');
-        $this->headerInforme();
-        $this->departament();
+    
 
         Fpdf::Output('Informe-Mensual-Ingresos-Gastos.pdf','I');
         exit;
