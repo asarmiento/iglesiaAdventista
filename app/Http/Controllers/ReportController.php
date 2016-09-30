@@ -370,10 +370,12 @@ class ReportController extends  Controller
 
                 $departamentos = $this->departamentRepository->getModel()->get();
           $e=0;
+        $total =0;
         foreach ($departamentos AS $departamento):
          $e++;
                 $pdf   = Fpdf::SetX(10);
                 $pdf   = Fpdf::Ln();
+            if($departamento->balance > 0):
                     $pdf  .= Fpdf::Cell(7,6,utf8_decode($e),0,0,'L');
             $pdf  .= Fpdf::Cell(150,6,utf8_decode($departamento->name),0,1,'L');
                 $pdf   = Fpdf::Ln();
@@ -389,9 +391,11 @@ class ReportController extends  Controller
                     $pdf  .= Fpdf::Cell(100,6,utf8_decode($typeExpense->name),0,0,'L');
                     $pdf  .= Fpdf::Cell(35,6,(number_format($typeExpense->balance,2)),0,1,'C');
                     endif;
+                    $total += $typeExpense->balance;
                 endforeach;
+            endif;
                 endforeach;
-
+        $pdf  .= Fpdf::Cell(100,6,number_format($typeExpense->balance,2),0,0,'L');
         return $pdf;
     }
     /*
