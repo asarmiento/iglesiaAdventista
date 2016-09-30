@@ -30,9 +30,9 @@ class Expense extends Entity
     {
         return $this->belongsTo(Check::getClass(),'check_id','id');
     }
-    public function typeExpenses()
+    public function typeExpense()
     {
-        return $this->belongsTo(TypeExpense::getClass(),'type_expense_id','id');
+        return $this->belongsTo(TypeExpense::getClass());
     }
 
     public function expenseFixIncome()

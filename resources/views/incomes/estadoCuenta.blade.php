@@ -6,7 +6,7 @@
  -->
 @extends('layouts.layouts')
 @section('title')
-    Cuentas Bancarias
+    Informe
 @stop
 
 @section('title-form')
@@ -26,16 +26,14 @@
                 <label for="date">Fecha Inicial</label>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-bank"></i></span>
-                    <input name="dateIn"  class="form-control" type="date" >
+                    <select name="periods" class="form-control select2">
+                        @foreach($periods AS $period)
+                            <option value="{{$period->token}}">{{$period->month}}-{{$period->year}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
-            <div class="col-sm-6 col-md-6">
-                <label for="date">Fecha Final</label>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-bank"></i></span>
-                    <input name="dateOut"  class="form-control" type="date" >
-                </div>
-            </div>
+
             {{csrf_field()}}
         </div>
         </br>

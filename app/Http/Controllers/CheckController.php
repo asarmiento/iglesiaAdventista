@@ -101,7 +101,6 @@ class CheckController extends Controller {
 		if($checks->isValid($check)):
 			$checks->fill($check);
 			$checks->save();
-			$checks->accounts()->attach($checks->account_id,['balance'=>($checks->balance*-1)]);
 			$this->accountRepository->updateBalance($checks->account_id,$checks->balance,'balance');
 			return redirect()->route('create-gasto',$checks->id);
 		endif;
@@ -217,8 +216,8 @@ class CheckController extends Controller {
 		$pdf .= Fpdf::Cell(17,7,utf8_decode($expense->invoiceNumber),1,0,'C');
 		$pdf .= Fpdf::Cell(20,7,utf8_decode($expense->invoiceDate),1,0,'C');
 		$pdf .= Fpdf::Cell(80,7,utf8_decode($expense->detail),1,0,'C');
-		$pdf .= Fpdf::Cell(30,7,utf8_decode(substr($expense->typeExpenses->name,0,22)),1,0,'C');
-		$pdf .= Fpdf::Cell(30,7,utf8_decode($expense->typeExpenses->departaments[0]->name),1,0,'C');
+		$pdf .= Fpdf::Cell(30,7,utf8_decode(substr($expense->typeExpense->name,0,22)),1,0,'C');
+		$pdf .= Fpdf::Cell(30,7,utf8_decode($expense->typeExpense->departament->name),1,0,'C');
 		$pdf .= Fpdf::Cell(25,7,number_format($expense->amount,2),1,1,'C');
 		$total  += $expense->amount;
 		endforeach;

@@ -114,19 +114,25 @@ class TypeIncomeController extends Controller {
         return View::make('tipo_incomes.show', compact('tiposfijo'));
     }
 
-    /**
-     * Show the form for editing the specified tiposfijo.
-     *
-     * @param  int  $id
-     * @return Response
-     */
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com
+    * @Create: 08/07/16 06:13 PM   @Update 2016-07-08
+    ***************************************************
+    * @Description:
+    *
+    *
+    *
+    * @Pasos:
+    *
+    *
+    * @return view
+    ***************************************************/
     public function edit($id) {        
         $tiposfijo = $this->TypeIncomeRepository->getModel()->find($id);
-        $form_data = array('route' => array('update-typeFixs', $tiposfijo->id), 'method' => 'POST');
-        $action = 'Actualizar';
         $iglesia = Church::lists('id');
         $departaments = $this->departamentRepository->allData();
-        return View('tipo_incomes.form', compact('form_data','tiposfijo','action','iglesia','departaments'));
+        return View('tipo_incomes.edit', compact('tiposfijo','iglesia','departaments'));
     }
 
     /**
@@ -153,16 +159,44 @@ class TypeIncomeController extends Controller {
 
     }
 
-    /**
-     * Remove the specified tiposfijo from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id) {
-        TypeIncome::destroy($id);
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com
+    * @Create: 08/07/16 08:54 PM   @Update 0000-00-00
+    ***************************************************
+    * @Description: Se activara el tipo de ingreso para
+    * que aparesca en los informes de ingreso.
+    *
+    *
+    * @Pasos:
+    *
+    *
+    * @return
+    ***************************************************/
+    public function active($id) {
+        TypeIncome::where('id',$id)->update(['status'=>'activo']);
 
-        return Redirect::route('tipo_incomes.index');
+        return redirect()->route('typeFix-lista');
+    }
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com
+    * @Create: 08/07/16 08:55 PM   @Update 0000-00-00
+    ***************************************************
+    * @Description: Se Desactivara el tipo de ingreso para
+     * que aparesca en los informes de ingreso.
+    *
+    *
+    *
+    * @Pasos:
+    *
+    *
+    * @return
+    ***************************************************/
+    public function desactive($id) {
+
+        TypeIncome::where('id',$id)->update(['status'=>'inactivo']);
+        return redirect()->route('typeFix-lista');
     }
 
 }

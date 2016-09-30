@@ -93,6 +93,7 @@ class InformeDieOfe extends Controller
     */
     public function notOfrendas($year,$tipo)
     {
+
         $pdf = Fpdf::SetFont('Arial','B',12);
         $pdf .= Fpdf::Cell(10,7,utf8_decode('N°'),1,0,'C');
         $pdf .= Fpdf::Cell(80,7,utf8_decode('Miembros'),1,0,'C');
@@ -171,6 +172,7 @@ class InformeDieOfe extends Controller
     */
     public function ofrendas($year)
     {
+
         $pdf = Fpdf::SetFont('Arial','B',10);
         $pdf .= Fpdf::Cell(5,7,utf8_decode('N°'),1,0,'C');
         $pdf .= Fpdf::Cell(55,7,utf8_decode('Miembros'),1,0,'C');

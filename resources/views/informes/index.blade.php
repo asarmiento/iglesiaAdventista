@@ -44,7 +44,11 @@ Lista Informes Semanales
             <td>{{$informe->saturday}}</td>
             <td>{{number_format($informe->balance,2)}}</td>
             <td>{{number_format($informe->mision,2)}}</td>
+            @if($informe->mision >0 )
             <td>{{number_format($informe->balance-$informe->mision,2)}}</td>
+            @else
+            <td>{{number_format(0,2)}}</td>
+            @endif
             @if(($informe->incomes->isEmpty()))
             <td><a href="{{route('create-income',$informe->token)}}"><i class="fa fa-book"></i></a></td>
             @else

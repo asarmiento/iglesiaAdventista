@@ -22,4 +22,24 @@ class PeriodRepository extends BaseRepository
     {
        return new Period();// TODO: Implement getModel() method.
     }
+
+    public function before($period)
+    {
+
+        $month = $period->month - 1;
+        $year = $period->year;
+        if(count($month) == 1 ):
+            $month = '0'.$month;
+        endif;
+        if($period->month == 1 || $period->month == '01'):
+            $month = 12;
+            $year = $period->year-1;
+        endif;
+
+
+
+        $before= $this->newQuery()->where('month',$month)->where('year',$year)->get();
+
+        return $before[0];
+    }
 }

@@ -245,7 +245,7 @@ class InformeExpenses extends Controller
         $pdf .= Fpdf::Cell(45,7,utf8_decode('Total'),1,0,'L');
         $pdf = Fpdf::SetFont('Arial','BI',7.5);
         for($i=0;$i<count($mes);$i++):
-            $gasto = $this->expensesRepository->getModel()->whereHas('typeExpenses',function($q){
+            $gasto = $this->expensesRepository->getModel()->whereHas('typeExpense',function($q){
                 $q->where('type','iglesia');
             })->whereBetween('invoiceDate',[$year.'-'.$mes[$i].'-01',$year.'-'.$mes[$i].'-31'])->sum('amount');
             $totalDie += $gasto;

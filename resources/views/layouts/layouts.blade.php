@@ -22,7 +22,7 @@
 
                 </span>
                 <span class="church">
-                    Bienvenido a la Iglesia Quepos
+                    Bienvenido a la Iglesia Adventista de Quepos
                 </span>
             </div>
             <div class="menu">
@@ -66,6 +66,7 @@
                                     <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Miembros<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="{{route('members-lista')}}">Lista de Miembros</a></li>
+                                        <li><a href="{{route('members-mat')}}">Materiales</a></li>
                                         <li><a href="{{route('lista-diezmo')}}">Diezmos y Ofrendas Miembros</a></li>
                                    </ul>
                                 </li>

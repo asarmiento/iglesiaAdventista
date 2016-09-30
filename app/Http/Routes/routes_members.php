@@ -12,4 +12,5 @@ Route::post('miembros/crear',['as'=>'crear-members','uses'=>'MemberController@st
 Route::get('miembros/{id}',['as'=>'member-edit','uses'=>'MemberController@edit']);
 Route::get('miembros/ver/{token}','MemberController@view');
 Route::get('ver-historial/miembros',['as'=>'lista-diezmo','uses'=>'MemberController@viewInd']);
+Route::get('materiales-adicionales/miembros',['as'=>'members-mat','uses'=>'MemberController@matOther']);
 Route::post('ver-historial/miembros',['as'=>'lista-diezmo-pdf','uses'=>'Report\InformeDieOfe@index']);

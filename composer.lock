@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a6a8c54856d3185a3d6f553daf5e7b96",
-    "content-hash": "495f71c7a5cd6d0bbd773753b3b4c529",
+    "hash": "def1a4007a5d7ddf2f17b20b7b4dbcad",
+    "content-hash": "dcb0c8eacb4d8370b00a1f16b14878e0",
     "packages": [
         {
             "name": "anouar/fpdf",
@@ -17,8 +17,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xroot/laravel-fpdf/zipball/1a357759191cfd8506c7ef6669d0406bcf7b289b",
-                "reference": "1a357759191cfd8506c7ef6669d0406bcf7b289b",
+                "url": "https://api.github.com/repos/xroot/laravel-fpdf/zipball/master",
+                "reference": "master",
                 "shasum": ""
             },
             "require": {

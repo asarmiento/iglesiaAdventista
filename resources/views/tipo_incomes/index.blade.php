@@ -20,31 +20,34 @@ Lista Tipos de ingresos
                     <th width="200">Nº</th>
                     <th width="150">Departamento</th>
                     <th width="150">Nombre</th>
-                    <th width="150">Año Anterior</th>
-                    <th width="150">Año Actual</th>
-                    <th width="150">Balance</th>
+                    <th width="150">Abreviación</th>
+                    <th width="150">Saldo</th>
+                    <th width="150">Estado</th>
                     <th width="150">Editar</th>
                </tr>
             </thead>
             <tbody>
+            <?php $total=0;?>
                   @foreach($tipoincomes AS $key=>$tipoincome)
                 <tr>
             <td>{{$key+1}}</td>
-                    @if($tipoincome->departaments->isEmpty())
-                        <td></td>
-                    @else
-                        <td>{{$tipoincome->departaments[0]->name}}</td>
-                    @endif
+                    <td>{{$tipoincome->departament->name}}</td>
                     <td>{{$tipoincome->name}}</td>
-                    <td>{{number_format($tipoincome->lastYear,2)}}</td>
-                    <td>{{number_format($tipoincome->expense,2)}}</td>
+                    <td>{{$tipoincome->abreviation}}</td>
                     <td>{{number_format($tipoincome->balance,2)}}</td>
+                    @if($tipoincome->status == 'activo')
+                    <td><a href="{{route('desactivar-tipo-ingreso',$tipoincome->id)}}"><span class="label label-success">{{ $tipoincome->status }}</span></a></td>
+                    @else
+                    <td><a  href="{{route('activar-tipo-ingreso',$tipoincome->id)}}"><span class="label label-danger">{{ $tipoincome->status }}</span></a></td>
+                    @endif
                     <td class="text-center"><a  href="{{route('typeFix-edit',$tipoincome->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
-            </tr>
+            </tr><?php if($tipoincome->part=='no' && $tipoincome->offering=='si' && $tipoincome->association=='no'): 
+            $total +=$tipoincome->balance; endif; ?>
                 @endforeach
             </tbody>
         </table>
         </div>
+        <div>Total de Tipos de Ingresos{{number_format($total,2)}}</div>
     </div>
 @stop
 @section('scripts')

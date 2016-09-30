@@ -82,4 +82,9 @@ class TestController extends Controller
 
         $records = $this->recordRepository->oneWhereSum();
     }
+
+    public function repartir()
+    {
+
+    }
 }
