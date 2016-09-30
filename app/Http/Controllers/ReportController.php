@@ -368,14 +368,19 @@ class ReportController extends  Controller
     public function typeIncomes()
     {
 
-
-
+                $departamentos = $this->departamentRepository->getModel()->get();
+$$e=0;
+        foreach ($departamentos AS $departamento):
+$e++;       $pdf   = Fpdf::SetX(10);
                 $pdf   = Fpdf::Ln();
-                $typeExpenses = $this->typeIncomeRepository->getModel()->get();
+            $pdf  .= Fpdf::Cell(7,6,utf8_decode($e),0,0,'L');
+            $pdf  .= Fpdf::Cell(150,6,utf8_decode($departamento->name),0,1,'L');
+                $pdf   = Fpdf::Ln();
+                $typeExpenses = $this->typeIncomeRepository->getModel()->where('departament_id',$departamento->id)->get();
                 $i =0;
-                foreach($typeExpenses As $typeExpense): $i++;
-                    $pdf   .= Fpdf::SetX(10);
-                    if($typeExpense->balance > 0):
+                foreach($typeExpenses As $typeExpense):
+                    $pdf   .= Fpdf::SetX(15);
+                    if($typeExpense->balance > 0):$i++;
                     $pdf   = Fpdf::SetFont('Arial','I',14);
                     $i++;
                     $pdf   .= Fpdf::SetX(20);
@@ -383,6 +388,7 @@ class ReportController extends  Controller
                     $pdf  .= Fpdf::Cell(100,6,utf8_decode($typeExpense->name),0,0,'L');
                     $pdf  .= Fpdf::Cell(35,6,(number_format($typeExpense->balance,2)),0,1,'C');
                     endif;
+                endforeach;
                 endforeach;
 
         return $pdf;
