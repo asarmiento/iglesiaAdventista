@@ -372,18 +372,18 @@ class ReportController extends  Controller
           $e=0;
         $total =0;
         foreach ($departamentos AS $departamento):
-         $e++;
+
                 $pdf   = Fpdf::SetX(10);
                 $pdf   = Fpdf::Ln();
-            if($departamento->balance > 0):
+            if($departamento->balance > 0):  $e++;
                     $pdf  .= Fpdf::Cell(7,6,utf8_decode($e),0,0,'L');
             $pdf  .= Fpdf::Cell(150,6,utf8_decode($departamento->name),0,1,'L');
-                $pdf   = Fpdf::Ln();
+
                 $typeExpenses = $this->typeIncomeRepository->getModel()->where('departament_id',$departamento->id)->get();
                 $i =0;
                 foreach($typeExpenses As $typeExpense):
                     $pdf   .= Fpdf::SetX(15);
-                    if($typeExpense->balance > 0):$i++;
+                    if($typeExpense->balance > 0): $i++;
                     $pdf   = Fpdf::SetFont('Arial','I',14);
                     $i++;
                     $pdf   .= Fpdf::SetX(20);
