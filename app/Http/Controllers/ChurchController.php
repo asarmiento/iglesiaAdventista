@@ -302,7 +302,7 @@ class ChurchController extends Controller {
             $dateOut = $dateP->endOfMonth()->format('Y-m-d');
             $gasto  = $this->expensesRepository->getModel()->whereHas('typeExpenses',function($q){
                 $q->where('type','iglesia');
-            })->whereBetween('invoiceDate',[$dateIn,$dateOut])->sum('amount');
+            })->whereBetween('invoiceDate',[$dateIn,$dateOut])->where('type','transfer')->sum('amount');
 
 
 
