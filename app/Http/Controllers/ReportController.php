@@ -369,11 +369,12 @@ class ReportController extends  Controller
     {
 
                 $departamentos = $this->departamentRepository->getModel()->get();
-$$e=0;
+          $e=0;
         foreach ($departamentos AS $departamento):
-$e++;       $pdf   = Fpdf::SetX(10);
+         $e++;
+                $pdf   = Fpdf::SetX(10);
                 $pdf   = Fpdf::Ln();
-            $pdf  .= Fpdf::Cell(7,6,utf8_decode($e),0,0,'L');
+                    $pdf  .= Fpdf::Cell(7,6,utf8_decode($e),0,0,'L');
             $pdf  .= Fpdf::Cell(150,6,utf8_decode($departamento->name),0,1,'L');
                 $pdf   = Fpdf::Ln();
                 $typeExpenses = $this->typeIncomeRepository->getModel()->where('departament_id',$departamento->id)->get();
