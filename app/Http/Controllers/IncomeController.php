@@ -93,7 +93,7 @@ class IncomeController extends Controller {
      * @return Response
      */
     public function create($token) {
-
+set_time_limit(0);
         $typeIncomes=  $this->typeIncomeRepository->oneWhere('status','activo');
         $incomes=  $this->recordRepository->token($token);
         $members = $this->memberRepository->getModel()->all();
