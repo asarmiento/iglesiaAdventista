@@ -84,21 +84,32 @@ class ExpenseController extends Controller {
 		return View('expenses.index', compact('expenses'));
 	}
 
-	/**
-	 * Show the form for creating a new gasto
-	 *
-	 * @return Response
-	 */
+    /**************************************************
+    * @Author: Anwar Sarmiento Ramos
+    * @Email: asarmiento@sistemasamigables.com
+    * @Create: ${DATE} ${TIME}   @Update 0000-00-00
+    ***************************************************
+    * @Description:
+    *
+    *
+    *
+    * @Pasos:
+    *
+    *
+    * #if (${TYPE_HINT} != "void") * @return ${TYPE_HINT}
+    *  #end
+    *  ${THROWS_DOC}
+    ***************************************************/
 	public function create($id)
 	{
-		$checks = $this->checkRepository->getModel()->find($id);
-		$departaments = $this->departamentRepository->allData();
-		$expenses= $this->expensesRepository->oneWhere('check_id',$id);
-		$total= $this->expensesRepository->oneWhereSum('check_id',$id,'amount');
+		$checks = $this->checkRepository->getModel()
+            ->select('expenses.*','checks.*',DB::raw('SUM(expenses.amount) AS total '))
+            ->join('expenses','expenses.check_id','=','checks.id')
+            ->with('expenses')
+            ->find($id);
 		$typeExpenses= $this->typeExpenseRepository->allData();
-		$typeFixs = $this->typeIncomeRepository->allData();
-		return View('expenses.create',compact('checks','departaments',
-			'expenses','total','typeExpenses','typeFixs'));
+		return View('expenses.create',compact('checks',
+			'typeExpenses'));
 	}
 
 	/**
@@ -111,11 +122,10 @@ class ExpenseController extends Controller {
 		$gasto = $this->convertionObjeto();
 
 		$expenses = $this->expensesRepository->getModel();
-
 		if($expenses->isValid($gasto)):
 			$expenses->fill($gasto);
 			$expenses->save();
-           $this->typeExpenseRepository->updatesOutBalance($expenses->type_expense_id,$expenses->amount,'balance');
+            $this->typeExpenseRepository->updateBalance($expenses->type_expense_id,$expenses->amount,'balance');
             $this->departamentRepository->updatesOutBalance($expenses->typeExpense->departament->id,$expenses->amount,'balance');
 			return redirect()->route('create-gasto',$expenses->check_id);
 		endif;
@@ -207,7 +217,7 @@ class ExpenseController extends Controller {
 	public function deleteExpense($id)
 	{
 		$expense=$this->expensesRepository->getModel()->find($id);
-        $this->typeExpenseRepository->updateBalance($expense->type_expense_id,$expense->amount,'balance');
+        $this->typeExpenseRepository->updatesOutBalance($expense->type_expense_id,$expense->amount,'balance');
         $this->departamentRepository->updateBalance($expense->typeExpense->departament->id,$expense->amount,'balance');
 
         $this->expensesRepository->getModel()->destroy($id);

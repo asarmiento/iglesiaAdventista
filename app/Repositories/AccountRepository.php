@@ -21,4 +21,13 @@ class AccountRepository extends BaseRepository
     {
        return new Account(); // TODO: Implement getModel() method.
     }
+
+    public function updateAmountCheck($id,$amount){
+        $credit = $amount+ $this->newQuery()->where('id',$id)->sum('credit_balance');
+        $balance = $this->newQuery()->where('id',$id)->sum('balance') - $amount;
+
+        return $this->newQuery()->where('id',$id)
+            ->update(['credit_balance'=>$credit,
+            'balance'=>$balance]);
+    }
 }

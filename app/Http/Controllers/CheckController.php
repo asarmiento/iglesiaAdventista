@@ -97,11 +97,12 @@ class CheckController extends Controller {
 				->with(['message'=>'EL Cheque numero #: '.$check['number'].' ya Existe ']);
 		endif;
 		$checks = $this->checkRepository->getModel();
-		$check['token']= md5($check['number']);
+		$check['period_id'] = periodSchool()->id;
+        $check['token']= md5($check['number']);
 		if($checks->isValid($check)):
 			$checks->fill($check);
 			$checks->save();
-			$this->accountRepository->updateBalance($checks->account_id,$checks->balance,'balance');
+			$this->accountRepository->updateAmountCheck($checks->account_id,$checks->balance);
 			return redirect()->route('create-gasto',$checks->id);
 		endif;
 
