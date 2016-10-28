@@ -427,8 +427,8 @@ class ReportController extends  Controller
     {
 
         $token = $this->convertionObjeto();
-        $period = $this->periodRepository->token($token);
-      
+        $period = $this->periodRepository->getModel()->where('year',2016)->orderBy('month','DESC')->first();
+
         $beforePeriodo = $this->periodRepository->before($period);
 
         $pdf   = Fpdf::Ln();
