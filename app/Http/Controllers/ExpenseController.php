@@ -134,7 +134,7 @@ class ExpenseController extends Controller {
 
 	private function updateDepartament($type, $amount){
         $typeExpense = $this->typeExpenseRepository->getModel()->find($type);
-        $this->departamentRepository->updateAmountExpense($typeExpense->id,$amount);
+        $this->departamentRepository->updateAmountExpense($typeExpense->departament_id,$amount);
     }
 	/**
 	 * Display the specified gasto.
