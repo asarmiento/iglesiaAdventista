@@ -574,7 +574,7 @@ class ReportController extends  Controller
     public function association()
     {
         $token = $this->convertionObjeto();
-        $period = $this->periodRepository->token($token['periods']);
+        $period = $this->periodRepository->getModel()->where('year',2016)->orderBy('month','DESC')->first();
         $beforePeriodo = $this->periodRepository->before($period);
 
 
@@ -702,7 +702,7 @@ class ReportController extends  Controller
     public function ingresos()
     {
         $token = $this->convertionObjeto();
-        $period = $this->periodRepository->token('dab47d241644ba825bbead4e9eded06c');
+        $period = $this->periodRepository->getModel()->where('year',2016)->orderBy('month','DESC')->first();
         $beforePeriodo = $this->periodRepository->before($period);
 
         $pdf   = Fpdf::Ln();
