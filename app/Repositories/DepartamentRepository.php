@@ -52,4 +52,10 @@ class DepartamentRepository extends BaseRepository
              WHERE type_incomes.departament_id = departaments.id) as allIncome'
     )->with('typeExpenses')->get();
     }
+
+    public function updateAmountExpense($id,$amount){
+        $credit = $this->newQuery()->where('id',$id)->sum('balance')-$amount;
+        return $this->newQuery()->where('id',$id)
+            ->update(['balance'=>$credit]);
+    }
 }

@@ -21,4 +21,11 @@ class TypeExpenseRepository extends  BaseRepository
     {
        return new TypeExpense(); // TODO: Implement getModel() method.
     }
+
+    public function updateAmountExpense($id,$amount){
+        $credit = $amount + $this->newQuery()->where('id',$id)->sum('balance');
+
+        return $this->newQuery()->where('id',$id)
+            ->update(['balance'=>$credit]);
+    }
 }
