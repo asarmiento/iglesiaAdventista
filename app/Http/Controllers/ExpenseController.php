@@ -1,5 +1,6 @@
 <?php namespace SistemasAmigables\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use SistemasAmigables\Repositories\CheckRepository;
@@ -130,12 +131,11 @@ class ExpenseController extends Controller {
 	 */
 	public function show($token)
 	{
-
-		$cheques = $this->checkRepository->getModel()->find($token);
-		$gastos = $this->expensesRepository->oneWhere('check_id',$token);
-		$monto = $this->expensesRepository->oneWhereSum('check_id',$token,'amount');
-
-		return View('expenses.show', compact('cheques','gastos','monto'));
+		$gastos = $this->expensesRepository->getModel()
+            ->select('expenses.*',DB::raw('SUM(amount) AS total'))
+            ->with('check')
+            ->where('check_id',$token)->get();
+		return View('expenses.show', compact('gastos'));
 	}
 
 	/*
