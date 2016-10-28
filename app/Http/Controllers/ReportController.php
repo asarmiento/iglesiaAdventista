@@ -326,20 +326,20 @@ class ReportController extends  Controller
     {
 
 
-        //$pdf  = Fpdf::AddPage('P','letter');
-     //   $this->headerInforme();
-     //   $this->promedios();
-     //  $pdf  = Fpdf::AddPage('P','letter');
-    //    $this->headerInforme();
-     //  $pdf  .= Fpdf::Cell(0,5,utf8_decode($dateIni.' al '.$dateOut),0,1,'C');
 
-    //   $this->ingresos();
+            $pdf  = Fpdf::AddPage('L','letter');
+            $this->headerInforme();
+            $this->departament();
+            $pdf  = Fpdf::AddPage('P','letter');
+            $this->headerInforme();
+            $this->ingresos();
+            $pdf  = Fpdf::AddPage('P','letter');
+            $this->headerInforme();
+            $this->typeIncomes();
      //  $pdf  = Fpdf::AddPage('P','letter');
      //   $this->headerInforme();
       //  $this->association($dateIni,$dateOut);
-        $pdf  = Fpdf::AddPage('L','letter');
-        $this->headerInforme();
-        $this->departament();
+    
 
         Fpdf::Output('Informe-Mensual-Ingresos-Gastos.pdf','I');
         exit;
@@ -365,59 +365,42 @@ class ReportController extends  Controller
     | @return mixed
     |----------------------------------------------------------------------
     */
-    public function promedios()
+    public function typeIncomes()
     {
-        $token = $this->convertionObjeto();
-        $period = $this->periodRepository->token($token['periods']);
-        $beforePeriodo = $this->periodRepository->before($period);
-        $pdf   = Fpdf::Ln();
 
-        $departaments = $this->departamentRepository->getModel()->where('type','iglesia')->orderBy('budget','DESC')->get();
-        $i=0;
-        foreach($departaments As $departament):
-            $pdf   = Fpdf::SetFont('Arial','B',16);
-            $i++;
-            if($departament->budget > 0):
-                $pdf   .= Fpdf::SetX(10);
-                $pdf  .= Fpdf::Cell(7,6,utf8_decode($i),0,0,'L');
-                $pdf  .= Fpdf::Cell(60,6,utf8_decode($departament->name),0,0,'L');
-                $pdf  .= Fpdf::Cell(20,6,(number_format($departament->budget,2)*100).'%',0,0,'C');
-                $pdf  .= Fpdf::Cell(35,6,(number_format($departament->balance,2)),0,1,'C');
-                $pdf   .= Fpdf::Ln();
-                $typeIncomes = $this->typeIncomeRepository->getModel()->whereHas('incomes',function ($q) use ($period){
-                    $q->whereBetween('date',[$period->dateIn,$period->dateOut]);
-                })
-                    ->where('departament_id',$departament->id)->get();
-                $e=0;
-                foreach($typeIncomes As $typeIncome): $e++;
-                    if($typeIncome->balance > 0):
-                    $pdf   = Fpdf::SetFont('Arial','I',14);
-                    $i++;
-                       $pdf   .= Fpdf::SetX(20);
-                        $pdf  .= Fpdf::Cell(7,6,utf8_decode($e),0,0,'L');
-                        $pdf  .= Fpdf::Cell(100,6,utf8_decode($typeIncome->name),0,0,'L');
-                        $pdf  .= Fpdf::Cell(35,6,(number_format($typeIncome->balance,2)),0,0,'C');
-                        $pdf  .= Fpdf::Cell(35,6,('Ingreso'),0,1,'C');
-                        endif;
-                    endforeach;
-                $pdf   .= Fpdf::Ln();
-                $typeExpenses = $this->typeExpenseRepository->getModel()->whereHas('expenses',function ($q) use ($period){
-                    $q->whereBetween('invoiceDate',[$period->dateIn,$period->dateOut]);
-                })->where('departament_id',$departament->id)->get();
-                $f =0;
-                foreach($typeExpenses As $typeExpense): $f++;
-                    if($typeExpense->balance > 0):
+                $departamentos = $this->departamentRepository->getModel()->get();
+          $e=0;
+        $total =0;
+        foreach ($departamentos AS $departamento):
+
+                $pdf   = Fpdf::SetX(10);
+
+            if($departamento->balance > 0):  $e++;
+                    $pdf  .= Fpdf::Cell(7,6,utf8_decode($e),0,0,'L');
+            $pdf  .= Fpdf::Cell(150,6,utf8_decode($departamento->name),0,1,'L');
+
+                $typeExpenses = $this->typeIncomeRepository->getModel()
+                    ->where('departament_id',$departamento->id)
+                    ->where('offering','si')
+                    ->where('part','no')
+                    ->where('association','no')
+                    ->get();
+                $i =0;
+                foreach($typeExpenses As $typeExpense):
+                    $pdf   .= Fpdf::SetX(15);
+                    if($typeExpense->balance > 0): $i++;
                     $pdf   = Fpdf::SetFont('Arial','I',14);
                     $i++;
                     $pdf   .= Fpdf::SetX(20);
-                    $pdf  .= Fpdf::Cell(7,6,utf8_decode($f),0,0,'L');
+                    $pdf  .= Fpdf::Cell(7,6,utf8_decode($i),0,0,'L');
                     $pdf  .= Fpdf::Cell(100,6,utf8_decode($typeExpense->name),0,0,'L');
-                    $pdf  .= Fpdf::Cell(35,6,(number_format($typeExpense->balance,2)),0,0,'C');
-                    $pdf  .= Fpdf::Cell(35,6,('Gasto'),0,1,'C');
+                    $pdf  .= Fpdf::Cell(35,6,(number_format($typeExpense->balance,2)),0,1,'C');
                     endif;
+                    $total += $typeExpense->balance;
                 endforeach;
             endif;
-        endforeach;
+                endforeach;
+        $pdf  .= Fpdf::Cell(100,6,number_format($total,2),0,0,'L');
         return $pdf;
     }
     /*
@@ -718,7 +701,7 @@ class ReportController extends  Controller
     public function ingresos()
     {
         $token = $this->convertionObjeto();
-        $period = $this->periodRepository->token($token['periods']);
+        $period = $this->periodRepository->token('dab47d241644ba825bbead4e9eded06c');
         $beforePeriodo = $this->periodRepository->before($period);
 
         $pdf   = Fpdf::Ln();

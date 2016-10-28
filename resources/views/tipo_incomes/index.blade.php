@@ -27,6 +27,7 @@ Lista Tipos de ingresos
                </tr>
             </thead>
             <tbody>
+            <?php $total=0;?>
                   @foreach($tipoincomes AS $key=>$tipoincome)
                 <tr>
             <td>{{$key+1}}</td>
@@ -40,11 +41,13 @@ Lista Tipos de ingresos
                     <td><a  href="{{route('activar-tipo-ingreso',$tipoincome->id)}}"><span class="label label-danger">{{ $tipoincome->status }}</span></a></td>
                     @endif
                     <td class="text-center"><a  href="{{route('typeFix-edit',$tipoincome->id)}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
-            </tr>
+            </tr><?php if($tipoincome->part=='no' && $tipoincome->offering=='si' && $tipoincome->association=='no'): 
+            $total +=$tipoincome->balance; endif; ?>
                 @endforeach
             </tbody>
         </table>
         </div>
+        <div>Total de Tipos de Ingresos{{number_format($total,2)}}</div>
     </div>
 @stop
 @section('scripts')
