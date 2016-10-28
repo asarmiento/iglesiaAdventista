@@ -79,7 +79,7 @@ class ExpenseController extends Controller {
 		$expenses = $this->expensesRepository->getModel()
 			->select('expenses.*' , 'type_expenses.*' , 'type_expenses.balance')
 			->join('type_expenses','type_expenses.id','=','expenses.type_expense_id')
-			->with('departaments')->get();
+			->get();
 
 		return View('expenses.index', compact('expenses'));
 	}

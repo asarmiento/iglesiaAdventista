@@ -30,7 +30,7 @@ Lista Gastos
             <td>{{$key+1}}</td>
             <td>{{$expense->departaments->name}}</td>
             <td>{{$expense->name}}</td>
-            <td>{{$expense->checks->number}}</td>
+            <td>{{$expense->check->number}}</td>
             <td>{{$expense->invoiceNumber}}</td>
             <td>{{$expense->invoiceDate}}</td>
             <td>{{$expense->amount}}</td>
