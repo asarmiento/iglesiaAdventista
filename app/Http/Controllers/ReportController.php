@@ -444,7 +444,7 @@ class ReportController extends  Controller
     {
 
         $token = $this->convertionObjeto();
-        $period = $this->periodRepository->token('7713686a7ecdc68b103e580352e7bfda');
+        $period = $this->periodRepository->token('dab47d241644ba825bbead4e9eded06c');
         $beforePeriodo = $this->periodRepository->before($period);
 
         $pdf   = Fpdf::Ln();

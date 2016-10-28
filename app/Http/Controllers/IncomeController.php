@@ -93,11 +93,12 @@ class IncomeController extends Controller {
      * @return Response
      */
     public function create($token) {
-
+        set_time_limit(0);
         $typeIncomes=  $this->typeIncomeRepository->oneWhere('status','activo');
         $incomes=  $this->recordRepository->token($token);
-        $members = $this->memberRepository->getModel()->all();
-        return View('incomes.form', compact('incomes','typeIncomes','members'));
+        $members = $this->memberRepository->getModel()
+            ->select(DB::raw("CONCAT(name, ' ', last) as nameCompleto"),'token')->get();
+       return View('incomes.form', compact('incomes','typeIncomes','members'));
 
     }
 
@@ -196,10 +197,10 @@ class IncomeController extends Controller {
 
             if($balance == $control['balanceControl']):
             DB::commit();
-          //  return redirect()->route('post-report',$data['date']);
+            return redirect()->route('post-report',$data['date']);
             endif;
-         //   return redirect()->route('index-income')->withErrors(['balance'=>'Hay un monto mal no es igual'])
-          //      ->withInput();
+            return redirect()->route('index-income')->withErrors(['balance'=>'Hay un monto mal no es igual'])
+                ->withInput();
             /* Enviamos el mensaje de error */
         }catch (Exception $e) {
             \Log::error($e);

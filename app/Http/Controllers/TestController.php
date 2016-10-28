@@ -13,6 +13,7 @@ use SistemasAmigables\Http\Controllers\Controller;
 use SistemasAmigables\Repositories\AccountRepository;
 use SistemasAmigables\Repositories\BankRepository;
 use SistemasAmigables\Repositories\CheckRepository;
+use SistemasAmigables\Repositories\MemberRepository;
 use SistemasAmigables\Repositories\RecordRepository;
 
 class TestController extends Controller
@@ -34,12 +35,25 @@ class TestController extends Controller
      * @var RecordRepository
      */
     private $recordRepository;
+    /**
+     * @var MemberRepository
+     */
+    private $memberRepository;
 
+    /**
+     * TestController constructor.
+     * @param CheckRepository $checkRepository
+     * @param AccountRepository $accountRepository
+     * @param BankRepository $bankRepository
+     * @param RecordRepository $recordRepository
+     * @param MemberRepository $memberRepository
+     */
     public function __construct(
         CheckRepository $checkRepository,
         AccountRepository $accountRepository,
         BankRepository $bankRepository,
-        RecordRepository $recordRepository
+        RecordRepository $recordRepository,
+        MemberRepository $memberRepository
     )
     {
 
@@ -47,6 +61,7 @@ class TestController extends Controller
         $this->accountRepository = $accountRepository;
         $this->bankRepository = $bankRepository;
         $this->recordRepository = $recordRepository;
+        $this->memberRepository = $memberRepository;
     }
 
 
@@ -70,9 +85,9 @@ class TestController extends Controller
 
     public function updateToken()
     {
-        $checks = $this->checkRepository->allData();
+        $checks = $this->memberRepository->allData();
         foreach($checks AS $check):
-            $this->checkRepository->getModel()->where('id',$check->id)->update(['token'=>md5($check->number)]);
+            $this->memberRepository->getModel()->where('id',$check->id)->update(['token'=>md5($check->name)]);
         endforeach;
     }
 
