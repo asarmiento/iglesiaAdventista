@@ -120,19 +120,22 @@ class ExpenseController extends Controller {
 	public function store()
 	{
 		$gasto = $this->convertionObjeto();
-
 		$expenses = $this->expensesRepository->getModel();
 		if($expenses->isValid($gasto)):
 			$expenses->fill($gasto);
 			$expenses->save();
-            $this->typeExpenseRepository->updateBalance($expenses->type_expense_id,$expenses->amount,'balance');
-            $this->departamentRepository->updatesOutBalance($expenses->typeExpense->departament->id,$expenses->amount,'balance');
+            $this->typeExpenseRepository->updateAmountExpense($expenses->type_expense_id,$expenses->amount);
+            $this->updateDepartament($expenses->type_expense_id,$expenses->amount);
 			return redirect()->route('create-gasto',$expenses->check_id);
 		endif;
 
 		return redirect('iglesia/gastos/create/'.$gasto['check_id'])->withErrors($expenses)->withInput();
 	}
 
+	private function updateDepartament($type, $amount){
+        $typeExpense = $this->typeExpenseRepository->getModel()->find($type);
+        $this->departamentRepository->updateAmountExpense($typeExpense->id,$amount);
+    }
 	/**
 	 * Display the specified gasto.
 	 *
