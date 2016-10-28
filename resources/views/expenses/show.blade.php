@@ -19,16 +19,16 @@
                 <h2>Informe de Cheque de la Iglesia Adventista de Quepos</h2>
             </div>
             <div class="col-md-12 col-lg-12">
-                <h3>Emitido a: {{$cheques->name}}</h3>
+                <h3>Emitido a: {{$gastos[0]->check->name}}</h3>
             </div>
             <div class="col-md-4 col-lg-4">
-                <h3>Numero Cheque: {{$cheques->number}}</h3>
+                <h3>Numero Cheque: {{$gastos[0]->check->number}}</h3>
             </div>
             <div class="col-md-4 col-lg-4">
-                <h3>fecha: {{$cheques->date}}</h3>
+                <h3>fecha: {{$gastos[0]->check->date}}</h3>
             </div>
             <div class="col-md-4 col-lg-4">
-                <h3>Monto: {{$cheques->balance}}</h3>
+                <h3>Monto: {{$gastos[0]->check->balance}}</h3>
             </div>
             <div class="col-md-12 col-lg-12">
                 <table class="table ">
@@ -48,8 +48,8 @@
                             <td>{{$gasto->invoiceNumber}}</td>
                             <td>{{$gasto->invoiceDate}}</td>
                             <td>{{$gasto->detail}}</td>
-                            <td>{{$gasto->typeExpenses->name}}</td>
-                            <td>{{$gasto->typeExpenses->departaments[0]->name}}</td>
+                            <td>{{$gasto->typeExpense->name}}</td>
+                            <td>{{$gasto->typeExpense->departament->name}}</td>
                             <td>{{number_format($gasto->amount,2)}}</td>
                         </tr>
                     @endforeach
@@ -58,7 +58,7 @@
                             <td></td>
                             <td></td>
                             <td>Total</td>
-                            <td>{{number_format($monto,2)}}</td>
+                            <td>{{number_format($gastos[0]->total,2)}}</td>
                         </tr>
                     </tbody>
                 </table>

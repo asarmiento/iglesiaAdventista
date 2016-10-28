@@ -55,7 +55,7 @@ Formulario  Ingresos
                             <select  name="members-{{$i}}" style="height:40px; margin: 4px" class="form-control select2" data-type="select" >
                                 <option selected value="">Seleccione un Miembro</option>
                                 @foreach($members AS $member)
-                                    <option value="{{$member->token}}">{{$member->name.' '.$member->last}}</option>
+                                    <option value="{{$member->token}}">{{$member->nameCompleto}}</option>
                                 @endforeach
                             </select></td>
                         <td style="margin: 4px"><input type="text" placeholder="Numero Sobre" name="numberAbout-{{$i}}" class="form-control" style="height:30px; margin: 4px" size="10"></td>

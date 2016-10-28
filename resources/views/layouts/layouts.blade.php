@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset( 'img/favicon.png' ) }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/ladda-themeless.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('packages/font-awesome-4.5.0/css/font-awesome.css')}}">
+    <link rel="stylesheet" href="{{ asset('packages/font-awesome-4.7.0/css/font-awesome.css')}}">
     <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/lib/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css')}}">

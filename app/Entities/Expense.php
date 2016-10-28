@@ -26,9 +26,9 @@ class Expense extends Entity
     {
         return $this->belongsTo(Departament::getClass(),'departament_id','id');
     }
-    public function checks()
+    public function check()
     {
-        return $this->belongsTo(Check::getClass(),'check_id','id');
+        return $this->belongsTo(Check::getClass());
     }
     public function typeExpense()
     {

@@ -7,7 +7,7 @@ class Check extends Entity
 {
     protected $timestamp;
 
-    protected $fillable= ['number','name','date','type','detail','balance','church_id','token','account_id'];
+    protected $fillable= ['number','name','date','type','detail','balance','church_id','token','account_id','period_id'];
 
     public function getRules()
     {
@@ -15,6 +15,7 @@ class Check extends Entity
             'number'    =>'required',
             'name'      =>'required',
             'date'      =>'required',
+            'period_id'    =>'required',
             'balance'    =>'required'
         ];
     }
@@ -34,6 +35,6 @@ class Check extends Entity
 
     public function expenses()
     {
-        return $this->belongsTo(Expense::getClass(),'id','check_id');
+        return $this->hasMany(Expense::getClass());
     }
 }
