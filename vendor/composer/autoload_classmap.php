@@ -31,7 +31,7 @@ return array(
     'CreateTaskUserTable' => $baseDir . '/database/migrations/2015_06_17_001311_create_task_user_table.php',
     'CreateTasksTable' => $baseDir . '/database/migrations/2015_06_16_205853_create_tasks_table.php',
     'CreateTypeExpensesTable' => $baseDir . '/database/migrations/2016_01_12_044125_create_type_expenses_table.php',
-    'CreateTypeIncomesOfTypeExpensesTable' => $baseDir . '/database/migrations/2016_11_24_183843_create_type_incomes_of_type_expenses_table.php',
+    'CreateTypeIncomesOfTypeExpensesTable' => $baseDir . '/database/migrations/2016_11_24_183843_create_type_expense_type_income_table.php',
     'CreateTypeIncomesTable' => $baseDir . '/database/migrations/2015_01_01_04_create_typeIncomes_table.php',
     'CreateTypeUsersTable' => $baseDir . '/database/migrations/2015_01_01_01_create_typeUsers_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2015_01_01_02_create_users_table.php',

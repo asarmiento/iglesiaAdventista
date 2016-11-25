@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
+use SistemasAmigables\Entities\DepartamentBaseIncome;
 use SistemasAmigables\Entities\Record;
 use SistemasAmigables\Entities\TypeFixedIncome;
+use SistemasAmigables\Entities\TypeIncome;
 use SistemasAmigables\Entities\TypesTemporaryIncome;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
@@ -148,17 +150,19 @@ class IncomeController extends Controller {
                      /** Buscamos los montos para las cantidades para su distribución*/
                 if($diezmos[0] == $data['type_income_id']):
                     $totalAsociacion += $data['balance'];
-
                 endif;
+                //Ofrenda generarl
                 if($ofrenda[0] == $data['type_income_id']):
 
                     $totalAsociacion += ($data['balance']*0.4);
                     $totalIglOfrenda += ($data['balance']*0.6);
                 endif;
+                //Fondo de Inversion
                 if($ofrenda[1] == $data['type_income_id']):
                     $totalAsociacion += ($data['balance']*0.4);
                     $totalIglOfrenda += ($data['balance']*0.6);
                 endif;
+
                 foreach ($otrasAsocOfrendas AS $otrasAsocOfrenda):
                     if($otrasAsocOfrenda == $data['type_income_id']):
                         $totalAsociacion += $data['balance'];
@@ -187,8 +191,8 @@ class IncomeController extends Controller {
                     endif;
                 endforeach;
 
-                $totalesDepartaments= ['asociacion'=>$totalAsociacion,
-                    'iglesia'=>['Ofrenda'=>($totalIglOfrenda),$otrosIglesia,$otrosNoIglesia]];
+                $totalesDepartaments = ['asociacion'=>$totalAsociacion,
+                    'iglesia'=>['Ofrenda'=>($totalIglOfrenda),$otrosIglesia,$otrosNoIglesia],'date'=>$data['date']];
                     endif;
 
             endforeach;
@@ -197,7 +201,7 @@ class IncomeController extends Controller {
 
             if($balance == $control['balanceControl']):
             DB::commit();
-            return redirect()->route('post-report',$data['date']);
+                return redirect()->route('post-report',$data['date']);
             endif;
             return redirect()->route('index-income')->withErrors(['balance'=>'Hay un monto mal no es igual'])
                 ->withInput();
@@ -207,7 +211,19 @@ class IncomeController extends Controller {
             return $this->errores(array('sobres' => 'Verificar la información del cheque, si no contactarse con soporte de la applicación'));
         }
     }
+    public function ingresoBase($datos,$departament)
+    {
+       if($departament->typeIncomeWhere):
+             $amount=   $datos['iglesia']['Ofrenda']*$departament->budget;
+            DepartamentBaseIncome::create([
+                'date'=>$datos['date'],
+                'amount'=>$amount,
+                'type_income_id'=>$departament->typeIncomeWhere->id
+            ]);
+            $this->typeIncomeRepository->updateBalance($departament->typeIncomeWhere->id,$amount,'balance');
+       endif;
 
+    }
     /**************************************************
     * @Author: Anwar Sarmiento Ramos
     * @Email: asarmiento@sistemasamigables.com
@@ -232,6 +248,7 @@ class IncomeController extends Controller {
         $departaments = $this->departamentRepository->oneWhere('type','iglesia');
         foreach ($departaments AS $departament):
 
+            $this->ingresoBase($datos,$departament);
             $this->departamentRepository->getModel()->where('id',$departament->id)
                 ->update(['balance'=>(($datos['iglesia']['Ofrenda']*$departament->budget)+$departament->balance)]);
         endforeach;
@@ -290,7 +307,7 @@ class IncomeController extends Controller {
                 if($data['fixeds-'.$i.'-'.$fixed->id] > 0)
                 {
                     $balance = $data['fixeds-'.$i.'-'.$fixed->id];
-                    $this->TypeIncomeRepository->updateBalance($fixed->id,$balance,'balance');
+                    $this->TypeIncomeRepository->updateBalanceAll($fixed,$balance);
                     array_push($transaction, array(
                             'record_id' => $record->id,
                             'numberOf' => $numberOf,
@@ -369,7 +386,12 @@ class IncomeController extends Controller {
     }
 
     public function send($token){
-
+        [
+            'asociacion' => 372000.0,
+            'iglesia' =>array ('Ofrenda' => 108000.0,0 =>array(19 => 30000,22 => 30000,26 => 28000,),1 =>array (),
+            'date' => '2016-11-19',
+            ),
+        ];
 
     }
 
@@ -378,5 +400,6 @@ class IncomeController extends Controller {
         $periods = $this->periodRepository->getModel()->orderBy('year','DESC')->get();
         return view('incomes.estadoCuenta',compact('periods'));
     }
+
 
 }

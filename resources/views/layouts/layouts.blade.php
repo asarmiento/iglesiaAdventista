@@ -58,6 +58,7 @@
                                         <li><a href="{{route('index-depart')}}">Departamentos</a></li>
                                         <li><a href="{{route('date-depart')}}">Movimiento x Departamentos</a></li>
                                         <li><a href="{{route('typeFix-lista')}}">Tipos de Ingresos</a></li>
+                                        <li><a href="{{route('realacionar-typeFix')}}">Relacionar</a></li>
                                         <li><a href="{{route('typeExp-lista')}}">Tipos de Gastos</a></li>
 
                                     </ul>

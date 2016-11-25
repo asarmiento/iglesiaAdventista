@@ -9,12 +9,18 @@
 namespace SistemasAmigables\Http\Controllers;
 
 
+use SistemasAmigables\Entities\DepartamentBaseIncome;
 use SistemasAmigables\Http\Controllers\Controller;
 use SistemasAmigables\Repositories\AccountRepository;
 use SistemasAmigables\Repositories\BankRepository;
 use SistemasAmigables\Repositories\CheckRepository;
+use SistemasAmigables\Repositories\DepartamentRepository;
+use SistemasAmigables\Repositories\ExpensesRepository;
+use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\MemberRepository;
 use SistemasAmigables\Repositories\RecordRepository;
+use SistemasAmigables\Repositories\TypeExpenseRepository;
+use SistemasAmigables\Repositories\TypeIncomeRepository;
 
 class TestController extends Controller
 {
@@ -39,6 +45,26 @@ class TestController extends Controller
      * @var MemberRepository
      */
     private $memberRepository;
+    /**
+     * @var TypeIncomeRepository
+     */
+    private $typeIncomeRepository;
+    /**
+     * @var IncomeRepository
+     */
+    private $incomeRepository;
+    /**
+     * @var DepartamentRepository
+     */
+    private $departamentRepository;
+    /**
+     * @var TypeExpenseRepository
+     */
+    private $typeExpenseRepository;
+    /**
+     * @var ExpensesRepository
+     */
+    private $expensesRepository;
 
     /**
      * TestController constructor.
@@ -47,13 +73,23 @@ class TestController extends Controller
      * @param BankRepository $bankRepository
      * @param RecordRepository $recordRepository
      * @param MemberRepository $memberRepository
+     * @param TypeIncomeRepository $typeIncomeRepository
+     * @param IncomeRepository $incomeRepository
+     * @param DepartamentRepository $departamentRepository
+     * @param TypeExpenseRepository $typeExpenseRepository
+     * @param ExpensesRepository $expensesRepository
      */
     public function __construct(
         CheckRepository $checkRepository,
         AccountRepository $accountRepository,
         BankRepository $bankRepository,
         RecordRepository $recordRepository,
-        MemberRepository $memberRepository
+        MemberRepository $memberRepository,
+        TypeIncomeRepository $typeIncomeRepository,
+        IncomeRepository $incomeRepository,
+        DepartamentRepository $departamentRepository,
+        TypeExpenseRepository $typeExpenseRepository,
+        ExpensesRepository $expensesRepository
     )
     {
 
@@ -62,6 +98,11 @@ class TestController extends Controller
         $this->bankRepository = $bankRepository;
         $this->recordRepository = $recordRepository;
         $this->memberRepository = $memberRepository;
+        $this->typeIncomeRepository = $typeIncomeRepository;
+        $this->incomeRepository = $incomeRepository;
+        $this->departamentRepository = $departamentRepository;
+        $this->typeExpenseRepository = $typeExpenseRepository;
+        $this->expensesRepository = $expensesRepository;
     }
 
 
@@ -93,9 +134,73 @@ class TestController extends Controller
 
     public function saldoChurch()
     {
-        $mes =[1,2];
+        $typeIncomes = $this->typeIncomeRepository->getModel()->get();
+        $date = ['2016-07-25','2016-11-01'];
+        foreach ($typeIncomes AS $typeIncome):
+            $amount = $this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)->whereBetween('date',$date)
+                ->sum('balance');
+            if($typeIncome->association == 'si' && $typeIncome->offering == 'no' && $typeIncome->part == 'no'):
+                $balance= $this->typeIncomeRepository->oneWhere('id',$typeIncome->id);
+                $newbalance= $balance[0]->balance + $amount;
+                $this->typeIncomeRepository->getModel()->where('id',$typeIncome->id)->update(['balance'=>$newbalance]);
+            elseif($typeIncome->association == 'si' && $typeIncome->offering == 'si' && $typeIncome->part == 'si'):
+                $balance= $this->typeIncomeRepository->newQuery()->where('id',$typeIncome->id)->sum('balance');
+                $newbalance= $balance + ($amount*0.4);
+                $this->typeIncomeRepository->getModel()->where('id',$typeIncome->id)->update(['balance'=>$newbalance]);
+            elseif($typeIncome->association=='no' && $typeIncome->offering == 'si' && $typeIncome->part == 'no'):
+                $balance= $this->typeIncomeRepository->oneWhere('id',$typeIncome->id);
+                $newbalance= $balance[0]->balance + $amount;
+                $this->typeIncomeRepository->getModel()->where('id',$typeIncome->id)->update(['balance'=>$newbalance]);
+            elseif($typeIncome->association=='no' && $typeIncome->offering == 'no' && $typeIncome->part == 'no'):
+                $balance= $this->typeIncomeRepository->oneWhere('id',$typeIncome->id);
+                $newbalance= $balance[0]->balance + $amount;
+                $this->typeIncomeRepository->getModel()->where('id',$typeIncome->id)->update(['balance'=>$newbalance]);
+            endif;
 
-        $records = $this->recordRepository->oneWhereSum();
+        endforeach;
+
+        $types = $this->typeIncomeRepository->getModel()->get();
+
+        foreach ($types AS $departament):
+
+                if($departament->base == 'si'):
+                    $amount = $this->incomeRepository->getModel()
+                        ->whereBetween('date',$date)
+                        ->whereIn('type_income_id',[2,3])
+                        ->sum('balance')*0.6;
+
+                    $amount =   ($amount) * $departament->departament->budget;
+                     DepartamentBaseIncome::create([
+                        'date'=>'2016-10-24',
+                        'amount'=>$amount,
+                        'type_income_id'=>$departament->id
+                    ]);
+                $this->typeIncomeRepository->updateBalance($departament->id,$amount,'balance');
+                endif;
+        endforeach;
+
+
+        $departamentos = $this->departamentRepository->getModel()->get();
+
+        foreach ($departamentos AS $departament):
+                $amount = $this->typeIncomeRepository->getModel()
+                        ->where('departament_id',$departament->id)
+                        ->sum('balance');
+                $this->departamentRepository->updateBalance($departament->id,$amount,'balance');
+
+        endforeach;
+
+        $typeExpenses = $this->typeExpenseRepository->getModel()->get();
+
+        foreach ($typeExpenses AS $departament):
+            $amount = $this->expensesRepository->getModel()
+                ->whereBetween('invoiceDate',$date)
+                ->where('type_expense_id',$departament->id)
+                ->sum('amount');
+            $this->typeExpenseRepository->updateBalance($departament->id,$amount,'balance');
+
+        endforeach;
+
     }
 
     public function repartir()

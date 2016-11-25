@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Validator;
 use SistemasAmigables\Entities\Church;
+use SistemasAmigables\Entities\TypeExpense;
 use SistemasAmigables\Entities\TypeIncome;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
@@ -199,4 +200,17 @@ class TypeIncomeController extends Controller {
         return redirect()->route('typeFix-lista');
     }
 
+    public function relation(){
+        $typeIncomes = TypeIncome::all();
+        $typeExpenses = TypeExpense::all();
+        return view('tipo_incomes.relation',compact('typeIncomes','typeExpenses'));
+    }
+
+    public function relationSave()
+    {
+        $data = Input::all();
+        $typeIncomes = TypeIncome::find($data['type_income_id']);
+        $typeIncomes->typeExpenses()->attach($data['type_expense_id']);
+        return redirect()->route('realacionar-typeFix');
+    }
 }

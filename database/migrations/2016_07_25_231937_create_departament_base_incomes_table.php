@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSeatingsTable extends Migration
+class CreateDepartamentBaseIncomesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,12 @@ class CreateSeatingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('seatings', function(Blueprint $table) {
+        Schema::create('departament_base_incomes', function(Blueprint $table) {
             $table->increments('id',true);
             $table->date('date');
             $table->decimal('amount', 20, 2);
-            $table->string('description');
-            $table->integer('record_id')->unsigned()->nullable();
-            $table->foreign('record_id')->references('id')->on('records')->onDelete('no action');
-            $table->integer('check_id')->unsigned()->nullable();
-            $table->foreign('check_id')->references('id')->on('checks')->onDelete('no action');
+            $table->integer('type_income_id')->unsigned()->index();
+            $table->foreign('type_income_id')->references('id')->on('type_incomes')->onDelete('no action');
             $table->engine = 'InnoDB';
             $table->timestamps();
             $table->softDeletes();
@@ -34,6 +31,6 @@ class CreateSeatingsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('seatings');
+        Schema::drop('departament_base_incomes');
     }
 }

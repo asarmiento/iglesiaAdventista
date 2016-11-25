@@ -28,7 +28,10 @@ class TypeIncome extends Entity
     {
         return $this->belongsToMany(Expense::getClass(),'expense_income','id','type_income_id')->sum('expense_income.amount');
     }
-
+    public function typeExpenses()
+    {
+        return $this->belongsToMany(TypeExpense::getClass());
+    }
     public function fixIncomes()
     {
         return $this->belongsTo(Income::getClass(),'id','type_income_id');

@@ -32,6 +32,7 @@ Route::get('/email', [ 'as' => 'email', 'uses' => 'EmailController@index' ]);
 Route::resource('expenses','ExpenseController');
 
 Route::get('test/saldo', 'TestController@index');
+Route::get('test/actual', 'TestController@saldoChurch');
 
 Route::group(['prefix' => 'iglesia'], function () {
 

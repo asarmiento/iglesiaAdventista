@@ -8,6 +8,8 @@
 
 Route::get('tipos-de-ingresos',['as'=>'typeFix-lista','uses'=>'TypeIncomeController@index']);
 Route::get('tipos-de-ingresos/crear',['as'=>'crear-typeFix','uses'=>'TypeIncomeController@create']);
+Route::get('tipos-de-ingresos/relacionar',['as'=>'realacionar-typeFix','uses'=>'TypeIncomeController@relation']);
+Route::post('tipos-de-ingresos/relacionar',['as'=>'relation-save','uses'=>'TypeIncomeController@relationSave']);
 Route::post('tipos-de-ingresos/crear',['as'=>'crear-typeFixs','uses'=>'TypeIncomeController@store']);
 Route::post('tipos-de-ingresos/update/{id}',['as'=>'update-typeFixs','uses'=>'TypeIncomeController@update']);
 Route::get('tipos-de-ingresos/{id}',['as'=>'typeFix-edit','uses'=>'TypeIncomeController@edit']);

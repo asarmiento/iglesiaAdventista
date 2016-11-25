@@ -32,6 +32,10 @@ class Departament extends Entity
     {
         return $this->belongsTo(TypeIncome::getClass(),'id','departament_id');
     }
+    public function typeIncomeWhere()
+    {
+        return $this->belongsTo(TypeIncome::getClass(),'id','departament_id')->where('base','si');
+    }
     public function getExist()
     {
         // TODO: Implement getExist() method.
