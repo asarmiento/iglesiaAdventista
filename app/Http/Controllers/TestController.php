@@ -134,18 +134,23 @@ class TestController extends Controller
 
     public function saldoChurch()
     {
+        //UPDATE `type_incomes` SET `balance` = '0' ;
+        //UPDATE `type_expenses` SET `balance` = '0' ;
+        //UPDATE `departaments` SET `balance` = '0' ;
         $typeIncomes = $this->typeIncomeRepository->getModel()->get();
         $date = ['2016-07-25','2016-11-01'];
         foreach ($typeIncomes AS $typeIncome):
-            $amount = $this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)->whereBetween('date',$date)
-                ->sum('balance');
+            $amount = $this->incomeRepository->getModel()->where('type_income_id',$typeIncome->id)
+                    ->whereHas('records',function($q) use ($date){
+                    $q->whereBetween('date',$date);
+                })->sum('balance');
             if($typeIncome->association == 'si' && $typeIncome->offering == 'no' && $typeIncome->part == 'no'):
                 $balance= $this->typeIncomeRepository->oneWhere('id',$typeIncome->id);
                 $newbalance= $balance[0]->balance + $amount;
                 $this->typeIncomeRepository->getModel()->where('id',$typeIncome->id)->update(['balance'=>$newbalance]);
             elseif($typeIncome->association == 'si' && $typeIncome->offering == 'si' && $typeIncome->part == 'si'):
                 $balance= $this->typeIncomeRepository->newQuery()->where('id',$typeIncome->id)->sum('balance');
-                $newbalance= $balance + ($amount*0.4);
+                $newbalance= $balance + ($amount*0.6);
                 $this->typeIncomeRepository->getModel()->where('id',$typeIncome->id)->update(['balance'=>$newbalance]);
             elseif($typeIncome->association=='no' && $typeIncome->offering == 'si' && $typeIncome->part == 'no'):
                 $balance= $this->typeIncomeRepository->oneWhere('id',$typeIncome->id);
@@ -165,7 +170,9 @@ class TestController extends Controller
 
                 if($departament->base == 'si'):
                     $amount = $this->incomeRepository->getModel()
-                        ->whereBetween('date',$date)
+                            ->whereHas('records',function($q) use ($date){
+                             $q->whereBetween('date',$date);
+                           })
                         ->whereIn('type_income_id',[2,3])
                         ->sum('balance')*0.6;
 
