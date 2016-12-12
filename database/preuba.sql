@@ -1,4 +1,12 @@
 
+UPDATE `incomes` SET `numeration`= 1 WHERE `date` = '2014-12-27';
+UPDATE `incomes` SET `numeration`=2 WHERE `date` ='2015-01-03';
+UPDATE `incomes` SET `numeration`=2 WHERE `date` ='2015-01-10';
+UPDATE `incomes` SET `numeration`=2 WHERE `date` ='2015-01-17';
+UPDATE `incomes` SET `numeration`=2 WHERE `date` ='2015-01-24';
+
+
+
 CREATE TABLE IF NOT EXISTS `expenses` (
   `id` int(10) unsigned NOT NULL,
   `invoiceNumber` varchar(255) COLLATE utf8_unicode_ci NOT NULL,

@@ -34,6 +34,10 @@ class Income extends Entity
     {
         return $this->belongsTo(Member::getClass(),'member_id','id');
     }
+    public function suma()
+    {
+        return $this->sum('balance');
+    }
     public function records()
     {
         return $this->belongsTo(Record::getClass(),'record_id','id');

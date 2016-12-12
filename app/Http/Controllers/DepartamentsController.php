@@ -5,9 +5,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use SistemasAmigables\Entities\Church;
+use SistemasAmigables\Entities\OtherIncome;
 use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\ExpensesRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
+use SistemasAmigables\Repositories\PeriodRepository;
 use SistemasAmigables\Repositories\TransfersRepository;
 use SistemasAmigables\Repositories\TypeExpenseRepository;
 use SistemasAmigables\Repositories\TypeIncomeRepository;
@@ -37,6 +39,10 @@ class DepartamentsController extends Controller {
      * @var TransfersRepository
      */
     private $transfersRepository;
+    /**
+     * @var PeriodRepository
+     */
+    private $periodRepository;
 
     /**
      * DepartamentsController constructor.
@@ -46,6 +52,7 @@ class DepartamentsController extends Controller {
      * @param TypeIncomeRepository $typeIncomeRepository
      * @param TypeExpenseRepository $typeExpenseRepository
      * @param TransfersRepository $transfersRepository
+     * @param PeriodRepository $periodRepository
      */
     public function __construct(
         DepartamentRepository $departamentRepository,
@@ -53,7 +60,8 @@ class DepartamentsController extends Controller {
         IncomeRepository $incomeRepository,
         TypeIncomeRepository $typeIncomeRepository,
         TypeExpenseRepository $typeExpenseRepository,
-        TransfersRepository $transfersRepository
+        TransfersRepository $transfersRepository,
+        PeriodRepository $periodRepository
     )
     {
 
@@ -63,6 +71,7 @@ class DepartamentsController extends Controller {
         $this->typeIncomeRepository = $typeIncomeRepository;
         $this->typeExpenseRepository = $typeExpenseRepository;
         $this->transfersRepository = $transfersRepository;
+        $this->periodRepository = $periodRepository;
     }
     /**************************************************
     * @Author: Anwar Sarmiento Ramos
@@ -212,7 +221,8 @@ class DepartamentsController extends Controller {
     public function moveDepartament()
     {
         $departaments = $this->departamentRepository->allData();
-        return view('departamentos.movimientos', compact('departaments'));
+        $periods = $this->periodRepository->allData();
+        return view('departamentos.movimientos', compact('departaments','periods'));
     }
 
     /**
@@ -243,15 +253,46 @@ class DepartamentsController extends Controller {
             $pdf .= Fpdf::SetFont('Arial','BI',12);
             $pdf .= Fpdf::Cell(0,7,utf8_decode('Fecha Inicial: '.$datos['dateIn'].' A '.$datos['dateOut']),0,1,'C');
             $pdf .= Fpdf::Ln();
-            $departaments = $this->departamentRepository->getModel()->where('type','iglesia')->get();
+            $saldoInicial = 666392;
+            $pdf .= Fpdf::Cell(160,7,utf8_decode('Saldo Inicial: 666,392.00'),1,1,'C');
+            $pdf .= Fpdf::Cell(70,7,utf8_decode('Departamentos'),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('Ingresos'),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('Salidas'),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,utf8_decode('Saldo'),1,1,'C');
+            $departaments = $this->departamentRepository->getModel()->get();
+            $totalIncomes = 0;
+            $totalExpense = 0;
             foreach($departaments AS $departament):
                 $pdf .= Fpdf::SetFont('Arial','B',14);
-                $pdf .= Fpdf::Cell(0,7,utf8_decode($departament->name),0,1,'C');
-                $pdf .= Fpdf::Ln();
-                $this->typeIncomesReport($departament->id,$datos);
-                $pdf .= Fpdf::Ln();
-                $this->typeExpesesReport($departament->id,$datos);
+                $pdf .= Fpdf::Cell(70,7,utf8_decode($departament->name),1,0,'L');
+                $pdf .= Fpdf::SetFont('Arial','',12);
+                $incomes = $this->incomeRepository->getModel()
+                    ->whereHas('typeIncomes',function ($q) use($departament){
+                        $q->where('departament_id',$departament->id);
+                    })
+                    ->whereBetween('date',[$datos['dateIn'],$datos['dateOut']])->sum('balance');
+                $other = OtherIncome::wherehas('typeIncomes',function ($q) use($departament){
+                    $q->where('departament_id',$departament->id);
+                })->whereBetween('date',[$datos['dateIn'],$datos['dateOut']])->sum('amount');
+
+                $pdf .= Fpdf::Cell(30,7,number_format($incomes+$other,2),1,0,'C');
+
+                $expenses = $this->expensesRepository->getModel()
+                    ->whereHas('typeExpense',function ($q) use($departament){
+                        $q->where('departament_id',$departament->id);
+                    })
+                    ->whereBetween('invoiceDate',[$datos['dateIn'],$datos['dateOut']])->sum('amount');
+                
+                $pdf .= Fpdf::Cell(30,7,number_format($expenses),1,0,'C');
+                $pdf .= Fpdf::Cell(30,7,number_format($incomes+$other-$expenses),1,1,'C');
+                $totalIncomes += $incomes+$other;
+                $totalExpense += $expenses;
             endforeach;
+            $pdf .= Fpdf::SetFont('Arial','B',12);
+            $pdf .= Fpdf::Cell(70,7,utf8_decode('Total:'),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,number_format($totalIncomes+$saldoInicial),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,number_format($totalExpense),1,0,'C');
+            $pdf .= Fpdf::Cell(30,7,number_format($totalIncomes+$saldoInicial-$totalExpense),1,1,'C');
             $pdf .= Fpdf::Ln();
         else:
             $pdf = Fpdf::Cell(0,7,utf8_decode('Informe movimientos x Departamento'),0,1,'C');

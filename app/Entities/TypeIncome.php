@@ -44,7 +44,10 @@ class TypeIncome extends Entity
     {
         return $this->hasMany(Income::getClass());
     }
-
+    public function income()
+    {
+        return $this->hasMany(Income::getClass())->sum('balance');
+    }
     public function expenses()
     {
         return $this->belongsToMany(Expense::getClass(),'expense_income')->withPivot('amount','types_temporary_income_id');

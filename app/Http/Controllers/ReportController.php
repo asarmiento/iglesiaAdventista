@@ -430,7 +430,7 @@ class ReportController extends  Controller
         $period = $this->periodRepository->getModel()->where('year',2016)->orderBy('month','DESC')->first();
 
         $beforePeriodo = $this->periodRepository->before($period);
-
+      
         $pdf   = Fpdf::Ln();
         $pdf   = Fpdf::SetFont('Arial','B',16);
         $pdf  .= Fpdf::Cell(0,5,utf8_decode('Departamentos de la Iglesia'),0,1,'C');

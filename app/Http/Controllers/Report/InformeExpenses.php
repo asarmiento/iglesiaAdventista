@@ -214,7 +214,7 @@ class InformeExpenses extends Controller
 
 
         $i=0;
-        $departaments = $this->departamentRepository->getModel()->where('type','iglesia')->orderBy('name','ASC')->get();
+        $departaments = $this->departamentRepository->getModel()->orderBy('name','ASC')->get();
         $departamen = $this->departamentRepository->getModel()->where('type','iglesia')->orderBy('name','ASC')->lists('id');
         $typesList = $this->typeExpenseRepository->getModel()->whereIn('departament_id',$departamen)->lists('id');
         $mes = ['01','02','03','04','05','06','07','08','09','10','11','12'];

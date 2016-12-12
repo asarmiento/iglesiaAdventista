@@ -88,10 +88,10 @@ class IncomeRepository extends BaseRepository
     ***************************************************/
     public function campoRecord($id,$dateIn,$dateout)
     {
+
         $ofrenda = $this->newQuery()->wherehas('typeIncomes',function($q){
             $q->where('part','si');
         })->where('record_id',$id)->whereBetween('date',[$dateIn,$dateout])->sum('balance');
-
         $ofrendas = ($ofrenda/5)*2;
 
         $diezmos = $this->newQuery()->wherehas('typeIncomes',function($q){
@@ -213,4 +213,6 @@ class IncomeRepository extends BaseRepository
     public function incomeDateMember($member,$date){
         return $this->newQuery()->where('member_id',$member)->where('date',$date)->orderBy('id','ASC');
     }
+
+
 }

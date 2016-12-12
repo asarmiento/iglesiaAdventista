@@ -108,20 +108,16 @@ class TestController extends Controller
 
     public function index(){
 
-        $accounts = $this->accountRepository->allData();
+        $accounts = $this->checkRepository->allData();
 
         foreach($accounts AS $account):
-            $check = $this->checkRepository->totalOut('account_id',$account->id);
-            $total = $account->initial_balance  + $check;
-            $bank = $this->bankRepository->oneWhereSum('account_id',$account->id,'balance');
-            $totalBank = $account->initial_balance  + $bank;
-            $balance = $totalBank - $total;
-
-            $this->accountRepository->getModel()->where('id',$account->id)->update(['credit_balance'=>$total,'debit_balance'=>$totalBank,'balance'=>$balance]);
+            if($this->expensesRepository->oneWhereSum('check_id',$account->id,'amount')== 0):
+           Echo $account->date.'-'.$account->number.'-'.$account->name.'-->'.$this->expensesRepository->oneWhereSum('check_id',$account->id,'amount').'</br>';
+                endif;
         endforeach;
 
 
-        return redirect('/');
+
     }
 
     public function updateToken()

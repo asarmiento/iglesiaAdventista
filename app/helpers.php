@@ -32,7 +32,8 @@ function actionList(){
 }
 
 function changeLetterMonth($month){
- $months=   ['01'=>'Enero','02'=>'Febrero','03'=>'Marzo','04'=>'Abril','05'=>'Mayo','06'=>'Junio','07'=>'Julio','08'=>'Agosto','09'=>'Septiembre','10'=>'Octubre','11'=>'Noviembre','12'=>'Diciembre'];
+ $months=   ['1'=>'Enero','2'=>'Febrero','3'=>'Marzo','4'=>'Abril','5'=>'Mayo','6'=>'Junio','7'=>'Julio','8'=>'Agosto',
+     '9'=>'Septiembre','10'=>'Octubre','11'=>'Noviembre','12'=>'Diciembre'];
 return $months[$month];
 }
 
@@ -61,6 +62,7 @@ function dayFinish($month){
         '07'=>31,'08'=>31,'09'=>30,'10'=>31,'11'=>30,'12'=>31];
     return $finsh[$month];
 }
+
 function dateShort()
 {
     $mes_actual = date("n");
@@ -75,4 +77,25 @@ function dateShort()
 
     endif;
     return date("Y/m/d");
+}
+
+function numeration($number)
+{
+    switch (count($number)):
+        case 1:
+            return '0000'.$number;
+        break;
+        case 2:
+            return '000'.$number;
+        break;
+        case 3:
+            return '00'.$number;
+        break;
+        case 4:
+            return '0'.$number;
+        break;
+
+            return $number;
+        default;
+    endswitch;
 }

@@ -84,6 +84,7 @@
                                     <ul class="dropdown-menu">
                                         <li><a href="{{route('index-record')}}">Informe Semanal</a></li>
                                         <li><a target="_blank" href="{{route('info-income')}}">Reporte Mensual</a></li>
+                                        <li><a href="{{route('lista-incomes',date('Y'))}}">Reporte de Ingresos</a></li>
                                     </ul>
                                 </li>
                                 <li><a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gastos<span class="caret"></span></a>

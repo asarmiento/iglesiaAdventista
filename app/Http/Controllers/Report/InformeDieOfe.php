@@ -10,10 +10,14 @@ namespace SistemasAmigables\Http\Controllers\Report;
 
 
 use Anouar\Fpdf\Facades\Fpdf;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
+use SistemasAmigables\Entities\OtherIncome;
 use SistemasAmigables\Http\Controllers\Controller;
+use SistemasAmigables\Repositories\DepartamentRepository;
 use SistemasAmigables\Repositories\IncomeRepository;
 use SistemasAmigables\Repositories\MemberRepository;
+use SistemasAmigables\Repositories\PeriodRepository;
 use SistemasAmigables\Repositories\TypeExpenseRepository;
 use SistemasAmigables\Repositories\TypeIncomeRepository;
 
@@ -36,17 +40,37 @@ class InformeDieOfe extends Controller
      * @var TypeIncomeRepository
      */
     private $typeIncomeRepository;
+    /**
+     * @var DepartamentRepository
+     */
+    private $departamentRepository;
+    /**
+     * @var PeriodRepository
+     */
+    private $periodRepository;
 
+    /**
+     * InformeDieOfe constructor.
+     * @param MemberRepository $memberRepository
+     * @param IncomeRepository $incomeRepository
+     * @param TypeIncomeRepository $typeIncomeRepository
+     * @param DepartamentRepository $departamentRepository
+     * @param PeriodRepository $periodRepository
+     */
     public function __construct(
        MemberRepository $memberRepository,
        IncomeRepository $incomeRepository,
-       TypeIncomeRepository $typeIncomeRepository
+       TypeIncomeRepository $typeIncomeRepository,
+        DepartamentRepository $departamentRepository,
+        PeriodRepository $periodRepository
     )
     {
 
         $this->memberRepository = $memberRepository;
         $this->incomeRepository = $incomeRepository;
         $this->typeIncomeRepository = $typeIncomeRepository;
+        $this->departamentRepository = $departamentRepository;
+        $this->periodRepository = $periodRepository;
     }
     public function index(){
          $year = Input::get('year');
@@ -349,6 +373,98 @@ class InformeDieOfe extends Controller
         exit;
     }
 
+    /**
+     * @param $year
+     */
+    public function departament($year)
+    {
+        $pdf  = Fpdf::AddPage('L','legal');
+        $pdf .= Fpdf::SetFont('Arial','B',16);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Asociación Central Sur de Costa Rica de los Adventista del Séptimo Día'),0,1,'C');
+        $pdf .= Fpdf::SetFont('Arial','',12);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Apartado 10113-1000 San José, Costa Rica'),0,1,'C');
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Teléfonos: 2224-8311 Fax:2225-0665'),0,1,'C');
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('acscrtesoreria07@gmail.com acscr_tesoreria@hotmail.com'),0,1,'C');
+        $pdf .= Fpdf::SetFont('Arial','B',16);
+        $pdf .= Fpdf::Cell(0,7,utf8_decode('Ingreso de Diezmos, Ofrendas y Otros de la Iglesia de Quepos'),0,1,'C');
+        $periods = $this->periodRepository->oneWhere('year',$year);
+        $i=79;
+        foreach($periods AS $period):
+            $i = $i +20;
+        endforeach;
+        $pdf .= Fpdf::Cell($i,7,utf8_decode('Año: '.$year),1,1,'C');
+
+        $pdf = Fpdf::SetFont('Arial','B',10);
+        $pdf .= Fpdf::Cell(5,7,utf8_decode('N°'),1,0,'C');
+        $pdf .= Fpdf::Cell(40,7,utf8_decode('Departamento'),1,0,'C');
+         foreach($periods AS $period):
+            $pdf .= Fpdf::Cell(20,7,utf8_decode(substr(changeLetterMonth($period->month),0,3)),1,0,'C');
+        endforeach;
+        $pdf .= Fpdf::Cell(20,7,utf8_decode('Total'),1,0,'C');
+        $pdf .= Fpdf::Cell(14,7,utf8_decode('%'),1,1,'C');
+
+
+
+        $i=0;
+        $departaments = $this->departamentRepository->getModel()->orderBy('name','ASC')->get();
+        $departamen = $this->departamentRepository->getModel()->where('type','iglesia')->orderBy('name','ASC')->lists('id');
+        $typesList = $this->typeIncomeRepository->getModel()->whereIn('departament_id',$departamen)->lists('id');
+        $mes = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+        foreach($departaments AS $key=>$departament): $i++;
+
+            $total=0;
+            $pdf = Fpdf::SetFont('Arial','B',8);
+            $pdf .= Fpdf::Cell(5,7,$key+1,1,0,'L');
+            $pdf .= Fpdf::Cell(40,7,substr(utf8_decode(ucwords(strtolower($departament->name))),0,33),1,0,'L');
+            $types = $this->typeIncomeRepository->getModel()->where('departament_id',$departament->id)->lists('id');
+            $totalDie=0;
+            $pdf = Fpdf::SetFont('Arial','I',8);
+            $periods = $this->periodRepository->oneWhere('year',$year);
+            foreach($periods AS $period):
+                $gasto = $this->incomeRepository->getModel()->whereIn('type_income_id',$types)
+                    ->whereBetween('date',[$period->dateIn,$period->dateOut])->sum('balance');
+                $totalDie += $gasto;
+
+                $pdf .= Fpdf::Cell(20,7,number_format($gasto),1,0,'C');
+
+            endforeach;
+            $pdf = Fpdf::SetFont('Arial','BI',8);
+            $pdf .= Fpdf::Cell(20,7,number_format($totalDie,2),1,0,'C');
+            $total = $this->incomeRepository->getModel()->whereIn('type_income_id',$typesList)
+                ->whereBetween('date',[($year-1).'-12-26',$year.'-12-25'])->sum('balance');
+            $percent = ($totalDie/$total)*100;
+            $pdf .= Fpdf::Cell(14,7,number_format($percent).'%',1,0,'C');
+            $pdf .= Fpdf::Ln();
+        endforeach;
+        $pdf = Fpdf::SetFont('Arial','B',8);
+        $pdf .= Fpdf::Cell(45,7,utf8_decode('Total'),1,0,'L');
+        $pdf = Fpdf::SetFont('Arial','BI',7.5);
+        $periods = $this->periodRepository->oneWhere('year',$year);
+        foreach($periods AS $period):
+            $gasto = $this->incomeRepository->getModel()
+                ->whereBetween('date',[$period->dateIn,$period->dateOut])->sum('balance');
+            $totalDie += $gasto;
+            $pdf .= Fpdf::Cell(20,7,number_format($gasto),1,0,'C');
+
+        endforeach;
+        $pdf .= Fpdf::Cell(20,7,number_format($totalDie,2),1,0,'C');
+        $percent = ($totalDie/$total)*100;
+        $pdf .= Fpdf::Cell(14,7,number_format(100).'%',1,1,'C');
+        $otherInc = OtherIncome::sum('amount');
+        $pdf = Fpdf::SetFont('Arial','B',10);
+        $periods = $this->periodRepository->oneWhere('year',$year);
+        $i=45;
+        foreach($periods AS $period):
+            $i = $i +20;
+        endforeach;
+        $pdf .= Fpdf::Cell($i,7,'Total de Otros ingresos a la Cuentas Bancarias: ',1,0,'R');
+        $pdf .= Fpdf::Cell(20,7,number_format($otherInc),1,1,'R');
+        $pdf .= Fpdf::Cell($i,7,'Total Final depositado a las Cuentas Bancarias: ',1,0,'R');
+        $pdf .= Fpdf::Cell(20,7,number_format($totalDie+$otherInc),1,1,'R');
+
+        $pdf .= Fpdf::Output('Informe-de-Ingresos.pdf','I');
+        exit;
+    }
     public function header()
     {
         $pdf  = Fpdf::AddPage('L','letter');

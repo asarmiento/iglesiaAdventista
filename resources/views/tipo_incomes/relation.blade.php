@@ -10,7 +10,7 @@ Formulario  Relacionar Tipos de Ingresos con Tipos de Gastos
 @section('content')
 <form action="{{route('relation-save')}}" method="post" class="form-group">
 <div class="form-group"> {{csrf_field()}}
-    <div class="col-lg-3 col-md-3">
+    <div class="col-lg-4 col-md-4">
         <label class="">Tipo de Ingresos</label>
             <select class="form-control select2" name="type_income_id">
                 <option value="">Selecciones un Ingreso</option>
@@ -19,7 +19,7 @@ Formulario  Relacionar Tipos de Ingresos con Tipos de Gastos
                 @endforeach
             </select>
     </div>
-    <div  class="col-lg-3 col-md-3">
+    <div  class="col-lg-4 col-md-4">
         <label class="">Tipo de Ingresos</label>
         <select class="form-control select2" name="type_expense_id">
             <option value="">Selecciones un Ingreso</option>
@@ -30,7 +30,7 @@ Formulario  Relacionar Tipos de Ingresos con Tipos de Gastos
     </div>
 </div>
 </br>
-<div class="col-lg-3 col-md-3">
+<div class="col-lg-4 col-md-4">
 
     <div class="large-12 columns text-center">
         <a href="{{route('typeFix-lista')}}" class="btn btn-default"><i class="fa fa-ban"></i>Regresar</a>
@@ -38,4 +38,24 @@ Formulario  Relacionar Tipos de Ingresos con Tipos de Gastos
     </div>
 </div>
 </form>
+    <div class="form-group">
+        <div class="col-lg-10 col-md-10">
+            <ul class="form-group">
+                    @foreach($typeIncomes As $typeIncome)
+                            <li style="align-content: inherit">{{$typeIncome->name}}-->{{number_format($typeIncome->balance)}} -->
+                                <ul style="padding-left: 150px; color: #007dbb "> <?php $totalExpenses = 0; ?>
+                                @foreach($typeIncome->typeExpenses As $typeExpense)
+                                    <li>{{$typeExpense->id.'-'.$typeExpense->name}}-->{{number_format($typeExpense->balance)}}</li>
+                                    <?php $totalExpenses += $typeExpense->balance; ?>
+                                @endforeach
+                                </ul>
+                                <li style="padding-left: 200px;
+                            <?php echo "color: #2ca02c"; if(($typeIncome->balance-$typeExpense->amount) < 0): echo "color:red"; endif;  ?>  ">
+                                Saldo Disponible: {{number_format($typeIncome->balance-$totalExpenses)}}
+                            </li>
+                            </li>
+                    @endforeach
+            </ul>
+        </div>
+    </div>
 @stop

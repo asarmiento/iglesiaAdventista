@@ -13,3 +13,5 @@ Route::get('lista-detalle/sobres-diezmos',['as'=>'index-income','uses'=>'IncomeC
 Route::get('informe-semanal/lista-detalle/{token}',['as'=>'informe-semanal','uses'=>'IncomeController@showInforme']);
 Route::post('save-informe',['as'=>'incomes-store','uses'=>'IncomeController@store']);
 Route::get('enviar-campo-local/{token}',['as'=>'send-income','uses'=>'IncomeController@send']);
+
+Route::get('ver-historial/ingresos/{date}',['as'=>'lista-incomes','uses'=>'Report\InformeDieOfe@departament']);

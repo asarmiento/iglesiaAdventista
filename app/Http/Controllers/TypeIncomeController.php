@@ -201,7 +201,7 @@ class TypeIncomeController extends Controller {
     }
 
     public function relation(){
-        $typeIncomes = TypeIncome::all();
+        $typeIncomes = TypeIncome::orderBY('name','ASC')->get();
         $typeExpenses = TypeExpense::all();
         return view('tipo_incomes.relation',compact('typeIncomes','typeExpenses'));
     }

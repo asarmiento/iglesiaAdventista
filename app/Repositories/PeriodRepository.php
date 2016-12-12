@@ -28,13 +28,15 @@ class PeriodRepository extends BaseRepository
 
         $month = $period->month - 1;
         $year = $period->year;
-        if(count($month) == 1 ):
+       
+        if(strlen ($month) == 1 ):
             $month = '0'.$month;
         endif;
         if($period->month == 1 || $period->month == '01'):
             $month = 12;
             $year = $period->year-1;
         endif;
+
 
 
 
