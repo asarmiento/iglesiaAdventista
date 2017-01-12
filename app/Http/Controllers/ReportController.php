@@ -233,7 +233,8 @@ class ReportController extends  Controller
     {
         $y = Fpdf::GetY();
         if($orientacion == 'L' && $y > 150):
-            $y = $y+170;
+            $y = $y+160;
+            $pdf  = Fpdf::SetY($y);
         endif;
 
         $pdf = Fpdf::SetXY(90,$y);
@@ -251,8 +252,9 @@ class ReportController extends  Controller
         $fixs = $this->typeIncomeRepository->getModel()->whereHas('incomes',function ($q) use ($date){
             $q->where('date',$date->format('Y-m-d'));
         })->get();
+      
         foreach($fixs AS $fix):
-            $pdf .= Fpdf::SetXY(135,$y);
+            $pdf .= Fpdf::SetX(145);
             $pdf  .= Fpdf::Cell(13,5,utf8_decode($fix->abreviation).' = '.utf8_decode($fix->name),0,1,'L');
             $y +=5;
         endforeach;
