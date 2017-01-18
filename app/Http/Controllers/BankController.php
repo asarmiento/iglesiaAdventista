@@ -146,17 +146,20 @@ class BankController extends Controller
         $datos['record_id']= $record->id;
         $bank = $this->bankRepository->getModel();
         $accounts = $this->accountRepository->getModel()->find($datos['account_id']);
-        if($bank->isValid($datos)):
-            $bank->fill($datos);
-            $bank->save();
+        $datos['deposit']= 'no';
+        
+            if($bank->isValid($datos)):
+                $bank->fill($datos);
+                $bank->save();
 
-            $bank->records()->attach($datos['record_id']);
-            $this->accountRepository->getModel()->where('id',$datos['account_id'])->update(['debit_balance'=>($accounts->debit_balance+$datos['balance']),
-                'balance'=>(($accounts->debit_balance+$datos['balance']+$accounts->initial_balance)-$accounts->credit_balance)]);
+                $bank->records()->attach($datos['record_id']);
+                $this->accountRepository->getModel()->where('id',$datos['account_id'])->update(['debit_balance'=>($accounts->debit_balance+$datos['balance']),
+                    'balance'=>(($accounts->debit_balance+$datos['balance']+$accounts->initial_balance)-$accounts->credit_balance)]);
 
-            $this->recordUpdate($bank);
-            return redirect()->route('deposito-ver');
-        endif;
+                $this->recordUpdate($bank);
+                return redirect()->route('deposito-ver');
+            endif;
+
 
         return redirect()->route('create-deposit')->withErrors($bank)->withInput();
     }
@@ -184,10 +187,10 @@ class BankController extends Controller
     public function recordUpdate($bank)
     {
 
-        $amount = $bank->records->sum('balance');
+        $amount =  $this->bankRepository->getModel()->where('record_id',$bank->record_id)->sum('balance');
 
         if($amount == $bank->records[0]->balance):
-            $this->recordRepository->getModel()->where('id',$bank->records[0]->id)->update(['deposit'=>'yes']);
+            $this->recordRepository->getModel()->where('id',$bank->record_id)->update(['deposit'=>'yes']);
         endif;
     }
     public function depositCampo()
