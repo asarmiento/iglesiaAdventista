@@ -143,7 +143,8 @@ class ReportController extends  Controller
         $pdf    .= Fpdf::Text(158,27,utf8_decode('N° ').'0000'.$miembros[0]->numeration,'B',7);
         elseif ($miembros[0]->numeration > 10 && $miembros[0]->numeration < 100):
             $pdf    .= Fpdf::Text(158,27,utf8_decode('N° ').'000'.$miembros[0]->numeration,'B',7);
-
+        elseif ($miembros[0]->numeration > 100 && $miembros[0]->numeration < 1000):
+            $pdf    .= Fpdf::Text(158,27,utf8_decode('N° ').'00'.$miembros[0]->numeration,'B',7);
         endif;
         $pdf    .= Fpdf::SetTextColor(0,0,0);
         $pdf  .= Fpdf::SetFont('Arial','I',7);
