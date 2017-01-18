@@ -3,6 +3,7 @@
 
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -52,10 +53,8 @@ class MemberController extends Controller {
         TypeExpenseRepository $typeExpenseRepository
     )
     {
-
         $this->memberRepository = $memberRepository;
         $this->typeIncomeRepository = $typeIncomeRepository;
-
         $this->incomeRepository = $incomeRepository;
         $this->typeExpenseRepository = $typeExpenseRepository;
     }
@@ -92,7 +91,7 @@ class MemberController extends Controller {
         try {
             DB::beginTransaction();
         $data = Input::all();
-
+            $data['token']= Crypt::encrypt($data['name']);
         $members = $this->memberRepository->getModel();
 
         if ($members->isValid($data)) {

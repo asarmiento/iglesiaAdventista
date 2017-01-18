@@ -211,7 +211,7 @@ class IncomeRepository extends BaseRepository
         return $ofrenda;
     }
     public function incomeDateMember($member,$date){
-        return $this->newQuery()->where('member_id',$member)->where('date',$date)->orderBy('id','ASC');
+        return $this->newQuery()->where('member_id',$member)->where('date',$date)->groupBy('numberOf')->orderBy('id','ASC');
     }
 
 

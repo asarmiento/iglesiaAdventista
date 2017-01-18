@@ -135,27 +135,33 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::ln();
         $e =0;
         $fin = 0;
-        $pdf  .= Fpdf::SetFont('Arial','I',7);
         /* INICIO DE CUERPO */
-        $miembros = $this->memberRepository->getModel()->whereHas('incomes',function ($q) use ($date){
-            $q->where('date',$date->format('Y-m-d'))->orderBy('id','ASC');
-        })->get();
-        foreach($miembros AS $miembro):
-            $e++;
-            $pdf  .= Fpdf::SetX(5);
-            $pdf  .= Fpdf::Cell(5,7,utf8_decode($e),1,0,'C');
-            $pdf  .= Fpdf::Cell(40,7,substr(utf8_decode($miembro->completo()),0,30),1,0,'L');
-            $numberOf = $this->incomeRepository->incomeDateMember($miembro->id,$date->format('Y-m-d'))->get();
-            $pdf  .= Fpdf::Cell(13,7,$numberOf[0]->numberOf,1,0,'C');
-            $total = $numberOf = $this->incomeRepository->incomeDateMember($miembro->id,$date->format('Y-m-d'))->sum('balance');
-            $fin += $total;
-            $pdf  .= Fpdf::Cell(13,7,number_format($total,2),1,0,'C');
+        $miembros = $this->incomeRepository->getModel()->where('date',$date->format('Y-m-d'))->groupBy('numberOf')->get();
+        $pdf    = Fpdf::SetFont('Arial','B',17);
+        $pdf    = Fpdf::SetTextColor(242,66,21);
+        $pdf    = Fpdf::Text(178,27,$miembros[0]->numeration,'B',7);
+        $pdf    = Fpdf::SetTextColor(0,0,0);
+        $pdf  .= Fpdf::SetFont('Arial','I',7);
 
-            foreach($fixs AS $fix):
-                $amount = $this->incomeRepository->incomeDateMember($miembro->id,$date->format('Y-m-d'))->where('type_income_id',$fix->id)->sum('balance');
-                $pdf  .= Fpdf::Cell(13,7,number_format($amount,2),1,0,'C');
-            endforeach;
-            $pdf  .= Fpdf::ln();
+        foreach($miembros AS $miembro):
+
+            if($miembro->members):
+                $e++;
+                $pdf  .= Fpdf::SetX(5);
+                $pdf  .= Fpdf::Cell(5,7,utf8_decode($e),1,0,'C');
+                $pdf  .= Fpdf::Cell(40,7,substr(utf8_decode($miembro->members->completo()),0,30),1,0,'L');
+                $pdf  .= Fpdf::Cell(13,7,$miembro->numberOf,1,0,'C');
+                $total = $numberOf = $this->incomeRepository->getModel()->where('numberOf',$miembro->numberOf)->sum('balance');
+                $fin += $total;
+                $pdf  .= Fpdf::Cell(13,7,number_format($total,2),1,0,'C');
+
+                foreach($fixs AS $fix):
+                    $amount = $this->incomeRepository->incomeDateMember($miembro->members->id,$date->format('Y-m-d'))
+                        ->where('type_income_id',$fix->id)->where('numberOf',$miembro->numberOf)->sum('balance');
+                    $pdf  .= Fpdf::Cell(13,7,number_format($amount,2),1,0,'C');
+                endforeach;
+                $pdf  .= Fpdf::ln();
+            endif;
         endforeach;
         /*fIN DE CUERPO*/
         $pdf  .= Fpdf::SetFont('Arial','B',6.5);

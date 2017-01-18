@@ -9,6 +9,7 @@
 namespace SistemasAmigables\Http\Controllers;
 
 
+use Illuminate\Support\Facades\Crypt;
 use SistemasAmigables\Entities\DepartamentBaseIncome;
 use SistemasAmigables\Http\Controllers\Controller;
 use SistemasAmigables\Repositories\AccountRepository;
@@ -108,15 +109,17 @@ class TestController extends Controller
 
     public function index(){
 
-        $accounts = $this->checkRepository->allData();
-
+        $accounts = $this->incomeRepository->getModel()->groupBy('date')->orderBy('date','ASC')->get();
+        $i=104;
         foreach($accounts AS $account):
-            if($this->expensesRepository->oneWhereSum('check_id',$account->id,'amount')== 0):
-           Echo $account->date.'-'.$account->number.'-'.$account->name.'-->'.$this->expensesRepository->oneWhereSum('check_id',$account->id,'amount').'</br>';
-                endif;
+            $i++;
+             $this->incomeRepository->getModel()->where('date',$account->date)->update(['numeration'=>$i]);
         endforeach;
+        $members = $this->memberRepository->getModel()->get();
+        foreach($members AS $member):
 
-
+            $this->memberRepository->getModel()->where('id',$member->id)->update(['token'=>Crypt::encrypt($member->name.$member->last)]);
+        endforeach;
 
     }
 
