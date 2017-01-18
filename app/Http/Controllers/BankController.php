@@ -190,7 +190,9 @@ class BankController extends Controller
     public function recordUpdate($bank)
     {
 
-        $amount =  $this->bankRepository->getModel()->where('record_id',$bank->record_id)->sum('balance');
+        $amount =  $this->bankRepository->getModel()->whereHas('records',function ($q) use($bank){
+            $q->where('record_id',$bank->record_id);
+        })->sum('balance');
 
         if($amount == $bank->records[0]->balance):
             $this->recordRepository->getModel()->where('id',$bank->record_id)->update(['deposit'=>'yes']);
