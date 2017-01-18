@@ -137,15 +137,15 @@ class ReportController extends  Controller
         $fin = 0;
         /* INICIO DE CUERPO */
         $miembros = $this->incomeRepository->getModel()->where('date',$date->format('Y-m-d'))->groupBy('numberOf')->get();
-        $pdf    = Fpdf::SetFont('Arial','B',17);
-        $pdf    = Fpdf::SetTextColor(242,66,21);
+        $pdf    .= Fpdf::SetFont('Arial','B',17);
+        $pdf    .= Fpdf::SetTextColor(242,66,21);
         if($miembros[0]->numeration > 0 && $miembros[0]->numeration < 10):
-        $pdf    = Fpdf::Text(158,27,utf8_decode('N° ').'0000'.$miembros[0]->numeration,'B',7);
+        $pdf    .= Fpdf::Text(158,27,utf8_decode('N° ').'0000'.$miembros[0]->numeration,'B',7);
         elseif ($miembros[0]->numeration > 10 && $miembros[0]->numeration < 100):
-            $pdf    = Fpdf::Text(158,27,utf8_decode('N° ').'000'.$miembros[0]->numeration,'B',7);
+            $pdf    .= Fpdf::Text(158,27,utf8_decode('N° ').'000'.$miembros[0]->numeration,'B',7);
 
         endif;
-        $pdf    = Fpdf::SetTextColor(0,0,0);
+        $pdf    .= Fpdf::SetTextColor(0,0,0);
         $pdf  .= Fpdf::SetFont('Arial','I',7);
 
         foreach($miembros AS $miembro):
