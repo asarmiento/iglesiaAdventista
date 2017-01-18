@@ -142,6 +142,9 @@ class BankController extends Controller
     {
         $datos = Input::all();
         $datos['type'] = 'entradas';
+        if($datos['record_id']==''):
+            return redirect()->route('create-deposit')->withErrors('Debe Seleccionar un informe Semanal')->withInput();
+        endif;
         $record = $this->recordRepository->token($datos['record_id']);
         $datos['record_id']= $record->id;
         $bank = $this->bankRepository->getModel();
