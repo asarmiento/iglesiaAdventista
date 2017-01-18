@@ -147,7 +147,7 @@ class BankController extends Controller
         $bank = $this->bankRepository->getModel();
         $accounts = $this->accountRepository->getModel()->find($datos['account_id']);
         $datos['deposit']= 'no';
-        
+
             if($bank->isValid($datos)):
                 $bank->fill($datos);
                 $bank->save();

@@ -113,12 +113,12 @@ class ReportController extends  Controller
         $fixs = $this->typeIncomeRepository->getModel()->whereHas('incomes',function ($q) use ($date){
             $q->where('date',$date->format('Y-m-d'));
         })->count();
-        if($fixs <= 9):
+        if($fixs <= 10):
             $orientacion = 'P';
         else:
                 $orientacion = 'L';
         endif;
-        $this->header($date->format('Y-m-d'),$orientacion);
+        $this->header($date->format('d-m-Y'),$orientacion);
         $pdf    = Fpdf::SetFont('Arial','B',7);
         $pdf    .= Fpdf::SetX(5);
         $pdf  .= Fpdf::Cell(5,7,utf8_decode('N°'),1,0,'C');
@@ -139,7 +139,12 @@ class ReportController extends  Controller
         $miembros = $this->incomeRepository->getModel()->where('date',$date->format('Y-m-d'))->groupBy('numberOf')->get();
         $pdf    = Fpdf::SetFont('Arial','B',17);
         $pdf    = Fpdf::SetTextColor(242,66,21);
-        $pdf    = Fpdf::Text(178,27,$miembros[0]->numeration,'B',7);
+        if($miembros[0]->numeration > 0 && $miembros[0]->numeration < 10):
+        $pdf    = Fpdf::Text(158,27,utf8_decode('N° ').'0000'.$miembros[0]->numeration,'B',7);
+        elseif ($miembros[0]->numeration > 10 && $miembros[0]->numeration < 100):
+            $pdf    = Fpdf::Text(158,27,utf8_decode('N° ').'000'.$miembros[0]->numeration,'B',7);
+
+        endif;
         $pdf    = Fpdf::SetTextColor(0,0,0);
         $pdf  .= Fpdf::SetFont('Arial','I',7);
 
@@ -175,9 +180,19 @@ class ReportController extends  Controller
         $pdf  .= Fpdf::ln();
         $pdf  .= Fpdf::ln();
         $y     = Fpdf::GetY();
-        $pdf .= $this->firmas($orientacion,$date);
-        $pdf = Fpdf::SetXY(110,$y);
+
+        if($y >=210 && $y <=220):
+            $pdf  .= Fpdf::ln();
+            $pdf  .= Fpdf::ln();
+            $pdf  .= Fpdf::ln();
+            $pdf  .= Fpdf::ln();
+            $pdf  .= Fpdf::ln();
+            $pdf  .= Fpdf::ln();
+            $y     = Fpdf::GetY();
+        endif;
+        $Y= Fpdf::GetY();
         $pdf .= $this->footer($date,$orientacion,$y);
+        $pdf .= $this->firmas($orientacion,$date,$Y);
         Fpdf::Output('Informe-Semanal: '.$date.'.pdf','I');
         exit;
     }
@@ -235,15 +250,11 @@ class ReportController extends  Controller
     | @return mixed
     |----------------------------------------------------------------------
     */
-    public function firmas($orientacion,$date)
+    public function firmas($orientacion,$date,$Y)
     {
-        $y = Fpdf::GetY();
-        if($orientacion == 'L' && $y > 150):
-            $y = $y+160;
-            $pdf  = Fpdf::SetY($y);
-        endif;
 
-        $pdf = Fpdf::SetXY(90,$y);
+       //
+        $pdf = Fpdf::SetX(90);
         $pdf  .= Fpdf::Cell(30,5,utf8_decode('______________________________'),0,1,'L');
         $pdf = Fpdf::SetX(90);
         $pdf  .= Fpdf::Cell(40,5,utf8_decode('Tesorero'),0,1,'C');
@@ -258,13 +269,12 @@ class ReportController extends  Controller
         $fixs = $this->typeIncomeRepository->getModel()->whereHas('incomes',function ($q) use ($date){
             $q->where('date',$date->format('Y-m-d'));
         })->get();
-      
-        foreach($fixs AS $fix):
-            $pdf .= Fpdf::SetX(145);
-            $pdf  .= Fpdf::Cell(13,5,utf8_decode($fix->abreviation).' = '.utf8_decode($fix->name),0,1,'L');
-            $y +=5;
-        endforeach;
 
+        foreach($fixs AS $fix):
+            $pdf .= Fpdf::SetX(142);
+            $pdf  .= Fpdf::Cell(13,5,utf8_decode($fix->abreviation).' = '.utf8_decode($fix->name),0,1,'L');
+
+        endforeach;
     }
 
  /**************************************************
@@ -285,10 +295,8 @@ class ReportController extends  Controller
     {
 
         $pdf = Fpdf::SetFont('Arial','',8);
-        if($orientacion == 'L' && $y > 150):
-            $y = $y-160;
-            $pdf  = Fpdf::SetY($y);
-        endif;
+
+
         $typeIncomes = $this->typeIncomeRepository->name('association','si');
         $i = 0;
         foreach($typeIncomes AS $typeIncome):
@@ -297,14 +305,14 @@ class ReportController extends  Controller
                 $type = $this->typeIncomeRepository->getModel()->where('part','si')->lists('id');
                 $ofrenda = $this->incomeRepository->getModel()->where('date',$date)->whereIn('type_income_id',$type)->sum('balance');
                 if($i==1):
-                $pdf  .= Fpdf::Cell(30,5,utf8_decode('20% MUNDIAL'),0,0,'L');
+                $pdf  .= Fpdf::Cell(35,5,utf8_decode('20% MUNDIAL'),0,0,'L');
                 $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format(($ofrenda/5),2),0,1,'L');
                 else:
-                    $pdf  .= Fpdf::Cell(30,5,utf8_decode('20% DESARROLLO'),0,0,'L');
+                    $pdf  .= Fpdf::Cell(35,5,utf8_decode('20% DESARROLLO'),0,0,'L');
                     $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format(($ofrenda/5),2),0,1,'L');
                 endif;
              else:
-                 $pdf  .= Fpdf::Cell(30,5,utf8_decode(strtoupper($typeIncome->name)),0,0,'L');
+                 $pdf  .= Fpdf::Cell(35,5,utf8_decode(strtoupper($typeIncome->name)),0,0,'L');
                  $Total = $this->incomeRepository->getModel()->twoWhere('date',$date,'type_income_id',$typeIncome->id);
                  $pdf  .= Fpdf::Cell(30,5,utf8_decode('¢ ').number_format($Total,2),0,1,'L');
              endif;
