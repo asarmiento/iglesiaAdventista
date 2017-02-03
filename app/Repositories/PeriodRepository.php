@@ -32,6 +32,7 @@ class PeriodRepository extends BaseRepository
         if(strlen ($month) == 1 ):
             $month = '0'.$month;
         endif;
+
         if($period->month == 1 || $period->month == '01'):
             $month = 12;
             $year = $period->year-1;
@@ -41,6 +42,10 @@ class PeriodRepository extends BaseRepository
 
 
         $before= $this->newQuery()->where('month',$month)->where('year',$year)->get();
+
+        if($before->count() == 0):
+            return false;
+        endif;
 
         return $before[0];
     }

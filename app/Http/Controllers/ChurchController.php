@@ -410,12 +410,12 @@ class ChurchController extends Controller {
         $depart = $this->departamentRepository->getModel()->where('type','iglesia')->orderBy('id','DESC')->count();
         $period = $this->periodRepository->token($token);
 
-        $periodBefoere = $this->periodRepository->before($period);
+       $periodBefoere = $this->periodRepository->before($period);
 
         $this->header();
 
         $pdf = Fpdf::SetFont('Arial','B',12);
-        $pdf .= Fpdf::Cell(200,7,utf8_decode('Nombre del Tesorero: Anwar Sarmiento Ramos'),1,0,'L');
+        $pdf .= Fpdf::Cell(200,7,utf8_decode('Nombre del Tesorero: Elizabeth Segura Gamboa'),1,0,'L');
         $pdf .= Fpdf::Cell(60,7,utf8_decode('Iglesia de: QUEPOS'),1,1,'L');
         $pdf .= Fpdf::Cell(150,7,utf8_decode(''),1,0,'L');
         $pdf .= Fpdf::Cell(110,7,utf8_decode('Para mes de: '.$period->month.'-'.$period->year),1,1,'L');
@@ -450,14 +450,15 @@ class ChurchController extends Controller {
         $i = 0;
 
         /********************************************************************************/
-
-
-        $saldo = $this->balanceChurchRepository->saldoInitial($periodBefoere->id);
-
+        $saldo =0;
+        if($periodBefoere):
+            $saldo = $this->balanceChurchRepository->saldoInitial($periodBefoere->id)->amount;
+        endif;
         $pdf = Fpdf::Ln();
         $pdf = Fpdf::SetFont('Arial','',6);
         $pdf .= Fpdf::Cell(149,5,utf8_decode('VIENE'),1,0,'R');
-        $pdf .= Fpdf::Cell(20,5,number_format($saldo->amount,2),1,1,'C');
+        $pdf .= Fpdf::Cell(15,5,'',1,0,'C');
+        $pdf .= Fpdf::Cell(20,5,number_format($saldo,2),1,1,'C');
 
         $records = $this->recordRepository->getModel()->where('period_id',$period->id)->orderBy('saturday','ASC')->get();
        $totalFondoLocal=0;
@@ -515,16 +516,27 @@ class ChurchController extends Controller {
         $pdf .= Fpdf::Cell(20,7,number_format($totalFondoLocal,2),1,1,'C');
         /** */
         $pdf .= Fpdf::Cell(149,7,utf8_decode('Total de Ingresos:'),1,0,'R');
-        $pdf .= Fpdf::Cell(20,7,number_format($saldo->amount+$totalFondoLocal,2),1,1,'C');
+        $pdf .= Fpdf::Cell(15,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(20,7,number_format($saldo+$totalFondoLocal,2),1,1,'C');
         $gastos  = $this->expensesRepository->getModel()->whereHas('typeExpense',function($q){
             $q->where('type','iglesia');
         })->whereBetween('invoiceDate',[$period->dateIn,$period->dateOut])->sum('amount');
         $pdf .= Fpdf::Cell(149,7,utf8_decode('Total de Gastos:'),1,0,'R');
+        $pdf .= Fpdf::Cell(15,7,'',1,0,'C');
         $pdf .= Fpdf::Cell(20,7,number_format($gastos,2),1,1,'C');
         $pdf .= Fpdf::Cell(149,7,utf8_decode('Saldo:'),1,0,'R');
-        $pdf .= Fpdf::Cell(20,7,number_format(($saldo->amount+$totalFondoLocal)-$gastos,2),1,1,'C');
+        $pdf .= Fpdf::Cell(15,7,'',1,0,'C');
+        $pdf .= Fpdf::Cell(20,7,number_format(($saldo+$totalFondoLocal)-$gastos,2),1,1,'C');
 
+        $departamentos  = $this->departamentRepository->getModel()->where('type','iglesia')->orderBy('budget','DESC')->get();
+        $pdf .= Fpdf::SetXY(194,67);
+        $x = 194;
+        foreach ($departamentos AS $departamento):
+            $pdf .= Fpdf::SetXY($x,67);
+            $pdf .= Fpdf::MultiCell(20,5,substr(utf8_decode($departamento->name.' '.($departamento->budget*100).'%'),0,22),1,'C');
+            $x = $x+20;
 
+        endforeach;
 
         Fpdf::Output('Informe-Mendual.pdf','I');
         exit;

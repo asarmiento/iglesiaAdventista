@@ -18,9 +18,15 @@ Lista Informes Semanales
         {{csrf_field()}}
         <tr>
             <th><label>Periodo Actual:</label></th>
-            <td><input name="oldPeriod"   type="text" value="{{$periods['old']}}"></td>
+            <td><input name="oldPeriod" readonly   type="text" value="{{$periods['old']}}"></td>
             <th><label>Nuevo Periodo:</label></th>
-            <td><input name="newPeriod"  type="text" value="{{$periods['new']}}"></td>
+            <td><input name="newPeriod" readonly type="text" value="{{$periods['new']}}"></td>
+        </tr>
+        <tr>
+            <th><label>Fecha Inicio:</label></th>
+            <td><input name="dateIn"   type="date" ></td>
+            <th><label>Fecha Final:</label></th>
+            <td><input name="dateOut"  type="date" ></td>
         </tr>
     <tr>
         <td></td>

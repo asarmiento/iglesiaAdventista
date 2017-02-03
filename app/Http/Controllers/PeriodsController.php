@@ -95,7 +95,13 @@ class PeriodsController extends Controller
         $dateOld = explode("-",$datos['oldPeriod']);
         Session::put('dateOld',$dateOld);
         $spli = explode("-",$datos['newPeriod']);
-        $data = ['month'=>$spli[0],'year'=>$spli[1],'church_id'=>1,'token'=>md5($datos['oldPeriod'])];
+        $data = [
+            'dateIn'=>$datos['dateIn'],
+            'dateOut'=>$datos['dateOut'],
+            'month'=>$spli[0],
+            'year'=>$spli[1],
+            'church_id'=>1,
+            'token'=>md5($datos['oldPeriod'])];
 
         $period = $this->periodRepository->getModel();
         if($period->isValid($data)):
