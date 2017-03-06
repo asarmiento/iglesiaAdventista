@@ -31,7 +31,7 @@ Lista Informes Semanales
         <th><label>Cantidad Filas:</label></th>
         <td><input name="rows"  type="number"></td>
         <th><label>Total:</label></th>
-        <td><input name="balance"  type="number"></td>
+        <td><input name="balance"  type="decimal"></td>
     </tr>
 
     <tr>
