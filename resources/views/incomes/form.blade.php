@@ -24,12 +24,12 @@ Formulario  Ingresos
                 <input name="date" type="hidden" value="{{$incomes->saturday}}">
             </div>
             <div class="col-sm-3">
-                <label class="">Saldo Disponible: <span class="balance">{{number_format($incomes->balance)}}</span>
+                <label class="">Saldo Disponible: <span class="balance">{{($incomes->balance)}}</span>
                 </label>
                 <input name="balanceControl" type="hidden" value="{{$incomes->balance}}">
             </div>
             <div class="col-sm-3">
-                <label>Saldo Por Ingresar: <span class="balance_in">{{number_format($incomes->balance)}}</span>
+                <label>Saldo Por Ingresar: <span class="balance_in">{{($incomes->balance)}}</span>
                 </label>
                 <input name="balanceControl" type="hidden" value="{{$incomes->balance}}">
             </div>
