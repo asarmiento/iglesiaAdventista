@@ -17,6 +17,13 @@
     <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/lib/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css')}}">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9818954671091924",
+    enable_page_level_ads: true
+  });
+</script>
     @yield('styles')
 </head>
 <body>
